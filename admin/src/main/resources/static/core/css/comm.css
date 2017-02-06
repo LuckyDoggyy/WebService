@@ -1,0 +1,267 @@
+.username {
+    background-image: url(./imgs/table/user.png) !important;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.password {
+    background-image: url(./imgs/table/password.gif) !important;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.table_add {
+    background-image: url(./imgs/table/houseadd.png) !important;
+}
+.addsystemmanager {
+    background-image: url(./imgs/table/addsystemmanager.png) !important;
+}
+.removesystemmanager {
+    background-image: url(./imgs/table/removesystemmanager.png) !important;
+}
+.liulan {
+    background-image: url(./imgs/table/liulan.png) !important;
+}
+.muladd {
+    background-image: url(./imgs/table/muladd.png) !important;
+}
+
+.switch {
+    background-image: url(./imgs/logo/switch.png) !important;
+}
+.apphome {
+    background-image: url(./imgs/form/application_home.png) !important;
+}
+
+.home {
+    background-image: url(./imgs/form/home.png) !important;
+}
+.house {
+    background-image: url(./imgs/form/house.png) !important;
+}
+.group {
+    background-image: url(./imgs/form/group.png) !important;
+}
+.door {
+    background-image: url(./imgs/form/door.png) !important;
+}
+.view {
+    background-image: url(./imgs/form/view.png) !important;
+}
+.door_in {
+    background-image: url(./imgs/form/door_in.png) !important;
+}
+.log {
+    background-image: url(./imgs/form/log.png) !important;
+}
+.conn {
+    background-image: url(./imgs/form/conn.png) !important;
+}
+.copy {
+    background-image: url(./imgs/form/copy.png) !important;
+}
+
+.message {
+    background-image: url(./imgs/form/message.png) !important;
+}
+
+.setting {
+    background-image: url(./imgs/form/setting.png) !important;
+}
+.user {
+    background-image: url(./imgs/form/user.png) !important;
+}
+.syncall {
+    background-image: url(./imgs/table/syncall.png) !important;
+}
+.houseadd {
+    background-image: url(./imgs/table/houseadd.png) !important;
+}
+.housedel {
+    background-image: url(./imgs/table/housedel.png) !important;
+}
+.useradd {
+    background-image: url(./imgs/table/useradd.png) !important;
+}
+.userdel {
+    background-image: url(./imgs/table/userdel.png) !important;
+}
+
+.accept {
+    background-image: url(./imgs/table/accept.png) !important;
+}
+
+.cancel {
+    background-image: url(./imgs/table/cancel.png) !important;
+}
+
+.table_refresh {
+    background-image: url(./imgs/table/table_refresh.png) !important;
+}
+
+.table_login {
+    background-image: url(./imgs/table/lock.png) !important;
+}
+
+.synctime {
+    background-image: url(./imgs/table/synctime.png) !important;
+}
+
+.importctrl {
+    background-image: url(./imgs/table/importctrl.png) !important;
+}
+
+.testconn {
+    background-image: url(./imgs/table/testconn.png) !important;
+}
+
+.disabled {
+    background-image: url(./imgs/table/disabled.png) !important;
+}
+
+.enable {
+    background-image: url(./imgs/table/enable.png) !important;
+}
+
+.table_remove {
+    background-image: url(./imgs/table/housedel.png) !important;
+}
+
+.table_edit {
+    background-image: url(./imgs/table/table_edit.png) !important;
+}
+
+.disabled {
+    background-image: url(./imgs/table/disabled.png) !important;
+}
+
+.search {
+    background-image: url(./imgs/table/search.png) !important;
+}
+
+.table_search {
+    background-image: url(./imgs/table/loading.gif) !important;
+}
+
+.table_refresh {
+    background-image: url(./imgs/table/table_refresh.png) !important;
+}
+
+.card {
+    background-image: url(./imgs/table/card.png) !important;
+}
+
+.set {
+    background-image: url(./imgs/table/table_gear.png) !important;
+}
+
+.modify {
+    background-image: url(./imgs/table/modify.png) !important;
+}
+
+.table_save {
+    background-image: url(./imgs/table/table_save.png) !important;
+}
+
+.tree_model_add {
+    background-image: url(./imgs/tree/tree_model_add.png) !important;
+}
+
+.tree_folder_add {
+    background-image: url(./imgs/tree/tree_folder_add.png) !important;
+}
+
+.tree_func_add {
+    background-image: url(./imgs/tree/tree_func_add.png) !important;
+}
+
+.menu_refresh {
+    background-image: url(./imgs/tree/menu_refresh.png) !important;
+}
+
+.page_excel {
+    background-image: url(./imgs/table/page_excel.png) !important;
+}
+
+.printer {
+    background-image: url(./imgs/table/printer.png) !important;
+}
+.reset {
+    background-image: url(./imgs/table/reset.png) !important;
+}
+.download {
+    background-image: url(./imgs/table/download.png) !important;
+}
+.roleright{
+    background-image: url(./imgs/table/roleright.png) !important;
+}
+.roleadduser {
+    background-image: url(./imgs/table/roleadduser.png) !important;
+}
+.tree_root {
+    background-image: url(./imgs/tree/tree_root.png) !important;
+}
+
+.tree_delete {
+    background-image: url(./imgs/tree/tree_delete.png) !important;
+}
+
+.tree_ok {
+    background-image: url(./imgs/tree/tree_ok.png) !important;
+}
+
+.tree_user_add {
+    background-image: url(./imgs/tree/tree_user_add.png) !important;
+}
+
+.tree_user {
+    background-image: url(./imgs/tree/tree_user.png) !important;
+}
+
+.tree_role_add {
+    background-image: url(./imgs/tree/tree_role_add.png) !important;
+}
+
+.tree_role_delete {
+    background-image: url(./imgs/tree/tree_role_delete.png) !important;
+}
+
+.tree_role_see {
+    background-image: url(./imgs/tree/tree_role_see.png) !important;
+}
+
+.tree_perm_set {
+    background-image: url(./imgs/tree/tree_perm_set.png) !important;
+}
+
+.return {
+    background-image: url(./imgs/form/return.png) !important;
+}
+
+.logout {
+    background-image: url(./imgs/form/logout.png) !important;
+}
+
+.wfstart {
+    background-image: url(./imgs/wf/wfstart.png) !important;
+}
+
+.wftake {
+    background-image: url(./imgs/wf/take.png) !important;
+}
+
+.wfend {
+    background-image: url(./imgs/wf/end.png) !important;
+}
+
+.wfnext {
+    background-image: url(./imgs/wf/next.png) !important;
+}
+
+.wfback {
+    background-image: url(./imgs/wf/back.png) !important;
+}
+
+.wfreturn {
+    background-image: url(./imgs/wf/wfreturn.png) !important;
+}

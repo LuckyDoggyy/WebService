@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.we.ws.admin.mapper.UserMapper" >
+
+    <select id="listUser" resultType="com.we.ws.admin.domain.User">
+        SELECT u.uid,u.name,u.rid,r.rname as rolename from T_User u,T_Role r
+        <where>
+            u.rid=r.rid
+            <if test="uid != null and uid!=''">
+                and u.uid = #{uid}
+            </if>
+            <if test="name != null and name!=''">
+                and u.name = #{name}
+            </if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
+
+    <select id="countUser" resultType="int">
+        SELECT count(*) from T_User
+        <where>
+            <if test="uid != null and uid!=''">
+                and uid = #{uid}
+            </if>
+            <if test="name != null and name!=''">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+</mapper>
