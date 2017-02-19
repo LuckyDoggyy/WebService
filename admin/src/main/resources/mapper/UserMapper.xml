@@ -3,14 +3,14 @@
 <mapper namespace="com.we.ws.admin.mapper.UserMapper" >
 
     <select id="listUser" resultType="com.we.ws.admin.domain.User">
-        SELECT u.uid,u.name,u.rid,r.rname as rolename from T_User u,T_Role r
+        SELECT uid,name from T_User
         <where>
-            u.rid=r.rid
+             state=0
             <if test="uid != null and uid!=''">
-                and u.uid = #{uid}
+                and uid = #{uid}
             </if>
             <if test="name != null and name!=''">
-                and u.name = #{name}
+                and name = #{name}
             </if>
         </where>
         limit #{offset},#{pageSize}
@@ -19,6 +19,7 @@
     <select id="countUser" resultType="int">
         SELECT count(*) from T_User
         <where>
+            state=0
             <if test="uid != null and uid!=''">
                 and uid = #{uid}
             </if>
@@ -27,5 +28,12 @@
             </if>
         </where>
     </select>
+    
+    <update id="delete">
+        update T_User set state=1 where uid in
+        <foreach collection="uids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

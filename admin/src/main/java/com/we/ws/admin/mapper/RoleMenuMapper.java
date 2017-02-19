@@ -21,11 +21,5 @@ public interface RoleMenuMapper {
     @Select("select * from T_Role")
     List<Role> listRole(int pageSize,int offset);
 
-    @Insert("insert into T_Role(rname) values (#{rolename})")
-    int insertRole(@Param("rolename")String rolename);
-
-    @Update("update T_Role set rname=#{rolename} where rid=#{rid}")
-    int updateRole(@Param("rolename")String rolename,String rid);
-
 
 }

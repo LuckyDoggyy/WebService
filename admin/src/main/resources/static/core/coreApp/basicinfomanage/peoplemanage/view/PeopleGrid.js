@@ -26,7 +26,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
             name: 'uid'
         }, {
             xtype: 'textfield',
-            fieldLabel: '姓名',
+            fieldLabel: '用户名',
             labelWidth: 30,
             width: 120,
             name: 'name'
@@ -45,14 +45,16 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
             ref: 'addPeople',
             iconCls: 'table_add',
             hidden: false
-        }, {
-            xtype: 'button',
-            text: '修改人员',
-            ref: 'updatePeople',
-            iconCls: 'modify',
-            disabled: true,
-            hidden: false
-        }, {
+        },
+//        {
+//            xtype: 'button',
+//            text: '修改人员',
+//            ref: 'updatePeople',
+//            iconCls: 'modify',
+//            disabled: true,
+//            hidden: false
+//        },
+        {
             xtype: 'button',
             text: '删除人员',
             ref: 'deletePeople',
@@ -76,16 +78,6 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
     },  {
         text: "姓名",
         dataIndex: "name",
-        width: 140,
-        align: 'center'
-    }, {
-        text: "角色id",
-        dataIndex: "rid",
-        width: 60,
-        align: 'center'
-    }, {
-        text: "角色",
-        dataIndex: "rolename",
         width: 140,
         align: 'center'
     }],

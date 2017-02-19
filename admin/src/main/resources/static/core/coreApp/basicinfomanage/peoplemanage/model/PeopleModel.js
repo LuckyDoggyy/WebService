@@ -5,9 +5,5 @@ Ext.define("core.basicinfomanage.peoplemanage.model.PeopleModel", {
             					},{
             						name : "name",
             						type : "string",
-            					}, {
-            						name : 'rid'
-            					}, {
-                                 	name : 'rolename'
-                                 }]
+            					}]
 		});

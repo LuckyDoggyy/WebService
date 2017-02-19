@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.we.ws.admin.mapper.RoleMapper">
+
+    <insert id="addRoles" parameterType="String">
+        insert into T_UserRole(uid,rid) values
+        <foreach collection="rids" item="item" index="index" separator=",">
+            (#{item},#{uid})
+        </foreach>
+
+    </insert>
+
+    <delete id="removeRoles">
+        delete from T_UserRole where autoid in
+        <foreach collection="autoids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <select id="listUser" resultType="com.we.ws.admin.domain.UserRole">
+        select ur.autoid,ur.uid,u.name as username,ur.rid,r.rname as rolename from T_User u,T_Role r,T_UserRole ur where ur.uid=#{uid}
+            and ur.state=0 and ur.uid=u.uid and ur.rid=r.rid order by r.rid
+    </select>
+
+</mapper>

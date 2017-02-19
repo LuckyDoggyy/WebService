@@ -1,10 +1,8 @@
 package com.we.ws.admin.mapper;
 
 import com.we.ws.admin.domain.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.we.ws.admin.domain.UserRole;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -18,8 +16,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into T_test(name) values ( #{name} )")
+    @Insert("insert into T_User(name,password) values ( #{name},#{name} )")
     int insert(@Param("name")String name);
+
+    int delete(@Param("uids")String[] uids);
 
     @Select("select * from T_User where name=#{name}")
     User getUserByName(String name);
@@ -27,5 +27,6 @@ public interface UserMapper {
     List<User> listUser(@Param("uid")String uid,@Param("name")String name,@Param("pageSize")int pageSize,@Param("offset")int offset);
 
     int countUser(@Param("uid")String uid,@Param("name")String name);
+
 
 }

@@ -28,11 +28,11 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 
     @Override
     public boolean addRole(String name) {
-        return roleMenuMapper.insertRole(name)==1;
+        return false;
     }
 
     @Override
     public boolean updateRole(String name, String rid) {
-        return roleMenuMapper.updateRole(name, rid)==1;
+        return false;
     }
 }

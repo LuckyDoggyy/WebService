@@ -11,8 +11,7 @@ public class User {
     private long uid;
     private String name;
     private String password;
-    private int rid;
-    private String rolename;
+    private int state;
 
     public long getUid() {
         return uid;
@@ -38,20 +37,12 @@ public class User {
         this.password = password;
     }
 
-    public int getRid() {
-        return rid;
+    public int getState() {
+        return state;
     }
 
-    public void setRid(int rid) {
-        this.rid = rid;
-    }
-
-    public String getRolename() {
-        return rolename;
-    }
-
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override
@@ -60,8 +51,7 @@ public class User {
                 "uid=" + uid +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", rid=" + rid +
-                ", rolename='" + rolename + '\'' +
+                ", state=" + state +
                 '}';
     }
 }
