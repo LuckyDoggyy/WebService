@@ -23,24 +23,19 @@ Ext.define("core.systemmanage.rolemanage.view.RoleGrid", {
     			text : '增加角色',
     			ref : 'addRole',
     			iconCls : 'table_add'
-    		}, {
-    			xtype : 'button',
-    			text : '删除角色',
-    			ref : 'deleteRole',
-    			iconCls : 'table_remove',
-    			disabled : true
-    		}, {
+    		},
+//    		{
+//    			xtype : 'button',
+//    			text : '删除角色',
+//    			ref : 'deleteRole',
+//    			iconCls : 'table_remove',
+//    			disabled : true
+//    		},
+    		{
     			xtype : 'button',
     			text : '设置角色权限',
     			ref : 'setroleright',
     			iconCls:'roleright',
-    			disabled : true
-
-    		}, {
-    			xtype : 'button',
-    			text : '人员角色分配与查询',
-    			ref : 'addrolepeople',
-    			iconCls:'roleadduser',
     			disabled : true
     		}]
     	} ],

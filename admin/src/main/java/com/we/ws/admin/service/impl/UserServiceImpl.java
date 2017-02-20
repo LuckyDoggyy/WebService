@@ -58,7 +58,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addRoles(String rids, String uid) {
-        userRoleMapper.addRoles(rids.split(","), uid);
+        String[] ids = rids.split(",");
+        for(String id :ids){
+            if(userRoleMapper.checkExist(id,uid)==0){
+                userRoleMapper.addRole(id,uid);
+            }
+        }
         return true;
     }
 

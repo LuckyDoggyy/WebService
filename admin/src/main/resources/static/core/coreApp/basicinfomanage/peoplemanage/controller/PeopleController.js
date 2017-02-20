@@ -126,6 +126,134 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 				}
 			},
 
+			 "peoplegrid button[ref=checkRole]" : {
+                    click : function(btn) {
+                        var grid = btn.ownerCt.ownerCt;
+                        var records = grid.getSelectionModel().getSelection();
+                        var uid=records[0].get("uid");
+                        var username=records[0].get("name");
+                        var window = Ext.create(
+                                    'Ext.window.Window', {
+                                        title : '用户角色设置',
+                                        constrain : true,
+                                        maximizable : true,
+                                        maximized : true,
+                                        layout : 'border',
+                                        fixed : true,
+                                        modal : true,
+                                        items : [{
+                                                 region: 'west',
+                                                 title: '用户当前角色&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;姓名:'+username+'</b></font>',
+                                                 xtype: "userrolegrid",
+                                                 width: 600
+                                             },{
+                                                 region: 'center',
+                                                 title: '全部角色',
+                                                 xtype: "allrolegrid"
+                                             }]
+                                    });
+                        var store=window.down("panel[xtype=userrolegrid]").getStore();
+                        proxy = store.getProxy();
+                        proxy.extraParams = {
+                            uid : uid
+                        };
+                        store.loadPage(1);
+
+//                        var rolestore=window.down("panel[xtype=allrolegrid]").getStore();
+//                        rolestore.loadPage(1);
+
+                        window.show();
+                        var button=window.down("panel[xtype=allrolegrid]").down("[xtype=toolbar]").down("button[ref=addforUser]");
+                        button.html=uid;
+                        return false;
+                    }
+                },
+
+
+
+            "userrolegrid button[ref=deleteRole]" : {
+                click : function(btn) {
+                    var grid = btn.ownerCt.ownerCt;
+                    var records = grid.getSelectionModel().getSelection();
+                    if(records.length==0){
+                        Ext.Msg.alert('友情提示',"请选择要删除的角色");
+                        return false;
+                    }
+                    var autoids = new Array();
+                    for (var i = 0; i < records.length; i++) {
+                        autoids.push(records[i].get('autoid'));
+                    }
+                    Ext.Msg.confirm( "用户角色删除确认","<center><h3>确定要删除选中的角色吗？<h3></center>",
+                            function(result) {
+                                if (result == "yes") {
+                                    var resObj = self
+                                            .ajax({
+                                                url : "user/removeUserRole",
+                                                params : {
+                                                    autoids : autoids.join(",")
+                                                }
+                                            });
+                                    if (resObj.success) {
+                                        grid.getStore().load();
+                                        self.msgbox("删除成功");
+                                        return false;
+                                    } else {
+                                        Ext.Msg.alert('友情提示',resObj.obj);
+                                        return false;
+                                    }
+                                    return false;
+                                } else {
+                                    return false;
+                                }
+                            });
+                    return false;
+                }
+            },
+
+                 "allrolegrid button[ref=addforUser]" : {
+                        click : function(btn) {
+                            var uid = btn.html;
+                            var grid = btn.ownerCt.ownerCt;
+                            var records = grid.getSelectionModel().getSelection();
+                            if(records.length==0){
+                                Ext.Msg.alert('友情提示',"请选择要添加的角色");
+                                return false;
+                            }
+                            var rids = new Array();
+                            for (var i = 0; i < records.length; i++) {
+                                rids.push(records[i].get('rid'));
+                            }
+                            Ext.Msg.confirm( "添加角色确认","<center><h3>确定要给该用户添加选中的角色吗？<h3></center>",
+                                    function(result) {
+                                        if (result == "yes") {
+                                            var resObj = self
+                                                    .ajax({
+                                                        url : "user/addUserRole",
+                                                        params : {
+                                                            rids : rids.join(","),
+                                                            uid : uid
+                                                        }
+                                                    });
+                                            if (resObj.success) {
+                                                var userrolegrid = Ext.ComponentQuery.query("panel[xtype=userrolegrid]")[0];
+                                                userrolegrid.getStore().load();
+                                                self.msgbox("添加成功");
+                                                return false;
+                                            } else {
+                                                Ext.Msg.alert('友情提示',resObj.obj);
+                                                return false;
+                                            }
+                                            return false;
+                                        } else {
+                                            return false;
+                                        }
+                                    });
+                            return false;
+                        }
+                    },
+
+
+
             "peoplegrid button[ref=checkuserservice]" : {
                 click : function(btn) {
                     var grid = btn.ownerCt.ownerCt;
@@ -165,6 +293,13 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                     return false;
                 }
             },
+
+
+
+
+
+
+
 
             "userservicegrid button[ref=deleteUserService]" : {
                 click : function(btn) {
@@ -273,6 +408,8 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 			"core.basicinfomanage.peoplemanage.view.AddPeopleForm",
 			"core.basicinfomanage.peoplemanage.view.UserServiceGrid",
 			"core.basicinfomanage.peoplemanage.view.AllWsGrid",
+	        "core.basicinfomanage.peoplemanage.view.AllRoleGrid",
+	        "core.basicinfomanage.peoplemanage.view.UserRoleGrid",
 			"core.basicinfomanage.peoplemanage.view.UserServiceMainLayout",
 			"core.basicinfomanage.peoplemanage.view.UpdatePeopleForm",
 			"core.basicinfomanage.peoplemanage.view.ChangeGangWeiForm"],
@@ -280,8 +417,10 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 	stores : ["core.basicinfomanage.peoplemanage.store.PeopleStore",
 	            "core.basicinfomanage.peoplemanage.store.WsOwnerStore",
 	            "core.basicinfomanage.peoplemanage.store.UserRoleStore",
+	            "core.systemmanage.rolemanage.store.RoleStore",
 	            "core.basicinfomanage.wsmanage.store.WsStore"],
 	models : ["core.basicinfomanage.peoplemanage.model.WsOwnerModel",
+	            "core.systemmanage.rolemanage.model.RoleModel",
 	            "core.basicinfomanage.peoplemanage.model.PeopleModel",
 	            "core.basicinfomanage.peoplemanage.model.UserRoleModel",
 	            "core.basicinfomanage.wsmanage.model.WsModel"],
@@ -290,7 +429,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 		var num = grid.getSelectionModel().getSelection().length;
 		var deletePeople = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=deletePeople]")[0];
 //		var updatePeople = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=updatePeople]")[0];
-		var checkList = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=checkuserservice]")[0];
+		var checkList = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=checkRole]")[0];
 		if (deletePeople != null) {
 			deletePeople.setDisabled(num == 0);
 		}

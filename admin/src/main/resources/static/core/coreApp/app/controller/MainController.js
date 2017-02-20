@@ -142,14 +142,12 @@
 											});
 									if (resObj.success) {
 										self.msgbox(resObj.obj);
-
 										btn.ownerCt.ownerCt.close();
 										return false;
 									} else {
 										Ext.Msg.alert("友情提示", resObj.obj);
 										return false;
 									}
-
 								}
 							}
 						}, {

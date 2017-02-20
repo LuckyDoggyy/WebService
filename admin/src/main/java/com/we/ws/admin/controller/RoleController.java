@@ -52,9 +52,9 @@ public class RoleController extends BaseController {
 
     @RequestMapping("updateRole")
     @ResponseBody
-    public Map<String, Object> updateRole(String name,String rid) {
+    public Map<String, Object> updateRole(String name, String rid) {
         Map<String, Object> map = new HashMap();
-        if (roleMenuService.updateRole(name,rid)) {
+        if (roleMenuService.updateRole(name, rid)) {
             map.put("success", true);
         } else {
             map.put("success", false);
@@ -62,4 +62,22 @@ public class RoleController extends BaseController {
         return map;
     }
 
+
+    @RequestMapping("listRoleMenu")
+    @ResponseBody
+    public List<Map<String, Object>> listRoleMenu(String node, String rid) {
+        return roleMenuService.listRoleMenu(rid);
+    }
+
+    @RequestMapping("saveRoleMenu")
+    @ResponseBody
+    public Map<String, Object> saveRoleMenu(String mids, String rid) {
+        Map<String, Object> map = new HashMap();
+        if (roleMenuService.saveRoleMenu(mids, rid)) {
+            map.put("success", true);
+        } else {
+            map.put("success", false);
+        }
+        return map;
+    }
 }

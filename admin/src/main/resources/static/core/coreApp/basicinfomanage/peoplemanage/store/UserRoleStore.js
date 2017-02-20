@@ -4,10 +4,10 @@ Ext.define("core.basicinfomanage.peoplemanage.store.UserRoleStore", {
 			pageSize : 50,
 			proxy : {
 				type : "ajax",
-				url : "user/listRole",
+				url : "user/listUserRole",
 				actionMethods : {
 					create : 'POST',
-					read : 'POST', // by default GET
+					read : 'POST',
 					update : 'POST',
 					destroy : 'POST'
 				},

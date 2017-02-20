@@ -13,6 +13,10 @@ import java.util.List;
 public interface UserRoleMapper {
     int addRoles(@Param("rids")String[] rids,@Param("uid")String uid);
 
+    int addRole(@Param("rid")String rid,@Param("uid")String uid);
+
+    int checkExist(@Param("rid")String rid,@Param("uid")String uid);
+
     int removeRoles(@Param("autoids")String[] autoids);
 
     List<UserRole> getRoles(@Param("uid")String uid);

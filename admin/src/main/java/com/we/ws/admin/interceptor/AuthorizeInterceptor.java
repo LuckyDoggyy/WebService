@@ -33,12 +33,13 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("-----"+env.getProperty("profile")+"----"+request.getRequestURI()+"--- do interceptor...");
+        System.out.println("hah");
+        log.info("-----"+env.getProperty("profile")+"----"+request.getRequestURI());
         if ("dev".equals(env.getProperty("profile"))) {
             log.debug("dev profile,not check...");
             return true;
         }
-
+        log.info("do interceptor...");
         Cookie[] cookies=request.getCookies();
         if(cookies==null||cookies.length==0){
             out(request, response, new ResponseData<Object>(ResponseCode.UNAUTHORIZED.code(), "未授权", null));

@@ -1,4 +1,4 @@
-Ext.define("core.basicinfomanage.peoplemanage.view.AllWsGrid", {
+Ext.define("core.basicinfomanage.peoplemanage.view.UserRoleGrid", {
 	extend : "Ext.grid.Panel",
 	alias : "widget.userrolegrid",
 	title : "<center height=40>用户角色管理</center>",
@@ -15,28 +15,15 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AllWsGrid", {
 	disableSelection : false,
 	enableKeyNav : true, // 可以使用键盘控制上下
 
-
-	[{
-                            name : 'autoid'
-                        },{
-                            name : "uid",
-                        },{
-                             name : "username",
-                        },{
-                              name : "rid",
-                        },{
-                             name : "rolename",
-                        }]
-
-
 	dockedItems : [{
         xtype : 'toolbar',
         dock : 'top',
-        items : [{
-            xtype : 'button',
-            text : '添加到左侧用户',
-            ref : 'addforUser'
-        }]
+     	items : [{
+				xtype : 'button',
+				text : '删除角色',
+				ref : 'deleteRole',
+				iconCls : 'table_remove',
+				}]
     }],
 
 	columns : [{

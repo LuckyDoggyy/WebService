@@ -27,7 +27,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
         }, {
             xtype: 'textfield',
             fieldLabel: '用户名',
-            labelWidth: 30,
+            labelWidth: 50,
             width: 120,
             name: 'name'
         }, {
@@ -63,8 +63,8 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
             hidden: false
         }, {
              xtype: 'button',
-             text: '查看服务列表',
-             ref: 'checkuserservice',
+             text: '查看角色',
+             ref: 'checkRole',
              disabled: true,
              hidden: false
            }]

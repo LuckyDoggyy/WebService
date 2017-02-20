@@ -24,7 +24,6 @@ import java.util.Map;
 @RequestMapping("/user/")
 public class UserController extends BaseController {
 
-    //
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
@@ -65,7 +64,7 @@ public class UserController extends BaseController {
         return result;
     }
 
-    @RequestMapping("listRole")
+    @RequestMapping("listUserRole")
     @ResponseBody
     public Map<String, Object> listRole(String uid) {
         Map<String, Object> result = new HashMap<>();
@@ -80,6 +79,18 @@ public class UserController extends BaseController {
     public Map<String, Object> addUserRole(String rids, String uid) {
         Map<String, Object> result = new HashMap<>();
         if (userService.addRoles(rids, uid)) {
+            result.put("success", true);
+        } else {
+            result.put("success", false);
+        }
+        return result;
+    }
+
+    @RequestMapping("removeUserRole")
+    @ResponseBody
+    public Map<String, Object> removeUserRole(String autoids) {
+        Map<String, Object> result = new HashMap<>();
+        if (userService.removeRoles(autoids)) {
             result.put("success", true);
         } else {
             result.put("success", false);
