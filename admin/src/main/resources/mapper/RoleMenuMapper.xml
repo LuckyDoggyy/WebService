@@ -3,8 +3,8 @@
 <mapper namespace="com.we.ws.admin.mapper.RoleMenuMapper">
 
     <insert id="insertMenus">
-        insert into T_RoleMenu (mid,menuname,pid,pmenuname,rid)
-        select mid,menuname,pid,pmenuname,#{rid} as rid from T_Menu where mid in
+        insert into T_RoleMenu (mid,rid)
+        select mid,#{rid} as rid from T_Menu where mid in
         <foreach collection="mids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>

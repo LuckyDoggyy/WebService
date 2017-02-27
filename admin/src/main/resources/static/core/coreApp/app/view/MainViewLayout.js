@@ -23,8 +23,7 @@ Ext.define("core.app.view.MainViewLayout", {
 				dock : 'top',
 				height : 50,
 				items : [
-						"<font size=5 color=#004000><b>" + "服务管理系统"
-								+ "</b></font>", {
+						"<font size=5 color=#004000><b>服务管理系统</b></font>", {
 							xtype : 'tbspacer',
 							width : 40
 						}, {
@@ -46,15 +45,9 @@ Ext.define("core.app.view.MainViewLayout", {
 							ref : 'logoutsystem',
 							iconCls : 'logout',
 							text : '<fone size=5 >退出系统</font>'
-						}/*
-							 * , { xtype : 'button', ref : 'manual', //
-							 * iconCls:'logout', text : '<fone size=5 >说明书下载</font>' }, {
-							 * xtype : 'button', ref : 'online', text : '<fone
-							 * size=5 >在线查看说明书</font>', listeners: { click:
-							 * function () { window.open('Manual.html'); } } }
-							 */]
+						}]
 			}],
 			initComponent : function() {
 				this.callParent(arguments);
 			}
-		});
+});

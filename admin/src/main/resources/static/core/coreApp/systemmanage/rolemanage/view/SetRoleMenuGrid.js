@@ -1,36 +1,24 @@
-Ext.define("core.systemmanage.rolemanage.view.RoleGrid", {
+Ext.define("core.systemmanage.rolemanage.view.SetRoleMenuGrid", {
 	extend : "Ext.grid.Panel",
-    alias : "widget.rolegrid",
-    title : "<center height=40>角色管理</center>",
+    alias : "widget.setrolemenugrid",
+    title : "<center height=40>角色菜单管理</center>",
     selModel : {
         selType : "checkboxmodel",
         mode : 'SIMPLE'
     },
     multiSelect : true,
-    columnLines : true, // 展示竖线
+    columnLines : true,
     loadMask : {
         msg : "数据加载中，请稍等..."
     },
     autoScroll : true,
     disableSelection : false,
-    enableKeyNav : true, // 可以使用键盘控制上下
-/*
+    enableKeyNav : true,
+
 	dockedItems : [ {
     		xtype : 'toolbar',
     		dock : 'top',
-    		items : [ {
-    			xtype : 'button',
-    			text : '增加角色',
-    			ref : 'addRole',
-    			iconCls : 'table_add'
-    		},
-    		{
-    			xtype : 'button',
-    			text : '删除角色',
-    			ref : 'deleteRole',
-    			iconCls : 'table_remove',
-    			disabled : true
-    		},
+    		items : [
     		{
     			xtype : 'button',
     			text : '设置角色权限',
@@ -39,7 +27,6 @@ Ext.define("core.systemmanage.rolemanage.view.RoleGrid", {
     			disabled : true
     		}]
     	} ],
- */
 	columns : [ {
             text : "角色编号",
             align : 'center',

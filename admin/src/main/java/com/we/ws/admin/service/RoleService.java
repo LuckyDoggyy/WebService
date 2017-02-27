@@ -1,5 +1,6 @@
 package com.we.ws.admin.service;
 
+import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.Role;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @version 0.1
  * @since 2017-02-04
  */
-public interface RoleMenuService {
+public interface RoleService {
 
     List<Role> listRole(int pageSize, int offset);
 
@@ -25,6 +26,8 @@ public interface RoleMenuService {
 
     boolean saveRoleMenu(String mids, String rid);
 
-    List<Map<String, String>> getRoleMenuForLogin(String pid,String uid);
+    List<Menu> getParentMenuForLogin();
+
+    List<Map<String, Object>> getRoleMenuForLogin(String pid,String uid);
 
 }

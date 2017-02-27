@@ -23,10 +23,8 @@ import java.util.Map;
 public class WebServiceController extends BaseController{
 
     private Logger log = LoggerFactory.getLogger(WebServiceController.class);
-
     @Autowired
     private WsService wsService;
-
     @RequestMapping("listWs")
     @ResponseBody
     public Map<String, Object> listWs(int page, int start, int limit, String sid, String name) {

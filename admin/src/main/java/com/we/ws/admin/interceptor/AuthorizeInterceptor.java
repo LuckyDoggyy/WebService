@@ -33,7 +33,6 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("hah");
         log.info("-----"+env.getProperty("profile")+"----"+request.getRequestURI());
         if ("dev".equals(env.getProperty("profile"))) {
             log.debug("dev profile,not check...");

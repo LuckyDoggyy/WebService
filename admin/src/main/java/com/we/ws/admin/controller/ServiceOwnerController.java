@@ -24,8 +24,7 @@ import java.util.Map;
 @RequestMapping("/wsowner/")
 public class ServiceOwnerController {
 
-    private Logger log = LoggerFactory.getLogger(UserController.class);
-
+    private Logger log = LoggerFactory.getLogger(ServiceOwnerController.class);
     @Autowired
     private ServiceOwnerService serviceOwnerService;
 
@@ -56,5 +55,4 @@ public class ServiceOwnerController {
         result.put("obj", "添加成功");
         return result;
     }
-
 }

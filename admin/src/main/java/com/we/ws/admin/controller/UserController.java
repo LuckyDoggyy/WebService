@@ -25,7 +25,6 @@ import java.util.Map;
 public class UserController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     private UserService userService;
 

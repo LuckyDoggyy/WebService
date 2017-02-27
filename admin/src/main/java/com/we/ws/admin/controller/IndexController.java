@@ -1,8 +1,8 @@
 package com.we.ws.admin.controller;
 
+import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.User;
-import com.we.ws.admin.mapper.RoleMenuMapper;
-import com.we.ws.admin.service.RoleMenuService;
+import com.we.ws.admin.service.RoleService;
 import com.we.ws.admin.service.impl.UserServiceImpl;
 import com.we.ws.common.data.Pair;
 import com.we.ws.common.exception.TokenException;
@@ -38,8 +38,7 @@ public class IndexController extends BaseController {
     private UserServiceImpl userService;
 
     @Autowired
-    private RoleMenuService roleMenuService;
-
+    private RoleService roleMenuService;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request) {
@@ -56,7 +55,7 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "/in", method = {RequestMethod.POST})
-    public String index(HttpServletResponse response, String j_username, String j_password) throws TokenException {
+    public String login(HttpServletResponse response, String j_username, String j_password) throws TokenException {
         User u = userService.getByName(j_username);
         if (u != null && j_password.equals(u.getPassword())) {
             Cookie uid = new Cookie("uid", Long.toString(u.getUid()));
@@ -97,9 +96,16 @@ public class IndexController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/getParentMenu")
+    @ResponseBody
+    public List<Menu> getParentMenu(HttpServletRequest request) {
+        return roleMenuService.getParentMenuForLogin();
+    }
+
+
     @RequestMapping(value = "/getMenu")
     @ResponseBody
-    public List<Map<String, String>> getMenu(HttpServletRequest request, String node) {
+    public List<Map<String, Object>> getMenu(HttpServletRequest request, String node) {
         String uid = getUserid(request);
         return roleMenuService.getRoleMenuForLogin(node, uid);
     }

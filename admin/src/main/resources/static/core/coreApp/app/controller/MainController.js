@@ -196,8 +196,8 @@
 				itemclick : function(tree, record, item, index, e, eOpts) {
 					var mainView = tree.up("mainviewlayout").down("centerview");
 					switch (record.data["id"]) {
-						// 用户管理
-						case "usermanage" :
+						// 用户浏览
+						case "userlist" :
 							self.addFunItem({
 								mainView : mainView,
 								funViewXtype : "peoplegrid",
@@ -205,8 +205,91 @@
 								funViewName : "core.basicinfomanage.peoplemanage.view.PeopleGrid"
 							});
 							break;
-						// 用户管理
-                        case "servicemanage" :
+						// 用户跟新
+						case "userupdate" :
+							self.addFunItem({
+								mainView : mainView,
+								funViewXtype : "updatepeoplegrid",
+								funController : "core.basicinfomanage.peoplemanage.controller.PeopleController",
+								funViewName : "core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid"
+							});
+							break;
+						// 用户删除
+						case "userdelete" :
+								self.addFunItem({
+									mainView : mainView,
+									funViewXtype : "deletepeoplegrid",
+									funController : "core.basicinfomanage.peoplemanage.controller.PeopleController",
+									funViewName : "core.basicinfomanage.peoplemanage.view.DeletePeopleGrid"
+								});
+								break;
+						// 用户添加
+						case "useradd" :
+								self.addFunItem({
+									mainView : mainView,
+									funViewXtype : "addpeople",
+									funController : "core.basicinfomanage.peoplemanage.controller.PeopleController",
+									funViewName : "core.basicinfomanage.peoplemanage.view.AddPeople"
+								});
+								break;
+						// 用户添加
+						case "userrolesetting" :
+								self.addFunItem({
+									mainView : mainView,
+									funViewXtype : "setrolepeoplegrid",
+									funController : "core.basicinfomanage.peoplemanage.controller.PeopleController",
+									funViewName : "core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid"
+								});
+								break;
+
+                        // 角色浏览
+                        case "rolelist" :
+                            self.addFunItem({
+                                mainView : mainView,
+                                funViewXtype : "rolegrid",
+                                funController : "core.systemmanage.rolemanage.controller.RoleController",
+                                funViewName : "core.systemmanage.rolemanage.view.RoleGrid"
+                            });
+                            break;
+                        // 角色添加
+                        case "roleadd" :
+                            self.addFunItem({
+                                mainView : mainView,
+                                funViewXtype : "addrole",
+                                funController : "core.systemmanage.rolemanage.controller.RoleController",
+                                funViewName : "core.systemmanage.rolemanage.view.AddRole"
+                            });
+                            break;
+                        // 角色更新
+                        case "roleupdate" :
+                            self.addFunItem({
+                                mainView : mainView,
+                                funViewXtype : "updaterolegrid",
+                                funController : "core.systemmanage.rolemanage.controller.RoleController",
+                                funViewName : "core.systemmanage.rolemanage.view.UpdateRoleGrid"
+                            });
+                            break;
+                        // 角色删除
+                        case "roledelete" :
+                            self.addFunItem({
+                                mainView : mainView,
+                                funViewXtype : "deleterolegrid",
+                                funController : "core.systemmanage.rolemanage.controller.RoleController",
+                                funViewName : "core.systemmanage.rolemanage.view.DeleteRoleGrid"
+                            });
+                            break;
+                        // 角色菜单设置
+                        case "rolemenusetting" :
+                            self.addFunItem({
+                                mainView : mainView,
+                                funViewXtype : "setrolemenugrid",
+                                funController : "core.systemmanage.rolemanage.controller.RoleController",
+                                funViewName : "core.systemmanage.rolemanage.view.SetRoleMenuGrid"
+                            });
+                            break;
+
+						// 服务管理
+                        case "servicelist" :
                             self.addFunItem({
                                 mainView : mainView,
                                 funViewXtype : "wsgrid",
@@ -215,15 +298,6 @@
                             });
                             break;
 
-                        // 角色管理
-                        case "rolemanage" :
-                            self.addFunItem({
-                                mainView : mainView,
-                                funViewXtype : "rolegrid",
-                                funController : "core.systemmanage.rolemanage.controller.RoleController",
-                                funViewName : "core.systemmanage.rolemanage.view.RoleGrid"
-                            });
-                            break;
 					}
 				}
 			}

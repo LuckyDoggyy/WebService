@@ -9,70 +9,105 @@ Ext.define("core.systemmanage.rolemanage.controller.RoleController",
 					},
 					init : function() {
 						var self = this;
-						var operator = {};
-
 						this.control({
 
-						 "panel[xtype=rolegrid]" : {
-                            select : this.checkEdit,
-                            deselect : this.checkEdit
+//						"panel[xtype=deleterolegrid]" : {
+//                            select : this.deleteCheckEdit,
+//                            deselect : this.deleteCheckEdit
+//                        },
+
+                        "panel[xtype=updaterolegrid]" : {
+                            select : this.updateCheckEdit,
+                            deselect : this.updateCheckEdit
                         },
-						    "rolegrid button[ref=addRole]" : {
-                                click : function(btn) {
+                        "panel[xtype=setrolemenugrid]" : {
+                            select : this.setMenuCheckEdit,
+                            deselect : this.setMenuCheckEdit
+                        },
+
+                    "panel[xtype=addrole] button[ref=addrole]" : {
+                        click : function(btn) {
+                            var addrolepanel = btn.up("panel[xtype=addrole]");
+                            var formObj = addrolepanel.getForm();
+                            var params = self.getFormValue(formObj);
+                            if (formObj.isValid()) {
+                                var resObj = self.ajax({
+                                            url : "role/addRole",
+                                            params : params
+                                        });
+                                if (resObj.success) {
+                                    self.msgbox('添加角色成功');
+                                    addrolepanel.down("textfield[name=name]").reset();
+                                    return false;
+                                } else {
+                                    Ext.Msg.alert("友情提示", "角色添加异常");
+                                    return false;
+                                }
+                            } else {
+                                Ext.Msg.alert('友情提示', "请检查增加角色的数据");
+                                return false;
+                            }
+                            return false;
+                        }
+                    },
+
+                    "updaterolegrid button[ref=updateRole]" : {
+                            click : function(btn) {
+                                    var grid = btn.up("panel[xtype=updaterolegrid]");
+                                    var records = grid.getSelectionModel().getSelection();
+                                    if (records.length != 1) {
+                                        Ext.Msg.alert('提示', '请选择一个角色！');
+                                        return false;
+                                    };
                                     var window = Ext.create('Ext.window.Window', {
-                                                title : '增加角色',
-                                                height : 120,
-                                                width : 300,
+                                                title : '修改角色',
+                                                height : 240,
+                                                width : 450,
                                                 constrain : true,
                                                 maximizable : true,
-                                                // minimizable :true,
                                                 layout : 'fit',
                                                 fixed : true,
                                                 modal : true,
                                                 items : {
-                                                    xtype : 'addroleform',
-                                                    id : 'addroleform'
+                                                    xtype : 'updateroleform',
+                                                    id : 'updateroleform'
                                                 }
                                             });
+                                    var form = window.down("panel[xtype=updateroleform]");
+                                    form.loadRecord(records[0]);
                                     window.show();
                                     return false;
                                 }
                             },
 
-                            "panel[xtype=addroleform] button[ref=return]" : {
-                                click : function(btn) {
-                                    btn.ownerCt.ownerCt.ownerCt.close();
-                                    return false;
-                                }
-                            },
-                            "panel[xtype=addroleform] button[ref=addrole]" : {
-                                click : function(btn) {
-                                    var addroleform = btn.up("panel[xtype=addroleform]");
-                                    var formObj = addroleform.getForm();
-                                    var params = self.getFormValue(formObj);
-                                    if (formObj.isValid()) {
-                                        var resObj = self.ajax({
-                                                    url : "role/addRole",
-                                                    params : params
-                                                });
-                                        if (resObj.success) {
-                                            self.msgbox('添加角色成功');
-                                            Ext.ComponentQuery.query("panel[xtype=rolegrid] component[xtype=pagingtoolbar]")[0].moveFirst();
-                                            btn.ownerCt.ownerCt.ownerCt.close();
-                                            return false;
-                                        } else {
-                                            Ext.Msg.alert("友情提示", "角色添加异常");
-                                            return false;
-                                        }
-                                    } else {
-                                        Ext.Msg.alert('友情提示', "请检查增加角色的数据");
-                                        return false;
-                                    }
-                                    return false;
-                                }
-                            },
+                            "panel[xtype=updateroleform] button[ref=updateRole]" : {
+                            				click : function(btn) {
+                            					var updateroleform = btn.up("panel[xtype=updateroleform]");
+                            					var formObj = updateroleform.getForm();
+                            					var params = self.getFormValue(formObj);
+                            					if (formObj.isValid()) {
+                            						var resObj2 = self.ajax({
+                            									url : "role/updateRole",
+                            									params : params
+                            								});
+                            						if (resObj2.success) {
+                            							self.msgbox("修改成功");
+                            							Ext.ComponentQuery.query("panel[xtype=updaterolegrid] component[xtype=pagingtoolbar]")[0].moveFirst();
+                            							btn.ownerCt.ownerCt.ownerCt.close();
+                            							return false;
+                            						} else {
+                            							Ext.Msg.alert("友情提示", "修改失败");
+                            							return false;
+                            						}
+                            					} else {
+                            						Ext.Msg.alert('友情提示', "请检查要修改角色的数据");
+                            						return false;
+                            					}
+                            					return false;
+                            				}
+                            			},
 
-                           "rolegrid button[ref=setroleright]" : {
+                           "setrolemenugrid button[ref=setroleright]" : {
                                 click : function(btn) {
                                     var grid = btn.ownerCt.ownerCt;
                                     var records = grid.getSelectionModel().getSelection();
@@ -120,11 +155,7 @@ Ext.define("core.systemmanage.rolemanage.controller.RoleController",
                                                 mids.push(nodes[i].internalId);
                                             }
                                         }
-                                    console.log(mids);
-
                                     var rid = tree.down("textfield[name=rid]").getValue();
-                                    console.log(rid);
-
                                    Ext.Msg.confirm("角色菜单修改确认","<center><h3>确定要修改角色的菜单吗？<h3></center>",
                                            function(result) {
                                                if (result == "yes") {
@@ -160,21 +191,37 @@ Ext.define("core.systemmanage.rolemanage.controller.RoleController",
                         });
 					},
             views : ["core.systemmanage.rolemanage.view.RoleGrid",
-                    "core.systemmanage.rolemanage.view.AddRoleForm",
+                    "core.systemmanage.rolemanage.view.DeleteRoleGrid",
+                    "core.systemmanage.rolemanage.view.UpdateRoleGrid",
+                    "core.systemmanage.rolemanage.view.SetRoleMenuGrid",
+                    "core.systemmanage.rolemanage.view.UpdateRoleForm",
+                    "core.systemmanage.rolemanage.view.AddRole",
                     "core.systemmanage.rolemanage.view.MenuTree",
                     "core.systemmanage.rolemanage.view.RoleForm"],
             stores : ["core.systemmanage.rolemanage.store.RoleStore",
                     "core.systemmanage.rolemanage.store.MenuTreeStore"],
             models : ["core.systemmanage.rolemanage.model.RoleModel",
                     "core.systemmanage.rolemanage.model.MenuTreeModel"],
-            checkEdit : function() {
-                var grid = Ext.ComponentQuery.query("panel[xtype=rolegrid]")[0];
+            deleteCheckEdit : function() {
+                var grid = Ext.ComponentQuery.query("panel[xtype=deleterolegrid]")[0];
                 var num = grid.getSelectionModel().getSelection().length;
-                var deleteRole = Ext.ComponentQuery.query("panel[xtype=rolegrid] button[ref=deleteRole]")[0];
-                var setroleright = Ext.ComponentQuery.query("panel[xtype=rolegrid] button[ref=setroleright]")[0];
+                var deleteRole = Ext.ComponentQuery.query("panel[xtype=deleterolegrid] button[ref=deleteRole]")[0];
                 if (deleteRole != null) {
                     deleteRole.setDisabled(num == 0);
                 }
+            },
+            updateCheckEdit : function() {
+                var grid = Ext.ComponentQuery.query("panel[xtype=updaterolegrid]")[0];
+                var num = grid.getSelectionModel().getSelection().length;
+                var updateRole = Ext.ComponentQuery.query("panel[xtype=updaterolegrid] button[ref=updateRole]")[0];
+                if (updateRole != null) {
+                    updateRole.setDisabled(num != 1);
+                }
+            },
+            setMenuCheckEdit : function() {
+                var grid = Ext.ComponentQuery.query("panel[xtype=setrolemenugrid]")[0];
+                var num = grid.getSelectionModel().getSelection().length;
+                var setroleright = Ext.ComponentQuery.query("panel[xtype=setrolemenugrid] button[ref=setroleright]")[0];
                 if (setroleright != null) {
                     setroleright.setDisabled(num != 1);
                 }

@@ -1,7 +1,7 @@
-Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
+Ext.define("core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid", {
     extend: "Ext.grid.Panel",
-    alias: "widget.peoplegrid",
-    title: "<center height=40>人员信息</center>",
+    alias: "widget.setrolepeoplegrid",
+    title: "<center height=40>人员角色设置</center>",
     selModel: {
         selType: "checkboxmodel",
         mode: 'SIMPLE'
@@ -36,42 +36,17 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
             iconCls: 'search',
             ref: 'searchPeople'
         }]
-    }
-    /*
-    , {
+    }, {
         xtype: 'toolbar',
         dock: 'top',
         items: [{
-            xtype: 'button',
-            text: '增加人员',
-            ref: 'addPeople',
-            iconCls: 'table_add',
-            hidden: false
-        },
-        {
-            xtype: 'button',
-            text: '修改人员',
-            ref: 'updatePeople',
-            iconCls: 'modify',
-            disabled: true,
-            hidden: false
-        },
-        {
-            xtype: 'button',
-            text: '删除人员',
-            ref: 'deletePeople',
-            iconCls: 'table_remove',
-            disabled: true,
-            hidden: false
-        }, {
              xtype: 'button',
-             text: '查看角色',
+             text: '设置角色',
              ref: 'checkRole',
              disabled: true,
              hidden: false
            }]
-    }*/
-    ],
+    }],
     columns: [{
         width: 50,
         height: 36,

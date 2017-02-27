@@ -1,7 +1,7 @@
 package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Role;
-import com.we.ws.admin.service.RoleMenuService;
+import com.we.ws.admin.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/role/")
 public class RoleController extends BaseController {
+
     private Logger log = LoggerFactory.getLogger(RoleController.class);
 
     @Autowired
-    private RoleMenuService roleMenuService;
+    private RoleService roleMenuService;
 
     @RequestMapping("listRole")
     @ResponseBody
@@ -52,16 +53,15 @@ public class RoleController extends BaseController {
 
     @RequestMapping("updateRole")
     @ResponseBody
-    public Map<String, Object> updateRole(String name, String rid) {
+    public Map<String, Object> updateRole(String rname, String rid) {
         Map<String, Object> map = new HashMap();
-        if (roleMenuService.updateRole(name, rid)) {
+        if (roleMenuService.updateRole(rname, rid)) {
             map.put("success", true);
         } else {
             map.put("success", false);
         }
         return map;
     }
-
 
     @RequestMapping("listRoleMenu")
     @ResponseBody

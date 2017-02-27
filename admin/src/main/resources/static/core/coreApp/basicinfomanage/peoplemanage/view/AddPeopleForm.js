@@ -15,7 +15,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AddPeopleForm",
 						flex : 1,
 						layout : 'anchor'
 					},
-					layout : 'hbox',
+					layout : 'vbox',
 					items : [
 							{
 								items : [
@@ -24,8 +24,8 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AddPeopleForm",
 											fieldLabel : '用户名'+ '<font color=red>*</font>',
 											anchor : '-5',
 											name : 'username',
-											allowBlank : false,// 不允许为空
-											blankText : '姓名不能为空'// 错误提示内容
+											allowBlank : false,
+											blankText : '姓名不能为空'
 										}]
 							} ],
 					buttons : [ {

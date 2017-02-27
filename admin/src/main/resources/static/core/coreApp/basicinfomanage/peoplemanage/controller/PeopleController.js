@@ -11,44 +11,25 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 
 		this.control({
 
-		    "panel[xtype=peoplegrid]" : {
-        				select : this.checkEdit,
-        				deselect : this.checkEdit
+		    "panel[xtype=setrolepeoplegrid]" : {
+        				select : this.roleCheckEdit,
+        				deselect : this.roleCheckEdit
         	 },
+        	 "panel[xtype=deletepeoplegrid]" : {
+                        select : this.deleteCheckEdit,
+                        deselect : this.deleteCheckEdit
+             },
+             "panel[xtype=updatepeoplegrid]" : {
+                        select : this.updateCheckEdit,
+                        deselect : this.updateCheckEdit
+             },
 
-
-        	  "peoplegrid button[ref=addPeople]" : {
-                     click : function(btn) {
-                         var window = Ext.create('Ext.window.Window', {
-                                     title : '增加用户',
-                                     height : 150,
-                                     width : 300,
-                                     constrain : true,
-                                     maximizable : true,
-                                     layout : 'fit',
-                                     fixed : true,
-                                     modal : true,
-                                     items : {
-                                         xtype : 'addpeopleform',
-                                         id : 'addpeopleform'
-                                     }
-                                 });
-                         window.show();
-                         return false;
-                     }
-                 },
-                  "panel[xtype=addpeopleform] button[ref=return]" : {
+                  "panel[xtype=addpeople] button[ref=addPeople]" : {
                          click : function(btn) {
-                             btn.ownerCt.ownerCt.ownerCt.close();
-                             return false;
-                         }
-                    },
-
-                  "panel[xtype=addpeopleform] button[ref=addPeople]" : {
-                         click : function(btn) {
-                             var addpeopleform = btn.up("panel[xtype=addpeopleform]");
-                             var formObj = addpeopleform.getForm();
+                             var addpeople = btn.up("panel[xtype=addpeople]");
+                             var formObj = addpeople.getForm();
                              var params = self.getFormValue(formObj);
+
                              if (formObj.isValid()) {
                                  var resObj = self.ajax({
                                              url : "user/addUser",
@@ -56,8 +37,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                          });
                                  if (resObj.success) {
                                      self.msgbox('用户添加成功');
-                                     Ext.ComponentQuery.query("panel[xtype=peoplegrid] component[xtype=pagingtoolbar]")[0].moveFirst();
-                                     btn.ownerCt.ownerCt.ownerCt.close();
+                                     addpeople.down("textfield[name=username]").reset();
                                      return false;
                                  } else {
                                      Ext.Msg.alert("友情提示", "用户添加异常");
@@ -71,9 +51,9 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                          }
                      },
 
-                     "peoplegrid button[ref=deletePeople]" : {
+                     "deletepeoplegrid button[ref=deletePeople]" : {
                              click : function(btn) {
-                                 var grid = btn.up("panel[xtype=peoplegrid]");
+                                 var grid = btn.up("panel[xtype=deletepeoplegrid]");
                                  var records = grid.getSelectionModel().getSelection();
                                  var uids = new Array();
                                  for (var i = 0; i < records.length; i++) {
@@ -125,8 +105,56 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 					return false;
 				}
 			},
+			"deletepeoplegrid button[ref=searchPeople]" : {
+                    click : function(btn) {
+                        var tbar = btn.ownerCt;
+                        var uid = tbar.down("textfield[name=uid]").getValue();
+                        var name = tbar.down("textfield[name=name]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            uid : uid,
+                            name : name
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+            "updatepeoplegrid button[ref=searchPeople]" : {
+                    click : function(btn) {
+                        var tbar = btn.ownerCt;
+                        var uid = tbar.down("textfield[name=uid]").getValue();
+                        var name = tbar.down("textfield[name=name]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            uid : uid,
+                            name : name
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+                "setrolepeoplegrid button[ref=searchPeople]" : {
+                        click : function(btn) {
+                            var tbar = btn.ownerCt;
+                            var uid = tbar.down("textfield[name=uid]").getValue();
+                            var name = tbar.down("textfield[name=name]").getValue();
+                            var grid = tbar.ownerCt;
+                            var _store = grid.getStore();
+                            proxy = _store.getProxy();
+                            proxy.extraParams = {
+                                uid : uid,
+                                name : name
+                            };
+                            _store.loadPage(1);
+                            return false;
+                        }
+                    },
 
-			 "peoplegrid button[ref=checkRole]" : {
+			 "setrolepeoplegrid button[ref=checkRole]" : {
                     click : function(btn) {
                         var grid = btn.ownerCt.ownerCt;
                         var records = grid.getSelectionModel().getSelection();
@@ -145,7 +173,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                                  region: 'west',
                                                  title: '用户当前角色&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;姓名:'+username+'</b></font>',
                                                  xtype: "userrolegrid",
-                                                 width: 600
+                                                 width: 700
                                              },{
                                                  region: 'center',
                                                  title: '全部角色',
@@ -254,7 +282,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 
 
 
-            "peoplegrid button[ref=checkuserservice]" : {
+            "setrolepeoplegrid button[ref=checkuserservice]" : {
                 click : function(btn) {
                     var grid = btn.ownerCt.ownerCt;
                     var records = grid.getSelectionModel().getSelection();
@@ -405,14 +433,16 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 		return false;
 	},
 	views : ["core.basicinfomanage.peoplemanage.view.PeopleGrid",
-			"core.basicinfomanage.peoplemanage.view.AddPeopleForm",
+	"core.basicinfomanage.peoplemanage.view.DeletePeopleGrid",
+	"core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid",
+	"core.basicinfomanage.peoplemanage.view.setRolePeopleGrid",
+			"core.basicinfomanage.peoplemanage.view.AddPeople",
 			"core.basicinfomanage.peoplemanage.view.UserServiceGrid",
 			"core.basicinfomanage.peoplemanage.view.AllWsGrid",
 	        "core.basicinfomanage.peoplemanage.view.AllRoleGrid",
 	        "core.basicinfomanage.peoplemanage.view.UserRoleGrid",
 			"core.basicinfomanage.peoplemanage.view.UserServiceMainLayout",
-			"core.basicinfomanage.peoplemanage.view.UpdatePeopleForm",
-			"core.basicinfomanage.peoplemanage.view.ChangeGangWeiForm"],
+			"core.basicinfomanage.peoplemanage.view.UpdatePeopleForm"],
 
 	stores : ["core.basicinfomanage.peoplemanage.store.PeopleStore",
 	            "core.basicinfomanage.peoplemanage.store.WsOwnerStore",
@@ -424,20 +454,28 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 	            "core.basicinfomanage.peoplemanage.model.PeopleModel",
 	            "core.basicinfomanage.peoplemanage.model.UserRoleModel",
 	            "core.basicinfomanage.wsmanage.model.WsModel"],
-	checkEdit : function() {
-		var grid = Ext.ComponentQuery.query("panel[xtype=peoplegrid]")[0];
+	deleteCheckEdit : function() {
+		var grid = Ext.ComponentQuery.query("panel[xtype=deletepeoplegrid]")[0];
 		var num = grid.getSelectionModel().getSelection().length;
-		var deletePeople = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=deletePeople]")[0];
-//		var updatePeople = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=updatePeople]")[0];
-		var checkList = Ext.ComponentQuery.query("panel[xtype=peoplegrid] button[ref=checkRole]")[0];
+		var deletePeople = Ext.ComponentQuery.query("panel[xtype=deletepeoplegrid] button[ref=deletePeople]")[0];
 		if (deletePeople != null) {
 			deletePeople.setDisabled(num == 0);
 		}
-//		if (updatePeople != null) {
-//			updatePeople.setDisabled(num != 1);
-//		}
-		if (checkList != null) {
-			checkList.setDisabled(num != 1);
+	},
+	updateCheckEdit : function() {
+		var grid = Ext.ComponentQuery.query("panel[xtype=updatepeoplegrid]")[0];
+		var num = grid.getSelectionModel().getSelection().length;
+		var updatePeople = Ext.ComponentQuery.query("panel[xtype=updatepeoplegrid] button[ref=updatePeople]")[0];
+		if (updatePeople != null) {
+			updatePeople.setDisabled(num != 1);
 		}
-	}
+	},
+	roleCheckEdit : function() {
+    		var grid = Ext.ComponentQuery.query("panel[xtype=setrolepeoplegrid]")[0];
+    		var num = grid.getSelectionModel().getSelection().length;
+    		var checkList = Ext.ComponentQuery.query("panel[xtype=setrolepeoplegrid] button[ref=checkRole]")[0];
+            if (checkList != null) {
+                checkList.setDisabled(num != 1);
+            }
+    	}
 });
