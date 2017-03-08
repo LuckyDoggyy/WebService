@@ -37,7 +37,9 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                          });
                                  if (resObj.success) {
                                      self.msgbox('用户添加成功');
-                                     addpeople.down("textfield[name=username]").reset();
+                                     addpeople.down("textfield[name=account]").reset();
+                                     addpeople.down("textfield[name=nickName]").reset();
+                                     addpeople.down("textarea[name=remarks]").reset();
                                      return false;
                                  } else {
                                      Ext.Msg.alert("友情提示", "用户添加异常");
@@ -50,6 +52,62 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                              return false;
                          }
                      },
+
+                         "panel[xtype=updatepeoplegrid] button[ref=updatePeople]" : {
+                                click : function(btn) {
+                                        var grid = btn.up("panel[xtype=updatepeoplegrid]");
+                                        var records = grid.getSelectionModel().getSelection();
+                                        if (records.length != 1) {
+                                            Ext.Msg.alert('提示', '请选择一个用户！');
+                                            return false;
+                                        };
+                                        var window = Ext.create('Ext.window.Window', {
+                                                    title : '修改用户信息',
+                                                    height : 240,
+                                                    width : 450,
+                                                    constrain : true,
+                                                    maximizable : true,
+                                                    layout : 'fit',
+                                                    fixed : true,
+                                                    modal : true,
+                                                    items : {
+                                                        xtype : 'updatepeopleform',
+                                                        id : 'updatepeopleform'
+                                                    }
+                                                });
+                                        var form = window.down("panel[xtype=updatepeopleform]");
+                                        form.loadRecord(records[0]);
+                                        window.show();
+                                        return false;
+                                    }
+                                },
+
+                                "panel[xtype=updatepeopleform] button[ref=updatePeople]" : {
+                                                click : function(btn) {
+                                                    var updatepeopleform = btn.up("panel[xtype=updatepeopleform]");
+                                                    var formObj = updatepeopleform.getForm();
+                                                    var params = self.getFormValue(formObj);
+                                                    if (formObj.isValid()) {
+                                                        var resObj2 = self.ajax({
+                                                                    url : "user/updateUser",
+                                                                    params : params
+                                                                });
+                                                        if (resObj2.success) {
+                                                            self.msgbox("修改成功");
+                                                            Ext.ComponentQuery.query("panel[xtype=updatepeoplegrid] component[xtype=pagingtoolbar]")[0].moveFirst();
+                                                            btn.ownerCt.ownerCt.ownerCt.close();
+                                                            return false;
+                                                        } else {
+                                                            Ext.Msg.alert("友情提示", "修改失败");
+                                                            return false;
+                                                        }
+                                                    } else {
+                                                        Ext.Msg.alert('友情提示', "请检查要修改角色的数据");
+                                                        return false;
+                                                    }
+                                                    return false;
+                                                }
+                                            },
 
                      "deletepeoplegrid button[ref=deletePeople]" : {
                              click : function(btn) {
@@ -71,7 +129,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                                      });
                                              if (resObj.success) {
                                                  grid.getStore().load();
-                                                 self.msgbox(resObj.obj);
+                                                 self.msgbox("删除成功");
                                                  return false;
                                              } else {
                                                  Ext.Msg.alert('友情提示',resObj.obj);
@@ -84,8 +142,6 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                      });
                              }
                          },
-
-
             /**
 			 * 查找人员信息
 			 */

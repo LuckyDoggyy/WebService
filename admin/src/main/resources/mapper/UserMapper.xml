@@ -3,14 +3,14 @@
 <mapper namespace="com.we.ws.admin.mapper.UserMapper" >
 
     <select id="listUser" resultType="com.we.ws.admin.domain.User">
-        SELECT uid,name from T_User
+        SELECT uid,account,nickName,remarks from T_User
         <where>
              state=0
             <if test="uid != null and uid!=''">
                 and uid = #{uid}
             </if>
-            <if test="name != null and name!=''">
-                and name = #{name}
+            <if test="account != null and account!=''">
+                and account = #{account}
             </if>
         </where>
         limit #{offset},#{pageSize}
@@ -23,8 +23,8 @@
             <if test="uid != null and uid!=''">
                 and uid = #{uid}
             </if>
-            <if test="name != null and name!=''">
-                and name = #{name}
+            <if test="account != null and account!=''">
+                and account = #{account}
             </if>
         </where>
     </select>

@@ -53,12 +53,22 @@ Ext.define("core.basicinfomanage.peoplemanage.view.DeletePeopleGrid", {
         width: 50,
         height: 36,
         dataIndex: "uid",
-        text: '序号',
+        text: 'uid',
         align: 'center'
     },  {
-        text: "姓名",
-        dataIndex: "name",
+        text: "账号",
+        dataIndex: "account",
         width: 140,
+        align: 'center'
+    },  {
+         text: "昵称",
+         dataIndex: "nickName",
+         width: 140,
+         align: 'center'
+     }, {
+        text: "备注",
+        dataIndex: "remarks",
+        width: 240,
         align: 'center'
     }],
     store: "core.basicinfomanage.peoplemanage.store.PeopleStore",

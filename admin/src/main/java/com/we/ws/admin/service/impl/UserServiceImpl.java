@@ -41,8 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUser(String name) {
-        return userMapper.insert(name) == 1;
+    public boolean addUser(String account, String nickName, String remarks) {
+        return userMapper.insert(account, nickName, remarks) == 1;
+    }
+
+    @Override
+    public boolean updateUser(String uid, String nickName, String remarks) {
+        return userMapper.update(uid, nickName, remarks)==1;
     }
 
     @Override
@@ -59,9 +64,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addRoles(String rids, String uid) {
         String[] ids = rids.split(",");
-        for(String id :ids){
-            if(userRoleMapper.checkExist(id,uid)==0){
-                userRoleMapper.addRole(id,uid);
+        for (String id : ids) {
+            if (userRoleMapper.checkExist(id, uid) == 0) {
+                userRoleMapper.addRole(id, uid);
             }
         }
         return true;

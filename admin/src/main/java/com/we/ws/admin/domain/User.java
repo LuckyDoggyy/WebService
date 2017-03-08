@@ -9,8 +9,10 @@ package com.we.ws.admin.domain;
  */
 public class User {
     private long uid;
-    private String name;
+    private String account;
     private String password;
+    private String nickName;
+    private String remarks;
     private int state;
 
     public long getUid() {
@@ -21,12 +23,12 @@ public class User {
         this.uid = uid;
     }
 
-    public String getName() {
-        return name;
+    public String getAccount() {
+        return account;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -35,6 +37,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public int getState() {
@@ -49,8 +67,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "uid=" + uid +
-                ", name='" + name + '\'' +
+                ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", remarks='" + remarks + '\'' +
                 ", state=" + state +
                 '}';
     }

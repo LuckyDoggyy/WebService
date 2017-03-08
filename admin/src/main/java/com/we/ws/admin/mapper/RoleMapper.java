@@ -1,6 +1,9 @@
 package com.we.ws.admin.mapper;
 
+import com.we.ws.admin.domain.Role;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * Created by twogoods on 17/2/19.
@@ -15,4 +18,7 @@ public interface RoleMapper {
 
     @Delete("delete from T_Role where rid=#{rid}")
     int deleteRole(@Param("rid")String rid);
+
+    @Select("select * from T_Role")
+    List<Role> listRole(int pageSize, int offset);
 }

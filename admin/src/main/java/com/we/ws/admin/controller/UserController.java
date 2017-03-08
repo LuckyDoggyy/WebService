@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-02
@@ -25,20 +23,32 @@ import java.util.Map;
 public class UserController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
     @RequestMapping("addUser")
     @ResponseBody
-    public Map<String, Object> addUser(String username) {
+    public Map<String, Object> addUser(String account, String nickName, String remarks) {
         Map<String, Object> result = new HashMap<>();
-        if (userService.addUser(username)) {
+        if (userService.addUser(account, nickName, remarks)) {
             result.put("success", true);
         } else {
             result.put("success", false);
         }
         return result;
+    }
 
+    @RequestMapping("updateUser")
+    @ResponseBody
+    public Map<String, Object> updateUser(String uid, String nickName, String remarks) {
+        Map<String, Object> result = new HashMap<>();
+        if (userService.updateUser(uid, nickName, remarks)) {
+            result.put("success", true);
+        } else {
+            result.put("success", false);
+        }
+        return result;
     }
 
     @RequestMapping("deleteUser")
@@ -96,6 +106,4 @@ public class UserController extends BaseController {
         }
         return result;
     }
-
-
 }

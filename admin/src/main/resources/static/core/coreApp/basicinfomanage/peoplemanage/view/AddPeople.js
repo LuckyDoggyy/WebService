@@ -17,9 +17,24 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AddPeople",
 							fieldLabel : '用户名'+ '<font color=red>*</font>',
 							anchor: '18%',
 							labelWidth: 50,
-							name : 'username',
+							name : 'account',
 							allowBlank : false,
-							blankText : '姓名不能为空'
+							blankText : '账号不能为空'
+						},{
+							xtype : 'textfield',
+							fieldLabel : '昵称',
+							anchor: '18%',
+							labelWidth: 50,
+							name : 'nickName',
+							allowBlank : true
+						},{
+							xtype : 'textarea',
+							fieldLabel : '备注',
+							anchor: '18%',
+							labelWidth: 50,
+                            width: 230,
+							name : 'remarks',
+							allowBlank : true
 						},{
 							 xtype: 'button',
 							 text: '添加',

@@ -2,6 +2,8 @@ package com.we.ws.admin.service.impl;
 
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.Role;
+import com.we.ws.admin.mapper.MenuMapper;
+import com.we.ws.admin.mapper.RoleMapper;
 import com.we.ws.admin.mapper.RoleMenuMapper;
 import com.we.ws.admin.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +26,31 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleMenuMapper roleMenuMapper;
+    @Autowired
+    private MenuMapper menuMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public List<Role> listRole(int pageSize, int offset) {
-        return roleMenuMapper.listRole(pageSize, offset);
+        return roleMapper.listRole(pageSize, offset);
     }
 
     @Override
     public boolean addRole(String name) {
-        roleMenuMapper.insertRole(name);
+        roleMapper.insertRole(name);
         return true;
     }
 
     @Override
     public boolean updateRole(String name, String rid) {
-        roleMenuMapper.updateRole(name,rid);
+        roleMapper.updateRole(name,rid);
         return true;
     }
 
     @Override
     public List<Map<String, Object>> listRoleMenu(String rid) {
-        List<Menu> parentMenus = roleMenuMapper.getFirstLayerMenu();
+        List<Menu> parentMenus = menuMapper.getFirstLayerMenu();
         List<Map<String, Object>> menuArr = new ArrayList<>(3);
         for (Menu menu : parentMenus) {
             Map<String, Object> firstmap = new HashMap<>();
@@ -52,12 +58,12 @@ public class RoleServiceImpl implements RoleService {
             firstmap.put("id", menu.getMid());
             firstmap.put("expanded", "true");
             firstmap.put("checked", "true");
-            List<Map<String, Object>> secondlayer = roleMenuMapper.getSecondLayerMenuForList(menu.getMid());
+            List<Map<String, Object>> secondlayer = menuMapper.getSecondLayerMenuForList(menu.getMid());
             //checked
             firstmap.put("children", secondlayer);
 
             for (Map<String, Object> secondMenu : secondlayer) {
-                List<Map<String, String>> leafmenus = roleMenuMapper.getLeafMenusByPid(secondMenu.get("id").toString());
+                List<Map<String, String>> leafmenus = menuMapper.getLeafMenusByPid(secondMenu.get("id").toString());
                 for (Map<String, String> leafmenu : leafmenus) {
                     if (roleMenuMapper.checkOwner(leafmenu.get("id"), rid) > 0) {
                         leafmenu.put("checked", "true");
@@ -77,23 +83,28 @@ public class RoleServiceImpl implements RoleService {
         String[] menuids = mids.split(",");
         roleMenuMapper.deleteAll(rid);
         if (menuids.length > 0) {
-            roleMenuMapper.insertMenus(menuids, rid);
+            menuMapper.insertMenus(menuids, rid);
         }
         return true;
     }
 
     @Override
     public List<Menu> getParentMenuForLogin() {
-        return roleMenuMapper.getFirstLayerMenu();
+        return menuMapper.getFirstLayerMenu();
     }
 
     @Override
     public List<Map<String, Object>> getRoleMenuForLogin(String pid, String uid) {
-        List<Map<String, Object>> secondLayer = roleMenuMapper.getSecondLayerMenu(pid);
+        List<Map<String, Object>> secondLayer = menuMapper.getSecondLayerMenu(pid);
         for (Map<String, Object> menu : secondLayer) {
-            menu.put("children", roleMenuMapper.getLeafMenu(menu.get("id").toString(), uid));
+            menu.put("children", menuMapper.getLeafMenu(menu.get("id").toString(), uid));
             menu.put("expanded", "true");
         }
         return secondLayer;
+    }
+
+    @Override
+    public Map<String, String> getView(String mid) {
+        return menuMapper.getView(mid);
     }
 }

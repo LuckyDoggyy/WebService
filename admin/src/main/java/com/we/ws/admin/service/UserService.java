@@ -2,6 +2,7 @@ package com.we.ws.admin.service;
 
 import com.we.ws.admin.domain.User;
 import com.we.ws.admin.domain.UserRole;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +20,9 @@ public interface UserService {
 
     int countUser(String uid,String name);
 
-    boolean addUser(String name);
+    boolean addUser(String account,String nickName,String remarks);
+
+    boolean updateUser(String uid,String nickName,String remarks);
 
     boolean deleteUser(String uids);
 

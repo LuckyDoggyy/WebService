@@ -195,7 +195,25 @@
 			"westview treepanel" : {
 				itemclick : function(tree, record, item, index, e, eOpts) {
 					var mainView = tree.up("mainviewlayout").down("centerview");
+					Ext.Ajax.request({
+						url : "getView",
+						method : "get",
+						params : {mid : record.data["id"]},
+						timeout : 4000,
+						sync : false,
+						success : function(response, opts) {
+							var resObj = Ext.decode(response.responseText);
+							self.addFunItem({
+								mainView : mainView,
+								funViewXtype : resObj.viewid,
+								funController : resObj.viewcontroller,
+								funViewName : resObj.viewname
+							});
+						}
+					});
+					return;
 					switch (record.data["id"]) {
+					//TODO 动态的获取
 						// 用户浏览
 						case "userlist" :
 							self.addFunItem({
@@ -232,7 +250,7 @@
 									funViewName : "core.basicinfomanage.peoplemanage.view.AddPeople"
 								});
 								break;
-						// 用户添加
+						// 用户角色设置
 						case "userrolesetting" :
 								self.addFunItem({
 									mainView : mainView,

@@ -30,4 +30,6 @@ public interface RoleService {
 
     List<Map<String, Object>> getRoleMenuForLogin(String pid,String uid);
 
+    Map<String,String> getView(String mid);
+
 }

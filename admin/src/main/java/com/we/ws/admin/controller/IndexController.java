@@ -36,9 +36,8 @@ public class IndexController extends BaseController {
 
     @Autowired
     private UserServiceImpl userService;
-
     @Autowired
-    private RoleService roleMenuService;
+    private RoleService roleService;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request) {
@@ -99,7 +98,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/getParentMenu")
     @ResponseBody
     public List<Menu> getParentMenu(HttpServletRequest request) {
-        return roleMenuService.getParentMenuForLogin();
+        return roleService.getParentMenuForLogin();
     }
 
 
@@ -107,6 +106,13 @@ public class IndexController extends BaseController {
     @ResponseBody
     public List<Map<String, Object>> getMenu(HttpServletRequest request, String node) {
         String uid = getUserid(request);
-        return roleMenuService.getRoleMenuForLogin(node, uid);
+        return roleService.getRoleMenuForLogin(node, uid);
+    }
+
+
+    @RequestMapping(value = "/getView")
+    @ResponseBody
+    public Map<String, String> getView(HttpServletRequest request, String mid) {
+        return roleService.getView(mid);
     }
 }

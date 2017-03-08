@@ -16,17 +16,20 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into T_User(name,password) values ( #{name},#{name} )")
-    int insert(@Param("name")String name);
+    @Insert("insert into T_User(account,password,nickName,remarks) values ( #{account},#{account},#{nickName},#{remarks} )")
+    int insert(@Param("account")String account,@Param("nickName")String nickName,@Param("remarks")String remarks);
+
+    @Update("update T_User set nickName=#{nickName},remarks=#{remarks} where uid=#{uid} ")
+    int update(@Param("uid")String uid,@Param("nickName")String nickName,@Param("remarks")String remarks);
 
     int delete(@Param("uids")String[] uids);
 
-    @Select("select * from T_User where name=#{name}")
-    User getUserByName(String name);
+    @Select("select * from T_User where account=#{account}")
+    User getUserByName(String account);
 
-    List<User> listUser(@Param("uid")String uid,@Param("name")String name,@Param("pageSize")int pageSize,@Param("offset")int offset);
+    List<User> listUser(@Param("uid")String uid,@Param("account")String account,@Param("pageSize")int pageSize,@Param("offset")int offset);
 
-    int countUser(@Param("uid")String uid,@Param("name")String name);
+    int countUser(@Param("uid")String uid,@Param("account")String account);
 
 
 }
