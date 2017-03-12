@@ -16,7 +16,6 @@ public class RoleMenu {
     private int rid;
     private int order;
 
-
     public int getAutoid() {
         return autoid;
     }

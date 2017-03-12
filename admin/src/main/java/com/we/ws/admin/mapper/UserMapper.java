@@ -17,19 +17,25 @@ import java.util.List;
 public interface UserMapper {
 
     @Insert("insert into T_User(account,password,nickName,remarks) values ( #{account},#{account},#{nickName},#{remarks} )")
-    int insert(@Param("account")String account,@Param("nickName")String nickName,@Param("remarks")String remarks);
+    int insert(@Param("account") String account, @Param("nickName") String nickName, @Param("remarks") String remarks);
 
     @Update("update T_User set nickName=#{nickName},remarks=#{remarks} where uid=#{uid} ")
-    int update(@Param("uid")String uid,@Param("nickName")String nickName,@Param("remarks")String remarks);
+    int update(@Param("uid") String uid, @Param("nickName") String nickName, @Param("remarks") String remarks);
 
-    int delete(@Param("uids")String[] uids);
+    int delete(@Param("uids") String[] uids);
 
     @Select("select * from T_User where account=#{account}")
-    User getUserByName(String account);
+    User getByAccount(String account);
 
-    List<User> listUser(@Param("uid")String uid,@Param("account")String account,@Param("pageSize")int pageSize,@Param("offset")int offset);
+    @Select("select * from T_User where uid=#{uid}")
+    User getByUid(String uid);
 
-    int countUser(@Param("uid")String uid,@Param("account")String account);
+    @Update("update T_User set password=#{pass} where uid=#{uid}")
+    int updatePass(@Param("uid") String uid, @Param("pass") String pass);
+
+    List<User> listUser(@Param("uid") String uid, @Param("account") String account, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    int countUser(@Param("uid") String uid, @Param("account") String account);
 
 
 }

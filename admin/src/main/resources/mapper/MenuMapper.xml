@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.we.ws.admin.mapper.MenuMapper" >
+
+    <select id="listMenu" resultType="com.we.ws.admin.domain.Menu">
+        select a.autoid,a.mid,a.menuname,a.pid,b.menuname as pname,a.order,a.viewid,a.viewname,a.viewcontroller from T_Menu a,T_Menu b
+        <where>
+            a.pid = b.mid and a.mid != 'root'
+            <if test="mid != null and mid!='' and mid!='null'">
+                and a.pid = #{mid}
+            </if>
+        </where>
+        order by a.pid
+    </select>
+    
+    
+    <update id="deleteMenus">
+        update T_Menu set state=1 where autoid in
+        <foreach collection="autoids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

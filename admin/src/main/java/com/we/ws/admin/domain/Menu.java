@@ -8,12 +8,15 @@ package com.we.ws.admin.domain;
  * @since 2017-02-26
  */
 public class Menu {
-
     private int autoid;
     private String mid;
     private String menuname;
     private String pid;
+    private String pname;
     private int order;
+    private String viewid;
+    private String viewname;
+    private String viewcontroller;
 
     public int getAutoid() {
         return autoid;
@@ -53,5 +56,37 @@ public class Menu {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getViewid() {
+        return viewid;
+    }
+
+    public void setViewid(String viewid) {
+        this.viewid = viewid;
+    }
+
+    public String getViewname() {
+        return viewname;
+    }
+
+    public void setViewname(String viewname) {
+        this.viewname = viewname;
+    }
+
+    public String getViewcontroller() {
+        return viewcontroller;
+    }
+
+    public void setViewcontroller(String viewcontroller) {
+        this.viewcontroller = viewcontroller;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 }

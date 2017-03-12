@@ -2,6 +2,7 @@ package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.UserRole;
 import com.we.ws.admin.service.UserService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +23,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user/")
 public class UserController extends BaseController {
-
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
@@ -62,6 +63,22 @@ public class UserController extends BaseController {
         }
         return result;
 
+    }
+
+    @RequestMapping("updatePass")
+    @ResponseBody
+    public Map<String, Object> updatePass(HttpServletRequest request, String oldPassword, String newPassword) {
+        Map<String, Object> result = new HashMap<>();
+        String uid = getUserid(request);
+        if (!"0".equals(uid)) {
+            Pair<Boolean, String> res = userService.updatePass(uid, oldPassword, newPassword);
+            result.put("success", res.getLeft());
+            result.put("obj", res.getRight());
+        } else {
+            result.put("success", false);
+            result.put("obj", "您未登陆");
+        }
+        return result;
     }
 
     @RequestMapping("list")

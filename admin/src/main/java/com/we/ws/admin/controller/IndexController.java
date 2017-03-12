@@ -6,6 +6,7 @@ import com.we.ws.admin.service.RoleService;
 import com.we.ws.admin.service.impl.UserServiceImpl;
 import com.we.ws.common.data.Pair;
 import com.we.ws.common.exception.TokenException;
+import com.we.ws.common.util.MD5Utils;
 import com.we.ws.common.util.TokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/in", method = {RequestMethod.POST})
     public String login(HttpServletResponse response, String j_username, String j_password) throws TokenException {
-        User u = userService.getByName(j_username);
-        if (u != null && j_password.equals(u.getPassword())) {
+        User u = userService.getByAccount(j_username);
+        if (u != null && MD5Utils.getStringMD5(j_password).equals(u.getPassword())) {
             Cookie uid = new Cookie("uid", Long.toString(u.getUid()));
             uid.setMaxAge(2000);
             Cookie token = new Cookie("token", TokenUtils.generateToken(u.getUid()));

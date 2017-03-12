@@ -5,6 +5,8 @@ import com.we.ws.admin.domain.UserRole;
 import com.we.ws.admin.mapper.UserMapper;
 import com.we.ws.admin.mapper.UserRoleMapper;
 import com.we.ws.admin.service.UserService;
+import com.we.ws.common.util.MD5Utils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRoleMapper userRoleMapper;
 
     @Override
-    public User getByName(String name) {
-        return userMapper.getUserByName(name);
+    public User getByAccount(String name) {
+        return userMapper.getByAccount(name);
     }
 
     @Override
@@ -47,13 +49,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(String uid, String nickName, String remarks) {
-        return userMapper.update(uid, nickName, remarks)==1;
+        return userMapper.update(uid, nickName, remarks) == 1;
     }
 
     @Override
     public boolean deleteUser(String uids) {
         userMapper.delete(uids.split(","));
         return true;
+    }
+
+    @Override
+    public Pair<Boolean, String> updatePass(String uid, String oldPass, String newPass) {
+        User user = userMapper.getByUid(uid);
+        if (user != null && MD5Utils.getStringMD5(oldPass).equals(user.getPassword())) {
+            userMapper.updatePass(uid, MD5Utils.getStringMD5(newPass));
+        } else {
+            return Pair.of(false, "原密码错误");
+        }
+        return Pair.of(true, "密码修改成功");
     }
 
     @Override
