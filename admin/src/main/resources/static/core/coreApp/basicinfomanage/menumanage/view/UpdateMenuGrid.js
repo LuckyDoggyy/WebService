@@ -1,6 +1,6 @@
-Ext.define("core.basicinfomanage.menumanage.view.MenuGrid", {
+Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuGrid", {
 	extend : "Ext.grid.Panel",
-	alias : "widget.menugrid",
+	alias : "widget.updatemenugrid",
 	title : "<center height=40>菜单修改</center>",
 	selModel : {
 		selType : "checkboxmodel",
@@ -34,7 +34,7 @@ Ext.define("core.basicinfomanage.menumanage.view.MenuGrid", {
 			xtype : 'button',
 			text : '查询',
 			iconCls : 'search',
-			ref : 'searchWs'
+			ref : 'searchMenu'
 		}]
 	}, {
 		xtype : 'toolbar',

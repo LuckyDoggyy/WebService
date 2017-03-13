@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : utf-8
 
- Date: 02/27/2017 20:51:44 PM
+ Date: 03/13/2017 19:51:34 PM
 */
 
 SET NAMES utf8mb4;
@@ -27,14 +27,18 @@ CREATE TABLE `T_Menu` (
   `menuname` varchar(255) NOT NULL,
   `pid` varchar(255) NOT NULL,
   `order` int(11) NOT NULL DEFAULT '0',
+  `viewid` varchar(255) NOT NULL DEFAULT '',
+  `viewname` varchar(255) NOT NULL DEFAULT '',
+  `viewcontroller` varchar(255) NOT NULL DEFAULT '',
+  `state` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`autoid`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `T_Menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_Menu` VALUES ('1', 'usermanage', '用户管理', 'basicinfomanage', '0'), ('2', 'rolemanage', '角色管理', 'basicinfomanage', '0'), ('3', 'servicemanage', '服务管理', 'basicinfomanage', '0'), ('4', 'basicinfomanage', '信息管理', '0', '0'), ('6', 'userlist', '用户浏览', 'usermanage', '0'), ('7', 'useradd', '添加用户', 'usermanage', '0'), ('8', 'userupdate', '修改用户', 'usermanage', '0'), ('9', 'userdelete', '删除用户', 'usermanage', '0'), ('10', 'userrolesetting', '用户角色设置', 'usermanage', '0'), ('11', 'rolelist', '角色浏览', 'rolemanage', '0'), ('12', 'roleadd', '添加角色', 'rolemanage', '0'), ('13', 'roledelete', '角色删除', 'rolemanage', '0'), ('14', 'rolemenusetting', '角色菜单设置', 'rolemanage', '0'), ('15', 'roleupdate', '角色修改', 'rolemanage', '0'), ('16', 'servicelist', '查询服务', 'servicemanage', '0'), ('17', 'serviceadd', '增加服务', 'servicemanage', '0'), ('18', 'servicedelete', '删除服务', 'servicemanage', '0'), ('19', 'serviceupdate', '更新服务', 'servicemanage', '0');
+INSERT INTO `T_Menu` VALUES ('1', 'usermanage', '用户管理', 'basicinfomanage', '0', '', '', '', '0'), ('2', 'rolemanage', '角色管理', 'basicinfomanage', '0', '', '', '', '0'), ('3', 'menumanage', '菜单管理', 'basicinfomanage', '0', '', '', '', '0'), ('4', 'basicinfomanage', '信息管理', 'root', '0', '', '', '', '0'), ('6', 'userlist', '用户浏览', 'usermanage', '0', 'peoplegrid', 'core.basicinfomanage.peoplemanage.view.PeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('7', 'useradd', '添加用户', 'usermanage', '0', 'addpeople', 'core.basicinfomanage.peoplemanage.view.AddPeople', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('8', 'userupdate', '修改用户', 'usermanage', '0', 'updatepeoplegrid', 'core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('9', 'userdelete', '删除用户', 'usermanage', '0', 'deletepeoplegrid', 'core.basicinfomanage.peoplemanage.view.DeletePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('10', 'userrolesetting', '用户角色设置', 'usermanage', '0', 'setrolepeoplegrid', 'core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('11', 'rolelist', '角色浏览', 'rolemanage', '0', 'rolegrid', 'core.systemmanage.rolemanage.view.RoleGrid', 'core.systemmanage.rolemanage.controller.RoleController', '0'), ('12', 'roleadd', '添加角色', 'rolemanage', '0', 'addrole', 'core.systemmanage.rolemanage.view.AddRole', 'core.systemmanage.rolemanage.controller.RoleController', '0'), ('13', 'roledelete', '角色删除', 'rolemanage', '0', 'deleterolegrid', 'core.systemmanage.rolemanage.view.DeleteRoleGrid', 'core.systemmanage.rolemanage.controller.RoleController', '0'), ('14', 'rolemenusetting', '角色菜单设置', 'rolemanage', '0', 'setrolemenugrid', 'core.systemmanage.rolemanage.view.SetRoleMenuGrid', 'core.systemmanage.rolemanage.controller.RoleController', '0'), ('15', 'roleupdate', '角色修改', 'rolemanage', '0', 'updaterolegrid', 'core.systemmanage.rolemanage.view.UpdateRoleGrid', 'core.systemmanage.rolemanage.controller.RoleController', '0'), ('16', 'menulist', '菜单浏览', 'menumanage', '0', 'menugrid', 'core.basicinfomanage.menumanage.view.MenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('17', 'menuadd', '增加菜单', 'menumanage', '0', 'addmenu', 'core.basicinfomanage.menumanage.view.AddMenu', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('18', 'menudelete', '删除菜单', 'menumanage', '0', 'deletemenugrid', 'core.basicinfomanage.menumanage.view.DeleteMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('19', 'menuupdate', '更新菜单', 'menumanage', '0', 'updatemenugrid', 'core.basicinfomanage.menumanage.view.UpdateMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('20', 'root', 'root', 'null', '0', '', '', '', '0');
 COMMIT;
 
 -- ----------------------------
@@ -45,7 +49,7 @@ CREATE TABLE `T_Role` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
   `rname` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Records of `T_Role`
@@ -71,7 +75,7 @@ CREATE TABLE `T_RoleMenu` (
 --  Records of `T_RoleMenu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_RoleMenu` VALUES ('1', 'userlist', '1', '0', '0'), ('2', 'useradd', '1', '0', '0'), ('3', 'userupdate', '1', '0', '0'), ('4', 'userdelete', '1', '0', '0'), ('5', 'userrolesetting', '1', '0', '0'), ('6', 'rolelist', '1', '0', '0'), ('7', 'roleadd', '1', '0', '0'), ('8', 'roledelete', '1', '0', '0'), ('9', 'rolemenusetting', '1', '0', '0'), ('10', 'roleupdate', '1', '0', '0'), ('11', 'servicelist', '1', '0', '0'), ('12', 'serviceadd', '1', '0', '0'), ('13', 'servicedelete', '1', '0', '0'), ('14', 'serviceupdate', '1', '0', '0');
+INSERT INTO `T_RoleMenu` VALUES ('1', 'userlist', '1', '0', '0'), ('2', 'useradd', '1', '0', '0'), ('3', 'userupdate', '1', '0', '0'), ('4', 'userdelete', '1', '0', '0'), ('5', 'userrolesetting', '1', '0', '0'), ('6', 'rolelist', '1', '0', '0'), ('7', 'roleadd', '1', '0', '0'), ('8', 'roledelete', '1', '0', '0'), ('9', 'rolemenusetting', '1', '0', '0'), ('10', 'roleupdate', '1', '0', '0'), ('11', 'menulist', '1', '0', '0'), ('12', 'menuadd', '1', '0', '0'), ('13', 'menudelete', '1', '0', '0'), ('14', 'menuupdate', '1', '0', '0'), ('15', 'userlist', '2', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -119,18 +123,20 @@ COMMIT;
 DROP TABLE IF EXISTS `T_User`;
 CREATE TABLE `T_User` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `account` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `nickName` varchar(255) NOT NULL DEFAULT '',
+  `remarks` varchar(255) NOT NULL DEFAULT '',
   `state` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `name` (`account`)
+) ENGINE=InnoDB AUTO_INCREMENT=138252 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Records of `T_User`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_User` VALUES ('1', 'admin', 'admin', '0'), ('2', 'test', 'test', '0'), ('3', 'boss', 'boss', '0'), ('9', 'twogoods', 'twogoods', '0');
+INSERT INTO `T_User` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '管理员账号', '0'), ('2', 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', '测试账号', '0'), ('3', 'boss', 'ceb8447cc4ab78d2ec34cd9f11e4bed2', 'boss', '领导', '0'), ('9', 'twogoods', '228ba6f6384004be1473b9eee85be9ac', 'twogoods', '开发', '0');
 COMMIT;
 
 -- ----------------------------

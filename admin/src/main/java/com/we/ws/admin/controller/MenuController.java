@@ -2,6 +2,7 @@ package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.service.MenuService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/menu/")
 public class MenuController {
+
     private Logger log = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired
@@ -52,11 +54,9 @@ public class MenuController {
     @ResponseBody
     public Map<String, Object> addMenu(Menu menu) {
         Map<String, Object> result = new HashMap<>();
-        if (menuService.addNewMenu(menu)) {
-            result.put("success", true);
-        } else {
-            result.put("success", false);
-        }
+        Pair<Boolean, String> res = menuService.addNewMenu(menu);
+        result.put("success", res.getLeft());
+        result.put("obj", res.getRight());
         return result;
     }
 
@@ -64,11 +64,9 @@ public class MenuController {
     @ResponseBody
     public Map<String, Object> updateMenu(Menu menu) {
         Map<String, Object> result = new HashMap<>();
-        if (menuService.updateMenu(menu)) {
-            result.put("success", true);
-        } else {
-            result.put("success", false);
-        }
+        Pair<Boolean, String> res = menuService.updateMenu(menu);
+        result.put("success", res.getLeft());
+        result.put("obj", res.getRight());
         return result;
     }
 

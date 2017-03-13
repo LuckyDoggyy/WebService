@@ -10,61 +10,69 @@ Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuForm", {
 			},
 			align : 'center',
 			buttonAlign : 'center',
-			items : [ {
-				xtype : "textfield",
-				fieldLabel : "工号" + '<font color=red>*</font>',
-				labelWidth : 35,
-				padding : '5,20,5,30',
-				name : "usergh",
-				allowBlank : false,// 不允许为空
-				blankText : '工号不能为空',// 错误提示内容
-				emptyText : '请输入新班组人员的工号',
-				readOnly : false
-			}, {
-				xtype : "textfield",
-				fieldLabel : "姓名",
-				labelWidth : 35,
-				padding : '5,20,5,30',
-				name : "username",
-				disabled:true,
-				allowBlank : false,
-				readOnly : false
-			},{
-				xtype : "textfield",
-				fieldLabel : "部门编号",
-				labelWidth : 35,
-				padding : '5,20,5,30',
-				name : "deptbh",
-				allowBlank : false,
-				hidden : true
-			},{
-				xtype : "textfield",
-				fieldLabel : "部门",
-				labelWidth : 35,
-				padding : '5,20,5,30',
-				name : "deptname",
-				disabled:true,
-				allowBlank : false,
-				readOnly : false
-			},{
-				xtype : "textfield",
-				fieldLabel : "班组名",
-				labelWidth : 90,
-				padding : '5,20,5,30',
-				name : "banzuname",
-				allowBlank : false,// 允许为空
-				hidden : "true",
-				readOnly : false
-			},{ xtype : 'textfield',
-				name : 'remarks',
-				fieldLabel : '备注',
-				labelWidth :35,
-				padding : '5,20,5,30',
-				allowBlank : true,
-			}],			
+			items : [{
+						xtype : 'textfield',
+						fieldLabel : '自增id,
+						anchor: '18%',
+						labelWidth: 80,
+						name : 'autoid',
+						hidden : true
+					},{
+						xtype : 'textfield',
+						fieldLabel : '菜单编号'+ '<font color=red>*</font>',
+						anchor: '18%',
+						labelWidth: 80,
+						name : 'mid',
+						allowBlank : false,
+						disabled : true,
+						blankText : '编号不能为空'
+					},{
+						xtype : 'textfield',
+						fieldLabel : '菜单名'+ '<font color=red>*</font>',
+						anchor: '18%',
+						labelWidth: 80,
+						name : 'menuname',
+						allowBlank : false,
+						blankText : '菜单名不能为空'
+					},{
+						fieldLabel : '父菜单',
+						xtype : "combobox",
+						name : 'pid',
+						labelWidth : 80,
+						emptyText : '请选择菜单',
+						queryMode : 'remote',
+						store : "core.basicinfomanage.menumanage.store.MenuNodeStore",
+						loadingText : '正在加载数据，请稍侯……',
+						triggerAction : 'all',
+						valueField : 'mid',
+						forceSelection : false,
+						allowBlank : false,
+						displayField : 'menuname'
+					},{
+						xtype : 'textfield',
+						fieldLabel : '页面id',
+						anchor: '24%',
+						labelWidth: 80,
+						name : 'viewid',
+						allowBlank : true
+					},{
+						xtype : 'textfield',
+						fieldLabel : '页面名',
+						anchor: '24%',
+						labelWidth: 80,
+						name : 'viewname',
+						allowBlank : true
+					},{
+						xtype : 'textfield',
+						fieldLabel : '页面控制器',
+						anchor: '24%',
+						labelWidth: 80,
+						name : 'viewcontroller',
+						allowBlank : true
+					}],
 			buttons : [{
 						text : '修改',
-						ref : 'updateBanzuPeople',
+						ref : 'updateMenu',
 						iconCls : "table_save"
 					}, {
 						text : '返回',

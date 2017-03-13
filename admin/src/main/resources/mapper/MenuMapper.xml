@@ -5,7 +5,7 @@
     <select id="listMenu" resultType="com.we.ws.admin.domain.Menu">
         select a.autoid,a.mid,a.menuname,a.pid,b.menuname as pname,a.order,a.viewid,a.viewname,a.viewcontroller from T_Menu a,T_Menu b
         <where>
-            a.pid = b.mid and a.mid != 'root'
+            a.state=0 and a.pid = b.mid and a.mid != 'root'
             <if test="mid != null and mid!='' and mid!='null'">
                 and a.pid = #{mid}
             </if>

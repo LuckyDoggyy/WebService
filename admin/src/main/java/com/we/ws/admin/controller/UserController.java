@@ -32,11 +32,9 @@ public class UserController extends BaseController {
     @ResponseBody
     public Map<String, Object> addUser(String account, String nickName, String remarks) {
         Map<String, Object> result = new HashMap<>();
-        if (userService.addUser(account, nickName, remarks)) {
-            result.put("success", true);
-        } else {
-            result.put("success", false);
-        }
+        Pair<Boolean, String> res = userService.addUser(account, nickName, remarks);
+        result.put("success", res.getLeft());
+        result.put("success", res.getRight());
         return result;
     }
 
@@ -62,7 +60,6 @@ public class UserController extends BaseController {
             result.put("success", false);
         }
         return result;
-
     }
 
     @RequestMapping("updatePass")

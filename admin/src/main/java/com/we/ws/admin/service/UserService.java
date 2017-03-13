@@ -21,7 +21,7 @@ public interface UserService {
 
     int countUser(String uid, String name);
 
-    boolean addUser(String account, String nickName, String remarks);
+    Pair<Boolean,String> addUser(String account, String nickName, String remarks);
 
     boolean updateUser(String uid, String nickName, String remarks);
 

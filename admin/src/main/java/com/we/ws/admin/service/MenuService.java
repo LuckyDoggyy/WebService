@@ -1,6 +1,7 @@
 package com.we.ws.admin.service;
 
 import com.we.ws.admin.domain.Menu;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public interface MenuService {
 
     List<Menu> getMenuNodes();
 
-    boolean addNewMenu(Menu menu);
+    Pair<Boolean,String> addNewMenu(Menu menu);
 
-    boolean updateMenu(Menu menu);
+    Pair<Boolean,String> updateMenu(Menu menu);
 
     boolean deleteMenu(String autoids);
 }

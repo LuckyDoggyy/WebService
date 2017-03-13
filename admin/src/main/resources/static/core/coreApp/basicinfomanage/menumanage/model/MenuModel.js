@@ -1,6 +1,9 @@
 Ext.define("core.basicinfomanage.menumanage.model.MenuModel", {
 			extend : "Ext.data.Model",
 			fields : [{
+						name : "autoid",
+						type : "string"
+					},{
 						name : "mid",
 						type : "string"
 					},{

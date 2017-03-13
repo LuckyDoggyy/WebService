@@ -35,32 +35,9 @@ Ext.define("core.basicinfomanage.menumanage.view.MenuGrid", {
 			xtype : 'button',
 			text : '查询',
 			iconCls : 'search',
-			ref : 'searchWs'
+			ref : 'searchMenu'
 		}]
-	}, {
-		xtype : 'toolbar',
-		dock : 'top',
-		height : 36,
-		items : [{
-					xtype : 'button',
-					text : '添加服务',
-					ref : 'addService',
-					iconCls : 'table_add'
-				}, {
-					xtype : 'button',
-					text : '修改服务',
-					ref : 'updateService',
-					iconCls : 'modify',
-					disabled : true
-				}, {
-					xtype : 'button',
-					text : '删除服务',
-					ref : 'deleteService',
-					iconCls : 'table_remove',
-					disabled : true
-                   }]
 	}],
-
 	columns : [{
 				text : "菜单编号",
 				dataIndex : "mid",

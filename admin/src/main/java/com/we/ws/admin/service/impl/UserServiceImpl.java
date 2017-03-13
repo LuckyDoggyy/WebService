@@ -43,8 +43,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUser(String account, String nickName, String remarks) {
-        return userMapper.insert(account, nickName, remarks) == 1;
+    public Pair<Boolean, String> addUser(String account, String nickName, String remarks) {
+        if (userMapper.checkExist(account) > 0) {
+            return Pair.of(false, "账号已存在请更换");
+        }
+        if (userMapper.insert(account, nickName, remarks) != 1) {
+            return Pair.of(false, "用户添加异常");
+        }
+        return Pair.of(true, "用户添加成功");
     }
 
     @Override

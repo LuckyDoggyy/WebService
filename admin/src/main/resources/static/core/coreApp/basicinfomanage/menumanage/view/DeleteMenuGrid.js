@@ -35,7 +35,7 @@ Ext.define("core.basicinfomanage.menumanage.view.DeleteMenuGrid", {
 			xtype : 'button',
 			text : '查询',
 			iconCls : 'search',
-			ref : 'searchWs'
+			ref : 'searchMenu'
 		}]
 	}, {
 		xtype : 'toolbar',

@@ -42,7 +42,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                      addpeople.down("textarea[name=remarks]").reset();
                                      return false;
                                  } else {
-                                     Ext.Msg.alert("友情提示", "用户添加异常");
+                                     Ext.Msg.alert("友情提示", resObj.obj);
                                      return false;
                                  }
                              } else {

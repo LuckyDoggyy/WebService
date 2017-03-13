@@ -37,7 +37,7 @@ public interface MenuMapper {
     @Select("select mid,viewid,viewname,viewcontroller from T_Menu where mid=#{mid} and state=0")
     Map<String, String> getView(@Param("mid") String mid);
 
-    List<Menu> listMenu(String mid);
+    List<Menu> listMenu(@Param("mid")String mid);
 
     @Select("select mid,menuname from T_Menu where state=0 and pid in (select mid from T_Menu where pid='root') or pid='null' or pid='root'")
     List<Menu> getNodes();
@@ -49,5 +49,8 @@ public interface MenuMapper {
 
     @Update("update T_Menu set menuname=#{menuname},pid=#{pid},viewid=#{viewid},viewname=#{viewname},viewcontroller=#{viewcontroller} where autoid=#{autoid}")
     int updateMenu(Menu menu);
+
+    @Select("select count(*) from T_Menu where state=0 and mid=#{id} or pid=#{id}")
+    int checkIdExist(String id);
 
 }

@@ -37,5 +37,8 @@ public interface UserMapper {
 
     int countUser(@Param("uid") String uid, @Param("account") String account);
 
+    @Select("select count(*) from T_User where account=#{account}")
+    int checkExist(@Param("account")String account);
+
 
 }

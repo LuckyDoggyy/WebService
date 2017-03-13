@@ -3,6 +3,7 @@ package com.we.ws.admin.service.impl;
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.mapper.MenuMapper;
 import com.we.ws.admin.service.MenuService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,22 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public boolean addNewMenu(Menu menu) {
-        return menuMapper.insert(menu) == 1;
+    public Pair<Boolean,String> addNewMenu(Menu menu) {
+        if(menuMapper.checkIdExist(menu.getMid())>0){
+            return Pair.of(false,"菜单id已存在");
+        }
+        if(menuMapper.insert(menu) != 1){
+            return Pair.of(false,"菜单添加异常");
+        }
+        return Pair.of(true,"菜单添加成功");
     }
 
     @Override
-    public boolean updateMenu(Menu menu) {
-        return menuMapper.updateMenu(menu) == 1;
+    public Pair<Boolean,String> updateMenu(Menu menu) {
+        if(menuMapper.updateMenu(menu) != 1){
+            return Pair.of(false,"菜单更新异常");
+        }
+        return Pair.of(true,"菜单更新成功");
     }
 
     @Override

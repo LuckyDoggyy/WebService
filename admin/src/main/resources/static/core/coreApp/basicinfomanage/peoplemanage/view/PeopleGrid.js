@@ -73,7 +73,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.PeopleGrid", {
     }*/
     ],
     columns: [{
-        width: 50,
+        width: 80,
         height: 36,
         dataIndex: "uid",
         text: 'uid',
