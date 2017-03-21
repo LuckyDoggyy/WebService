@@ -26,7 +26,7 @@
 
 
     <select id="getRoles" resultType="com.we.ws.admin.domain.UserRole">
-        select ur.autoid,ur.uid,u.name as username,ur.rid,r.rname as rolename from T_User u,T_Role r,T_UserRole ur where ur.uid=#{uid}
+        select ur.autoid,ur.uid,u.account,ur.rid,r.rname as rolename from T_User u,T_Role r,T_UserRole ur where ur.uid=#{uid}
             and ur.state=0 and ur.uid=u.uid and ur.rid=r.rid order by r.rid
     </select>
 

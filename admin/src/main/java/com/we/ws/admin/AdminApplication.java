@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 
 /**
  * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-01

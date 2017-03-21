@@ -66,7 +66,7 @@ Ext.define("core.basicinfomanage.menumanage.view.DeleteMenuGrid", {
 				align: 'center',
 				width : 180
 			}, {
-				text : "菜单名",
+				text : "父菜单名",
 				dataIndex : "pname",
 				align: 'center',
 				width : 120

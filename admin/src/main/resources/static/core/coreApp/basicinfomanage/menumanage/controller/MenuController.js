@@ -99,8 +99,8 @@ Ext.define("core.basicinfomanage.menumanage.controller.MenuController",
 												 };
 												 var window = Ext.create('Ext.window.Window', {
 															 title : '修改菜单信息',
-															 height : 240,
-															 width : 450,
+															 height : 340,
+															 width : 580,
 															 constrain : true,
 															 maximizable : true,
 															 layout : 'fit',
@@ -182,6 +182,7 @@ Ext.define("core.basicinfomanage.menumanage.controller.MenuController",
                                     });
                                   },
 						views : ["core.basicinfomanage.menumanage.view.AddMenu",
+								"core.basicinfomanage.menumanage.view.UpdateMenuForm",
 								"core.basicinfomanage.menumanage.view.DeleteMenuGrid",
 								"core.basicinfomanage.menumanage.view.UpdateMenuGrid",
 								"core.basicinfomanage.menumanage.view.MenuGrid"],

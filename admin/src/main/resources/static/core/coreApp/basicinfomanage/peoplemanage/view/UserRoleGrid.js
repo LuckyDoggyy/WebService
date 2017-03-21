@@ -37,8 +37,8 @@ Ext.define("core.basicinfomanage.peoplemanage.view.UserRoleGrid", {
 				align: 'center',
 				width : 120
 			}, {
-				text : "用户名",
-				dataIndex : "username",
+				text : "账户",
+				dataIndex : "account",
 				align: 'center',
 				width : 120
 			}, {

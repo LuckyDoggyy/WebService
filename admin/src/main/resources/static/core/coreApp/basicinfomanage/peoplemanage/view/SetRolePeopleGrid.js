@@ -26,10 +26,10 @@ Ext.define("core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid", {
             name: 'uid'
         }, {
             xtype: 'textfield',
-            fieldLabel: '用户名',
+            fieldLabel: '账户',
             labelWidth: 50,
             width: 120,
-            name: 'name'
+            name: 'account'
         }, {
             xtype: 'button',
             text: '查询',

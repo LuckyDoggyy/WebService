@@ -149,7 +149,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
 				click : function(btn) {
 					var tbar = btn.ownerCt;
 					var uid = tbar.down("textfield[name=uid]").getValue();
-					var name = tbar.down("textfield[name=name]").getValue();
+					var name = tbar.down("textfield[name=account]").getValue();
 					var grid = tbar.ownerCt;
 					var _store = grid.getStore();
 					proxy = _store.getProxy();
@@ -165,7 +165,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                     click : function(btn) {
                         var tbar = btn.ownerCt;
                         var uid = tbar.down("textfield[name=uid]").getValue();
-                        var name = tbar.down("textfield[name=name]").getValue();
+                        var name = tbar.down("textfield[name=account]").getValue();
                         var grid = tbar.ownerCt;
                         var _store = grid.getStore();
                         proxy = _store.getProxy();
@@ -181,7 +181,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                     click : function(btn) {
                         var tbar = btn.ownerCt;
                         var uid = tbar.down("textfield[name=uid]").getValue();
-                        var name = tbar.down("textfield[name=name]").getValue();
+                        var name = tbar.down("textfield[name=account]").getValue();
                         var grid = tbar.ownerCt;
                         var _store = grid.getStore();
                         proxy = _store.getProxy();
@@ -197,7 +197,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                         click : function(btn) {
                             var tbar = btn.ownerCt;
                             var uid = tbar.down("textfield[name=uid]").getValue();
-                            var name = tbar.down("textfield[name=name]").getValue();
+                            var name = tbar.down("textfield[name=account]").getValue();
                             var grid = tbar.ownerCt;
                             var _store = grid.getStore();
                             proxy = _store.getProxy();
@@ -215,7 +215,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                         var grid = btn.ownerCt.ownerCt;
                         var records = grid.getSelectionModel().getSelection();
                         var uid=records[0].get("uid");
-                        var username=records[0].get("name");
+                        var username=records[0].get("account");
                         var window = Ext.create(
                                     'Ext.window.Window', {
                                         title : '用户角色设置',
@@ -227,7 +227,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                         modal : true,
                                         items : [{
                                                  region: 'west',
-                                                 title: '用户当前角色&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;姓名:'+username+'</b></font>',
+                                                 title: '用户当前角色&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;账户:'+username+'</b></font>',
                                                  xtype: "userrolegrid",
                                                  width: 700
                                              },{
@@ -343,7 +343,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                     var grid = btn.ownerCt.ownerCt;
                     var records = grid.getSelectionModel().getSelection();
                     var uid=records[0].get("uid");
-                    var username=records[0].get("name");
+                    var username=records[0].get("account");
 
                     var window = Ext.create(
                                 'Ext.window.Window', {
@@ -356,7 +356,7 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                                     modal : true,
                                     items : [{
                                              region: 'west',
-                                             title: '用户当前可用服务&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;姓名:'+username+'</b></font>',
+                                             title: '用户当前可用服务&nbsp;&nbsp;&nbsp;&nbsp;  <font  size=4 color=red><b>'+'用户id:&nbsp;'+uid+'&nbsp;&nbsp;&nbsp;&nbsp;账户:'+username+'</b></font>',
                                              xtype: "userservicegrid",
                                              width: 600
                                          },{
@@ -377,12 +377,6 @@ Ext.define("core.basicinfomanage.peoplemanage.controller.PeopleController",
                     return false;
                 }
             },
-
-
-
-
-
-
 
 
             "userservicegrid button[ref=deleteUserService]" : {

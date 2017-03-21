@@ -16,6 +16,14 @@ Ext.define("core.systemmanage.rolemanage.view.AddRole", {
 						blankText : '角色名称不能为空',
 						readOnly : false
 					},{
+						xtype : "textfield",
+						fieldLabel : "备注",
+						labelWidth : 80,
+						anchor : '18%',
+						name : "remark",
+						allowBlank : true,
+						readOnly : false
+					},{
 						xtype : "button",
 						ref : "addrole",
 						iconCls : "table_save",

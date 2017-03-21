@@ -24,7 +24,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/menu/")
 public class MenuController {
-
     private Logger log = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired

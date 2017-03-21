@@ -35,8 +35,8 @@ Ext.define("core.basicinfomanage.peoplemanage.view.UserServiceGrid", {
                     align: 'center',
                     width : 55
                 }, {
-                    text : "用户名",
-                    dataIndex : "username",
+                    text : "账户",
+                    dataIndex : "account",
                     align: 'center',
                     width : 100
                 }, {

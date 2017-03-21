@@ -5,7 +5,7 @@ Ext.define("core.basicinfomanage.peoplemanage.model.UserRoleModel", {
                     },{
                         name : "uid",
                     },{
-                         name : "username",
+                         name : "account",
                     },{
                           name : "rid",
                     },{

@@ -6,7 +6,7 @@ package com.we.ws.admin.domain;
 public class UserRole {
     private long autoid;
     private long uid;
-    private String username;
+    private String account;
     private int rid;
     private String rolename;
     private int state;
@@ -27,12 +27,12 @@ public class UserRole {
         this.uid = uid;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public int getRid() {
@@ -64,7 +64,7 @@ public class UserRole {
         return "UserRole{" +
                 "autoid=" + autoid +
                 ", uid=" + uid +
-                ", username='" + username + '\'' +
+                ", account='" + account + '\'' +
                 ", rid=" + rid +
                 ", rolename='" + rolename + '\'' +
                 ", state=" + state +

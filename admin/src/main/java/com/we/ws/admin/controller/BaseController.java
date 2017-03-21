@@ -37,8 +37,7 @@ public class BaseController {
 
     private Logger log= LoggerFactory.getLogger(BaseController.class);
 
-    @Autowired
-    private Environment env;
+    @Autowired private Environment env;
 
     protected long validateOperateAuthoriz(HttpServletRequest request,long requestUid){
         if (!"dev".equals(env.getProperty("profile"))) {

@@ -12,15 +12,13 @@ Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuForm", {
 			buttonAlign : 'center',
 			items : [{
 						xtype : 'textfield',
-						fieldLabel : '自增id,
-						anchor: '18%',
+						fieldLabel : '自增id',
 						labelWidth: 80,
 						name : 'autoid',
 						hidden : true
 					},{
 						xtype : 'textfield',
 						fieldLabel : '菜单编号'+ '<font color=red>*</font>',
-						anchor: '18%',
 						labelWidth: 80,
 						name : 'mid',
 						allowBlank : false,
@@ -29,7 +27,6 @@ Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuForm", {
 					},{
 						xtype : 'textfield',
 						fieldLabel : '菜单名'+ '<font color=red>*</font>',
-						anchor: '18%',
 						labelWidth: 80,
 						name : 'menuname',
 						allowBlank : false,
@@ -51,21 +48,18 @@ Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuForm", {
 					},{
 						xtype : 'textfield',
 						fieldLabel : '页面id',
-						anchor: '24%',
 						labelWidth: 80,
 						name : 'viewid',
 						allowBlank : true
 					},{
 						xtype : 'textfield',
 						fieldLabel : '页面名',
-						anchor: '24%',
 						labelWidth: 80,
 						name : 'viewname',
 						allowBlank : true
 					},{
 						xtype : 'textfield',
 						fieldLabel : '页面控制器',
-						anchor: '24%',
 						labelWidth: 80,
 						name : 'viewcontroller',
 						allowBlank : true
@@ -74,10 +68,5 @@ Ext.define("core.basicinfomanage.menumanage.view.UpdateMenuForm", {
 						text : '修改',
 						ref : 'updateMenu',
 						iconCls : "table_save"
-					}, {
-						text : '返回',
-						ref : "return",
-						iconCls : "return"
-						,
 					}]
 		});
