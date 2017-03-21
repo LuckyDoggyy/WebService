@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.we.webservice</groupId>
             <artifactId>common</artifactId>
             <version>0.1</version>
