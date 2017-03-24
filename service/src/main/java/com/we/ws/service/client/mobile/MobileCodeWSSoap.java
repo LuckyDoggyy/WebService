@@ -33,7 +33,7 @@ public interface MobileCodeWSSoap {
     );
 
     /**
-     * <br /><h3>获得国内手机号码归属地数据库信息</h3><p>输入参数：无；返回数据：一维字符串数组（省份 城市 记录数量）。</p><br />
+     * <br/><h3>获得国内手机号码归属地数据库信息</h3><p>输入参数：无；返回数据：一维字符串数组（省份 城市 记录数量）。</p><br />
      */
     @WebMethod(action = "http://WebXml.com.cn/getDatabaseInfo")
     @RequestWrapper(localName = "getDatabaseInfo", targetNamespace = "http://WebXml.com.cn/", className = "com.we.ws.service.client.mobile.GetDatabaseInfo")

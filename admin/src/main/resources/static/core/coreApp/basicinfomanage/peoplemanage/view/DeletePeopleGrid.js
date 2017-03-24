@@ -29,7 +29,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.DeletePeopleGrid", {
             fieldLabel: '用户名',
             labelWidth: 50,
             width: 120,
-            name: 'name'
+            name: 'account'
         }, {
             xtype: 'button',
             text: '查询',

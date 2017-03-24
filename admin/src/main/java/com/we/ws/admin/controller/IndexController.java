@@ -67,7 +67,6 @@ public class IndexController extends BaseController {
             return "redirect:home.html";
         } else {
             return "redirect:relogin.html";
-
         }
     }
 
