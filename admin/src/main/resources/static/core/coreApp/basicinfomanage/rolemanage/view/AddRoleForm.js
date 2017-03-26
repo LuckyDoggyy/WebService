@@ -1,6 +1,6 @@
-Ext.define("core.systemmanage.rolemanage.view.RoleForm", {
+Ext.define("core.basicinfomanage.rolemanage.view.AddRoleForm", {
 			extend : "Ext.form.Panel",
-			alias : "widget.roleform",
+			alias : "widget.addroleform",
 			layout : 'anchor',
 			defaults : {
 				anchor : '100%'
@@ -9,25 +9,27 @@ Ext.define("core.systemmanage.rolemanage.view.RoleForm", {
 			buttonAlign : 'center',
 			buttons : [{
 						xtype : "button",
-						ref : "saverole",
+						ref : "addrole",
 						iconCls : "table_save",
-						text : "保存"
+						text : "增加"
 					}, {
 						xtype : "button",
 						ref : "return",
 						iconCls : "return",
 						text : "返回"
 					}],
-			items : [{
+			items : [
+					{
 						xtype : "textfield",
 						fieldLabel : "角色名称" + '<font color=red>*</font>',
 						labelWidth : 120,
 						padding : '5,20,5,30',
-						name : "rolename",
+						name : "name",
 						allowBlank : false,// 不允许为空
 						blankText : '角色名称不能为空',// 错误提示内容
 						readOnly : false
-					}],
+					}
+					],
 			initComponent : function() {
 				this.callParent(arguments);
 			}

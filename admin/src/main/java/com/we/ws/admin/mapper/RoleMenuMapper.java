@@ -1,7 +1,5 @@
 package com.we.ws.admin.mapper;
 
-import com.we.ws.admin.domain.Menu;
-import com.we.ws.admin.domain.Role;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -29,6 +27,6 @@ public interface RoleMenuMapper {
     @Delete("delete from T_RoleMenu where rid=#{rid}")
     int deleteAll(@Param("rid") String rid);
 
-
+    int insertMenus(@Param("mids") String[] mids, @Param("rid") String rid);
 
 }

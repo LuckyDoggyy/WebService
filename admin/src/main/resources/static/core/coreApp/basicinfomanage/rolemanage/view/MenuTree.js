@@ -1,10 +1,10 @@
-Ext.define("core.systemmanage.rolemanage.view.MenuTree", {
+Ext.define("core.basicinfomanage.rolemanage.view.MenuTree", {
 	extend : "Ext.tree.Panel",
     alias : "widget.menutree",
 	rootVisible : true,
 	displayField : "text",
 	border : 0,
-	store: "core.systemmanage.rolemanage.store.MenuTreeStore",
+	store: "core.basicinfomanage.rolemanage.store.MenuTreeStore",
 	dockedItems : [ {
         		xtype : 'toolbar',
         		dock : 'top',

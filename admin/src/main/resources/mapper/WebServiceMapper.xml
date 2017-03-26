@@ -2,29 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.we.ws.admin.mapper.WebServiceMapper" >
 
-    <select id="listService" resultType="com.we.ws.admin.domain.ServiceInfo">
-        SELECT * from T_ServiceInfo
+    <select id="listService" resultType="com.we.ws.admin.domain.Service">
+        SELECT * from T_Service
         <where>
+            state=0
             <if test="sid != null and sid!=''">
                 and sid = #{sid}
             </if>
-            <if test="name != null and name!=''">
-                and name = #{name}
+            <if test="servicename != null and servicename!=''">
+                and servicename like  %#{servicename}%
             </if>
         </where>
         limit #{offset},#{pageSize}
     </select>
 
     <select id="countListService" resultType="int">
-        SELECT count(*) from T_ServiceInfo
+        SELECT count(*) from T_Service
         <where>
+            state=0
             <if test="sid != null and sid!=''">
                 and sid = #{sid}
             </if>
-            <if test="name != null and name!=''">
-                and name = #{name}
+            <if test="servicename != null and servicename!=''">
+                and servicename = %#{servicename}%
             </if>
         </where>
     </select>
+    
+    <delete id="delete">
+        update T_Service set state=1 where sid in
+        <foreach collection="sids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 </mapper>

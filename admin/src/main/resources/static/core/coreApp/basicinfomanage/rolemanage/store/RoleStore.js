@@ -1,6 +1,6 @@
-Ext.define("core.systemmanage.rolemanage.store.RoleStore", {
+Ext.define("core.basicinfomanage.rolemanage.store.RoleStore", {
            			extend : 'Ext.data.Store',
-           			model : 'core.systemmanage.rolemanage.model.RoleModel',
+           			model : 'core.basicinfomanage.rolemanage.model.RoleModel',
            			pageSize : 50,
            			proxy : {
            				type : "ajax",

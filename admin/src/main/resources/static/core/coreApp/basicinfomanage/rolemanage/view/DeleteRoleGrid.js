@@ -1,29 +1,28 @@
-Ext.define("core.systemmanage.rolemanage.view.SetRoleMenuGrid", {
+Ext.define("core.basicinfomanage.rolemanage.view.DeleteRoleGrid", {
 	extend : "Ext.grid.Panel",
-    alias : "widget.setrolemenugrid",
-    title : "<center height=40>角色菜单管理</center>",
+    alias : "widget.deleterolegrid",
+    title : "<center height=40>角色删除</center>",
     selModel : {
         selType : "checkboxmodel",
         mode : 'SIMPLE'
     },
     multiSelect : true,
-    columnLines : true,
+    columnLines : true, // 展示竖线
     loadMask : {
         msg : "数据加载中，请稍等..."
     },
     autoScroll : true,
     disableSelection : false,
-    enableKeyNav : true,
+    enableKeyNav : true, // 可以使用键盘控制上下
 
 	dockedItems : [ {
     		xtype : 'toolbar',
     		dock : 'top',
-    		items : [
-    		{
+    		items : [{
     			xtype : 'button',
-    			text : '设置角色权限',
-    			ref : 'setroleright',
-    			iconCls:'roleright',
+    			text : '删除角色',
+    			ref : 'deleteRole',
+    			iconCls : 'table_remove',
     			disabled : true
     		}]
     	} ],
@@ -39,7 +38,7 @@ Ext.define("core.systemmanage.rolemanage.view.SetRoleMenuGrid", {
     		width : 200
     	}],
 
-	store : "core.systemmanage.rolemanage.store.RoleStore",
+	store : "core.basicinfomanage.rolemanage.store.RoleStore",
 	bbar : [{
 				xtype : 'button',
 				text : '全选',
@@ -54,7 +53,7 @@ Ext.define("core.systemmanage.rolemanage.view.SetRoleMenuGrid", {
 				}
 			}, {
 				xtype : 'pagingtoolbar',
-				store : "core.systemmanage.rolemanage.store.RoleStore",
+				store : "core.basicinfomanage.rolemanage.store.RoleStore",
 				displayInfo : true,
 				flex : 1
 			}]

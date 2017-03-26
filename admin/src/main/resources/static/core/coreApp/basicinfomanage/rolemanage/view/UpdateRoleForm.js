@@ -1,4 +1,4 @@
-Ext.define("core.systemmanage.rolemanage.view.UpdateRoleForm", {
+Ext.define("core.basicinfomanage.rolemanage.view.UpdateRoleForm", {
 	extend : "Ext.form.Panel",
 	alias : "widget.updateroleform",
 	bodyPadding : '5 5 0',

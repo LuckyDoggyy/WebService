@@ -5,6 +5,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import java.util.List;
 
 /**
  * Description:
@@ -17,6 +18,6 @@ import javax.xml.ws.BindingType;
 @BindingType(value = "http://java.sun.com/xml/ns/jaxws/2003/05/soap/bindings/HTTP/")
 public interface Hello {
     @WebMethod()
-    @WebResult(name = "myname",targetNamespace= "http://services.ws.com")
-    String sayHello(@WebParam(name = "myname",targetNamespace= "http://services.ws.com") String myname);
+    @WebResult(name = "list",targetNamespace= "http://services.ws.com")
+    List<String> sayHello(@WebParam(name = "myname",targetNamespace= "http://services.ws.com") String myname);
 }

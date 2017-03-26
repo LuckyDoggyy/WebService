@@ -1,4 +1,4 @@
-Ext.define("core.systemmanage.rolemanage.controller.RoleController",
+Ext.define("core.basicinfomanage.rolemanage.controller.RoleController",
 				{
 					extend : "Ext.app.Controller",
 					mixins : {
@@ -190,18 +190,18 @@ Ext.define("core.systemmanage.rolemanage.controller.RoleController",
                                 }
                         });
 					},
-            views : ["core.systemmanage.rolemanage.view.RoleGrid",
-                    "core.systemmanage.rolemanage.view.DeleteRoleGrid",
-                    "core.systemmanage.rolemanage.view.UpdateRoleGrid",
-                    "core.systemmanage.rolemanage.view.SetRoleMenuGrid",
-                    "core.systemmanage.rolemanage.view.UpdateRoleForm",
-                    "core.systemmanage.rolemanage.view.AddRole",
-                    "core.systemmanage.rolemanage.view.MenuTree",
-                    "core.systemmanage.rolemanage.view.RoleForm"],
-            stores : ["core.systemmanage.rolemanage.store.RoleStore",
-                    "core.systemmanage.rolemanage.store.MenuTreeStore"],
-            models : ["core.systemmanage.rolemanage.model.RoleModel",
-                    "core.systemmanage.rolemanage.model.MenuTreeModel"],
+            views : ["core.basicinfomanage.rolemanage.view.RoleGrid",
+                    "core.basicinfomanage.rolemanage.view.DeleteRoleGrid",
+                    "core.basicinfomanage.rolemanage.view.UpdateRoleGrid",
+                    "core.basicinfomanage.rolemanage.view.SetRoleMenuGrid",
+                    "core.basicinfomanage.rolemanage.view.UpdateRoleForm",
+                    "core.basicinfomanage.rolemanage.view.AddRole",
+                    "core.basicinfomanage.rolemanage.view.MenuTree",
+                    "core.basicinfomanage.rolemanage.view.RoleForm"],
+            stores : ["core.basicinfomanage.rolemanage.store.RoleStore",
+                    "core.basicinfomanage.rolemanage.store.MenuTreeStore"],
+            models : ["core.basicinfomanage.rolemanage.model.RoleModel",
+                    "core.basicinfomanage.rolemanage.model.MenuTreeModel"],
             deleteCheckEdit : function() {
                 var grid = Ext.ComponentQuery.query("panel[xtype=deleterolegrid]")[0];
                 var num = grid.getSelectionModel().getSelection().length;

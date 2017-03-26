@@ -20,8 +20,6 @@ public interface MenuMapper {
             " m.pid = #{pid} and m.state=0 and r.rid in ( select DISTINCT rid from T_UserRole where uid = #{uid}) and r.mid=m.mid")
     List<Map<String, String>> getLeafMenu(@Param("pid") String pid, @Param("uid") String uid);
 
-    int insertMenus(@Param("mids") String[] mids, @Param("rid") String rid);
-
     @Select("select * from T_Menu where pid='root'")
     List<Menu> getFirstLayerMenu();
 

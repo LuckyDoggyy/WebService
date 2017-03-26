@@ -1,13 +1,13 @@
 Ext.define("core.basicinfomanage.wsmanage.store.WsStore", {
 			extend : 'Ext.data.Store',
 			model : 'core.basicinfomanage.wsmanage.model.WsModel',
-			pageSize : 500,
+			pageSize : 50,
 			proxy : {
 				type : "ajax",
 				url : "ws/listWs",
 				actionMethods : {
 					create : 'POST',
-					read : 'POST', // by default GET
+					read : 'POST',
 					update : 'POST',
 					destroy : 'POST'
 				},

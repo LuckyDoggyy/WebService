@@ -1,4 +1,4 @@
-Ext.define("core.systemmanage.rolemanage.view.UpdateRoleGrid", {
+Ext.define("core.basicinfomanage.rolemanage.view.UpdateRoleGrid", {
 	extend : "Ext.grid.Panel",
     alias : "widget.updaterolegrid",
     title : "<center height=40>角色更新</center>",
@@ -36,7 +36,7 @@ Ext.define("core.systemmanage.rolemanage.view.UpdateRoleGrid", {
     		width : 200
     	}],
 
-	store : "core.systemmanage.rolemanage.store.RoleStore",
+	store : "core.basicinfomanage.rolemanage.store.RoleStore",
 	bbar : [{
 				xtype : 'button',
 				text : '全选',
@@ -51,7 +51,7 @@ Ext.define("core.systemmanage.rolemanage.view.UpdateRoleGrid", {
 				}
 			}, {
 				xtype : 'pagingtoolbar',
-				store : "core.systemmanage.rolemanage.store.RoleStore",
+				store : "core.basicinfomanage.rolemanage.store.RoleStore",
 				displayInfo : true,
 				flex : 1
 			}]

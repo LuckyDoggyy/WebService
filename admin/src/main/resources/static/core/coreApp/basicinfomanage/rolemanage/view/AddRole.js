@@ -1,4 +1,4 @@
-Ext.define("core.systemmanage.rolemanage.view.AddRole", {
+Ext.define("core.basicinfomanage.rolemanage.view.AddRole", {
 			extend : "Ext.form.Panel",
 			alias : "widget.addrole",
 			title : "<center height=40>添加角色</center>",

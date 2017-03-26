@@ -1,6 +1,6 @@
 package com.we.ws.admin.service.impl;
 
-import com.we.ws.admin.domain.ServiceInfo;
+import com.we.ws.admin.domain.Service;
 import com.we.ws.admin.mapper.WebServiceMapper;
 import com.we.ws.admin.service.WsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +16,33 @@ import java.util.List;
  * @since 2017-02-05
  */
 @Component
-public class WsServiceImpl implements WsService{
+public class WsServiceImpl implements WsService {
 
     @Autowired
     private WebServiceMapper webServiceMapper;
 
     @Override
-    public List<ServiceInfo> listService(String sid, String name, int pageSize, int offset) {
-        return webServiceMapper.listService(sid,name,pageSize,offset);
+    public List<Service> listService(String sid, String name, int pageSize, int offset) {
+        return webServiceMapper.listService(sid, name, pageSize, offset);
     }
 
     @Override
     public int countListService(String sid, String name) {
-        return webServiceMapper.countListService(sid,name);
+        return webServiceMapper.countListService(sid, name);
+    }
+
+    @Override
+    public boolean addNewWS(Service service) {
+        return webServiceMapper.insertWS(service) == 1;
+    }
+
+    @Override
+    public boolean updateWS(Service service) {
+        return webServiceMapper.updateWS(service) == 1;
+    }
+
+    @Override
+    public void deleteWS(String sids) {
+        webServiceMapper.delete(sids.split(","));
     }
 }

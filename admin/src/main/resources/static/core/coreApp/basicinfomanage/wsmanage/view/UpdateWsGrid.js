@@ -1,19 +1,19 @@
-Ext.define("core.basicinfomanage.wsmanage.view.WsGrid", {
+Ext.define("core.basicinfomanage.wsmanage.view.UpdateWsGrid", {
 	extend : "Ext.grid.Panel",
-	alias : "widget.wsgrid",
-	title : "<center height=40>服务浏览</center>",
+	alias : "widget.updatewsgrid",
+	title : "<center height=40>服务修改</center>",
 	selModel : {
 		selType : "checkboxmodel",
 		mode : 'SIMPLE'
 	},
 	multiSelect : true,
-	columnLines : true,
+	columnLines : true, // 展示竖线
 	loadMask : {
 		msg : "数据加载中，请稍等..."
 	},
 	autoScroll : true,
 	disableSelection : false,
-	enableKeyNav : true,
+	enableKeyNav : true, // 可以使用键盘控制上下
 
 	dockedItems : [{
 		xtype : 'toolbar',
@@ -34,6 +34,17 @@ Ext.define("core.basicinfomanage.wsmanage.view.WsGrid", {
 			iconCls : 'search',
 			ref : 'searchWs'
 		}]
+	}, {
+		xtype : 'toolbar',
+		dock : 'top',
+		height : 36,
+		items : [{
+					xtype : 'button',
+					text : '修改服务',
+					ref : 'updateService',
+					iconCls : 'modify',
+					disabled : true
+				}]
 	}],
 
 	columns : [{

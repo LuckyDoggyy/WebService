@@ -83,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
         String[] menuids = mids.split(",");
         roleMenuMapper.deleteAll(rid);
         if (menuids.length > 0) {
-            menuMapper.insertMenus(menuids, rid);
+            roleMenuMapper.insertMenus(menuids, rid);
         }
         return true;
     }

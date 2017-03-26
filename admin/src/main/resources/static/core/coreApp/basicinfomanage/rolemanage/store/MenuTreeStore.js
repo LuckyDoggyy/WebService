@@ -1,6 +1,6 @@
-Ext.define("core.systemmanage.rolemanage.store.MenuTreeStore", {
+Ext.define("core.basicinfomanage.rolemanage.store.MenuTreeStore", {
 			extend : 'Ext.data.TreeStore',
-			model : 'core.systemmanage.rolemanage.model.MenuTreeModel',
+			model : 'core.basicinfomanage.rolemanage.model.MenuTreeModel',
 			id:'treestore',
 			proxy: {
 				type: 'ajax',

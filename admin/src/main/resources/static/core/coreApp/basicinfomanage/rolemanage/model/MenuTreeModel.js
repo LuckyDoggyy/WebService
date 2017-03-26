@@ -1,4 +1,4 @@
-Ext.define("core.systemmanage.rolemanage.model.MenuTreeModel", { // 定义树节点数据模型
+Ext.define("core.basicinfomanage.rolemanage.model.MenuTreeModel", { // 定义树节点数据模型
 	extend : "Ext.data.Model",
 	fields : [{
 				name : "id",

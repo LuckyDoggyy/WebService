@@ -4,13 +4,19 @@ Ext.define("core.basicinfomanage.wsmanage.model.WsModel", {
 						name : "sid",
 						type : "string"
 					},{
-						name : "name",
+						name : "serviceName",
 						type : "string"
 					},{
-						name : "ip"
+						name : "remark"
 					},{
-						name : "port"
+						name : "url"
 					},{
-						name : "detail"
+						name : "wsdlUrl"
+					},{
+						name : "targetNamespace"
+					},{
+						name : "method"
+					},{
+						name : "version"
 					}]
 		});
