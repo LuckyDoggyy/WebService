@@ -19,18 +19,14 @@ import java.io.IOException;
 
 /**
  * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-02
  */
 public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
-
     private Logger log = LoggerFactory.getLogger(AuthorizeInterceptor.class);
-
     @Autowired
     private Environment env;
-
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("-----"+env.getProperty("profile")+"----"+request.getRequestURI());
@@ -75,7 +71,7 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
         String content = JsonUtils.jsonFromObject(obj);
         response.setHeader("Content-Type", "application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
-        //response.setHeader("Access-Control-Allow-Origin","*");
+        response.setHeader("Access-Control-Allow-Origin","*");
         response.setCharacterEncoding("utf-8");
         try {
             String callback = request.getParameter("callback").toString();
@@ -83,12 +79,12 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
                 content = callback + "&&" + callback + "(" + content + ");";
             }
         } catch (Exception e) {
+            log.error("error:{}",e);
         }
-
         try {
             response.getWriter().write(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("error:{}",e);
         }
     }
 

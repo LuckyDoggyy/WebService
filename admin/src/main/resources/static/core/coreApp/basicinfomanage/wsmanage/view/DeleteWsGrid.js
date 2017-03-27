@@ -61,22 +61,22 @@ Ext.define("core.basicinfomanage.wsmanage.view.DeleteWsGrid", {
 				text : "请求地址",
 				dataIndex : "url",
 				align: 'center',
-				width : 120
+				width : 200
 			}, {
 				text : "命名空间",
 				dataIndex : "targetNamespace",
 				align: 'center',
-				width : 100
+				width : 200
 			}, {
 				text : "请求方法",
 				dataIndex : "method",
 				align: 'center',
-				width : 80
+				width : 150
 			},{
 				text : "备注",
 				dataIndex : "remark",
 				align: 'center',
-				width : 80
+				width : 120
 			}],
 	store : "core.basicinfomanage.wsmanage.store.WsStore",
 	bbar : [{

@@ -36,7 +36,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AllRoleGrid", {
         		width : 200
         	}],
 
-    	store : "core.systemmanage.rolemanage.store.RoleStore",
+    	store : "core.basicinfomanage.rolemanage.store.RoleStore",
     	bbar : [{
     				xtype : 'button',
     				text : '全选',
@@ -51,7 +51,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.AllRoleGrid", {
     				}
     			}, {
     				xtype : 'pagingtoolbar',
-    				store : "core.systemmanage.rolemanage.store.RoleStore",
+    				store : "core.basicinfomanage.rolemanage.store.RoleStore",
     				displayInfo : true,
     				flex : 1
     			}]

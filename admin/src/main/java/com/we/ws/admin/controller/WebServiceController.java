@@ -1,6 +1,7 @@
 package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Service;
+import com.we.ws.admin.domain.ServiceParam;
 import com.we.ws.admin.service.WsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-05
@@ -22,8 +22,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/ws/")
 public class WebServiceController extends BaseController {
-
     private Logger log = LoggerFactory.getLogger(WebServiceController.class);
+
     @Autowired
     private WsService wsService;
 
@@ -38,9 +38,9 @@ public class WebServiceController extends BaseController {
 
     @RequestMapping("addWs")
     @ResponseBody
-    public Map<String, Object> addWs(Service service) {
+    public Map<String, Object> addWs(Service service, String serviceParams) {
         Map<String, Object> result = new HashMap<>();
-        if (wsService.addNewWS(service)) {
+        if (wsService.addNewWS(service, serviceParams)) {
             result.put("success", true);
             result.put("obj", "服务添加成功");
         } else {
@@ -52,9 +52,9 @@ public class WebServiceController extends BaseController {
 
     @RequestMapping("updateWs")
     @ResponseBody
-    public Map<String, Object> updateWs(Service service) {
+    public Map<String, Object> updateWs(Service service, String serviceParams) {
         Map<String, Object> result = new HashMap<>();
-        if (wsService.updateWS(service)) {
+        if (wsService.updateWS(service,serviceParams)) {
             result.put("success", true);
             result.put("obj", "服务修改成功");
         } else {
@@ -71,6 +71,16 @@ public class WebServiceController extends BaseController {
         wsService.deleteWS(sids);
         result.put("success", true);
         result.put("obj", "服务删除成功");
+        return result;
+    }
+
+    @RequestMapping("listWsParam")
+    @ResponseBody
+    public Map<String, Object> listWsParam(String sid) {
+        Map<String, Object> result = new HashMap<>();
+        List<ServiceParam> list = wsService.listParams(sid);
+        result.put("totalCount", list.size());
+        result.put("rows", list);
         return result;
     }
 }

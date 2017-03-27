@@ -22,6 +22,74 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                 deselect : this.deleteCheckEdit
                             },
 
+                            'wsgrid actioncolumn': {
+                                   itemclick: function (sid,node) {
+                                   if (node.action == 'viewParam') {
+                                       var window = Ext.create(
+                                                   'Ext.window.Window', {
+                                                       title : '服务参数',
+                                                       height : 280,
+                                                       width : 350,
+                                                       constrain : true,
+                                                       maximizable : true,
+                                                       layout : 'fit',
+                                                       fixed : true,
+                                                       modal : true,
+                                                       items : [{
+                                                                region: 'center',
+                                                                title: '参数',
+                                                                xtype: "showwsparamsgrid"
+                                                            }]
+                                                   });
+                                       var store=window.down("panel[xtype=showwsparamsgrid]").getStore();
+                                       proxy = store.getProxy();
+                                       proxy.extraParams = {sid : sid};
+                                       store.load();
+                                       window.show();
+                                       return false;
+                                   }else if(node.action == 'call'){
+                                        var window = Ext.create('Ext.window.Window', {
+                                            title : '服务调用',
+                                           constrain : true,
+                                           maximizable : true,
+                                           maximized : true,
+                                           layout : 'border',
+                                           fixed : true,
+                                           modal : true,
+                                            items : [{
+                                                     region: 'west',
+                                                     xtype : 'wscallform',
+                                                     width: 360
+                                                 },{
+                                                    region: 'center',
+                                                    xtype : 'form',
+                                                    layout: 'anchor',
+                                                    items:[{
+                                                            xtype : 'textarea',
+                                                            fieldLabel: 'Last Name',
+                                                            name: 'last'
+                                                            }]
+                                                }]
+                                        });
+                                        var resObj = self.ajax({
+                                                 url : "ws/listWsParam",
+                                                 params : {
+                                                     sid : sid
+                                                 }
+                                             });
+                                        var form = window.down("panel[xtype=wscallform]");
+                                        resObj.rows.forEach(function(e){
+                                            var fd = new Ext.form.TextField({name: e.paramName,fieldLabel:e.paramName});
+                                            //form.items.add(form.items.getCount()-1, fd);
+                                            form.items.add(fd);
+                                        });
+                                        form.doLayout();
+                                        window.show();
+                                        return false;
+                                        }
+                                    }
+                             },
+
                             "wsgrid button[ref=searchWs]" : {
                                 click : function(btn) {
                                     var tbar = btn.ownerCt;
@@ -77,6 +145,16 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                              var addws = btn.up("panel[xtype=addws]");
                                              var formObj = addws.getForm();
                                              var params = self.getFormValue(formObj);
+                                             var store=Ext.ComponentQuery.query("panel[xtype=addws] component[xtype=grid]")[0].getStore();
+                                             var serviceParams = new Array();
+                                             store.each(function(record){
+                                                var name=record.get('paramName');
+                                                if(name!=''){
+                                                    serviceParams.push({'paramName':name,'remark':record.get('remark')});
+                                                }
+                                             })
+                                             var paramStr=JSON.stringify(serviceParams);
+                                             params['serviceParams']=paramStr;
                                              if (formObj.isValid()) {
                                                  var resObj = self.ajax({
                                                              url : "ws/addWs",
@@ -86,10 +164,12 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                      self.msgbox(resObj.obj);
                                                      addws.down("textfield[name=serviceName]").reset();
                                                      addws.down("textfield[name=url]").reset();
-                                                     addws.down("textarea[name=targetNamespace]").reset();
-                                                     addws.down("textarea[name=method]").reset();
-                                                     addws.down("textarea[name=remarks]").reset();
-                                                     return false;
+                                                     addws.down("textfield[name=wsdlUrl]").reset();
+                                                     addws.down("textfield[name=targetNamespace]").reset();
+                                                     addws.down("textfield[name=method]").reset();
+                                                     addws.down("textarea[name=remark]").reset();
+                                                     store.removeAll();
+                                                     return false
                                                  } else {
                                                      Ext.Msg.alert("友情提示", resObj.obj);
                                                      return false;
@@ -114,19 +194,55 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                 var window = Ext.create('Ext.window.Window', {
                                                             title : '修改服务信息',
                                                             height : 320,
-                                                            width : 550,
+                                                            width : 680,
                                                             constrain : true,
                                                             maximizable : true,
-                                                            layout : 'fit',
+                                                            layout : 'border',
                                                             fixed : true,
                                                             modal : true,
-                                                            items : {
-                                                                xtype : 'updatewsform',
-                                                                id : 'updatewsform'
-                                                            }
+                                                            items : [{
+                                                                     region: 'west',
+                                                                     xtype : 'updatewsform',
+                                                                     id : 'updatewsform',
+                                                                     width: 360
+                                                                 },{
+                                                                    region: 'center',
+                                                                    xtype : 'grid',
+                                                                    columnLines : true,
+                                                                    store: "core.basicinfomanage.wsmanage.store.WsParamStore",
+                                                                    bbar : [{
+                                                                            xtype : 'button',
+                                                                            text : '添加',
+                                                                            handler : function(button, e) {
+                                                                                var data=[{'paramName':'','remark':''}];
+                                                                                var store=button.ownerCt.ownerCt.getStore();
+                                                                                var count=store.getCount();
+                                                                                store.insert(count++,data);
+                                                                                return false;
+                                                                            }
+                                                                         }, {
+                                                                            xtype : 'button',
+                                                                            text : '删除',
+                                                                            handler :function(button, e) {
+                                                                                    var grid=button.ownerCt.ownerCt;
+                                                                                    var store = grid.getStore();
+                                                                                    store.remove(grid.getSelectionModel().getSelection());
+                                                                                    return false;
+                                                                            }
+                                                                        }],
+                                                                    columns: [
+                                                                        { header: '参数名',  dataIndex: 'paramName',editor: 'textfield' },
+                                                                        { header: '备注', dataIndex: 'remark',editor: 'textfield' }
+                                                                    ],
+                                                                    plugins: [ Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1 })]
+                                                                }]
                                                         });
                                                 var form = window.down("panel[xtype=updatewsform]");
                                                 form.loadRecord(records[0]);
+                                                var store=window.down("panel[xtype=grid]").getStore();
+                                                proxy = store.getProxy();
+                                                proxy.extraParams = {sid : records[0].get('sid')};
+                                                store.load();
                                                 window.show();
                                                 return false;
                                             }
@@ -135,8 +251,19 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                             "panel[xtype=updatewsform] button[ref=updateWs]" : {
                                     click : function(btn) {
                                         var updatewsform = btn.up("panel[xtype=updatewsform]");
+                                        console.log(updatewsform.ownerCt.down("panel[xtype=grid]").getStore());
                                         var formObj = updatewsform.getForm();
                                         var params = self.getFormValue(formObj);
+                                        var store=updatewsform.ownerCt.down("panel[xtype=grid]").getStore();
+                                        var serviceParams = new Array();
+                                        store.each(function(record){
+                                            var name=record.get('paramName');
+                                            if(name!=''){
+                                                serviceParams.push({'autoid':record.get('autoid'),'paramName':name,'remark':record.get('remark')});
+                                            }
+                                        })
+                                        var paramStr=JSON.stringify(serviceParams);
+                                        params['serviceParams']=paramStr;
                                         if (formObj.isValid()) {
                                             var resObj = self.ajax({
                                                         url : "ws/updateWs",
@@ -195,14 +322,18 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                             }
 						});
 					},
-					views : [
+					views : ["core.basicinfomanage.wsmanage.view.ShowWsParamsGrid",
+					        "core.basicinfomanage.wsmanage.view.WsCallForm",
 							"core.basicinfomanage.wsmanage.view.WsGrid",
 							"core.basicinfomanage.wsmanage.view.UpdateWsGrid",
 							"core.basicinfomanage.wsmanage.view.DeleteWsGrid",
 							"core.basicinfomanage.wsmanage.view.AddWS",
 							"core.basicinfomanage.wsmanage.view.UpdateWsForm"],
-					stores : ["core.basicinfomanage.wsmanage.store.WsStore"],
-					models : ["core.basicinfomanage.wsmanage.model.WsModel"],
+					stores : ["core.basicinfomanage.wsmanage.store.WsStore",
+					          "core.basicinfomanage.wsmanage.store.NewParamStore",
+					          "core.basicinfomanage.wsmanage.store.WsParamStore"],
+					models : ["core.basicinfomanage.wsmanage.model.WsModel",
+					          "core.basicinfomanage.wsmanage.model.WsParamModel"],
 					updateCheckEdit : function() {
 						var grid = Ext.ComponentQuery.query("panel[xtype=updatewsgrid]")[0];
 						var num = grid.getSelectionModel().getSelection().length;
@@ -214,7 +345,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
 					deleteCheckEdit : function() {
 						var grid = Ext.ComponentQuery.query("panel[xtype=deletewsgrid]")[0];
 						var num = grid.getSelectionModel().getSelection().length;
-						var deleteWs = Ext.ComponentQuery.query("panel[xtype=updatewsgrid] button[ref=deleteService]")[0];
+						var deleteWs = Ext.ComponentQuery.query("panel[xtype=deletewsgrid] button[ref=deleteService]")[0];
 						if (deleteWs != null) {
 							deleteWs.setDisabled(num == 0);
 						}

@@ -1,13 +1,10 @@
-Ext.define("core.basicinfomanage.wsmanage.view.UpdateWsForm", {
+Ext.define("core.basicinfomanage.wsmanage.view.WsCallForm", {
 			extend : "Ext.form.Panel",
-			alias : "widget.updatewsform",
+			alias : "widget.wscallform",
 			mixins : {
 				suppleUtil : "core.util.SuppleUtil"
 			},
 			layout : 'anchor',
-			defaults : {
-				anchor : '100%'
-			},
 			align : 'center',
 			buttonAlign : 'center',
 			items : [{
@@ -53,10 +50,11 @@ Ext.define("core.basicinfomanage.wsmanage.view.UpdateWsForm", {
 						 width: 230,
 						name : 'remark',
 						allowBlank : true
-					}],
-			buttons : [{
-						text : '修改',
-						ref : 'updateWs',
+					},{
+						xtype : 'button',
+						text : '调用',
+						ref : 'call',
+						width: 60,
 						iconCls : "table_save"
 					}]
 		});

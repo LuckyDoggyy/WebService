@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 
 public class JsonUtils {
@@ -67,6 +68,17 @@ public class JsonUtils {
             e.printStackTrace();
             log.error("Exception during deserializing from " + StringUtils.abbreviate(json, 80));
             return null;
+        }
+        return object;
+    }
+
+    public static <T> List<T> listFromJson(String json, Class<T> klass) {
+        List<T> object;
+        try {
+            object = JSON.parseArray(json, klass);
+        } catch (RuntimeException e) {
+            log.error("Runtime exception during deserializing from " + StringUtils.abbreviate(json, 80));
+            throw e;
         }
         return object;
     }

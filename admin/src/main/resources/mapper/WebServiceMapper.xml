@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.we.ws.admin.mapper.WebServiceMapper" >
+<mapper namespace="com.we.ws.admin.mapper.WebServiceMapper">
 
     <select id="listService" resultType="com.we.ws.admin.domain.Service">
         SELECT * from T_Service
@@ -10,7 +10,7 @@
                 and sid = #{sid}
             </if>
             <if test="servicename != null and servicename!=''">
-                and servicename like  %#{servicename}%
+                and servicename like #{servicename}
             </if>
         </where>
         limit #{offset},#{pageSize}
@@ -24,16 +24,28 @@
                 and sid = #{sid}
             </if>
             <if test="servicename != null and servicename!=''">
-                and servicename = %#{servicename}%
+                and servicename = #{servicename}
             </if>
         </where>
     </select>
-    
+
     <delete id="delete">
         update T_Service set state=1 where sid in
         <foreach collection="sids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
+
+    <insert id="batchInsertParam">
+        insert into T_ServiceParam (sid,paramname,remark) values
+        <foreach collection="params" item="item" index="index" separator=",">
+            (#{allsid},#{item.paramName},#{item.remark})
+        </foreach>
+    </insert>
+    
+    <insert id="insertWSReturnKey" parameterType="com.we.ws.admin.domain.Service" useGeneratedKeys="true" keyProperty="sid">
+        insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method, version)
+        values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{version})
+    </insert>
 
 </mapper>

@@ -32,9 +32,7 @@ import java.util.Map;
  */
 @Controller
 public class IndexController extends BaseController {
-
     private Logger log = LoggerFactory.getLogger(IndexController.class);
-
     @Autowired
     private UserServiceImpl userService;
     @Autowired
@@ -94,13 +92,11 @@ public class IndexController extends BaseController {
         return map;
     }
 
-
     @RequestMapping(value = "/getParentMenu")
     @ResponseBody
     public List<Menu> getParentMenu(HttpServletRequest request) {
         return roleService.getParentMenuForLogin();
     }
-
 
     @RequestMapping(value = "/getMenu")
     @ResponseBody
@@ -108,7 +104,6 @@ public class IndexController extends BaseController {
         String uid = getUserid(request);
         return roleService.getRoleMenuForLogin(node, uid);
     }
-
 
     @RequestMapping(value = "/getView")
     @ResponseBody

@@ -57,6 +57,37 @@ Ext.define("core.basicinfomanage.wsmanage.view.AddWS",
 							name : 'remark',
 							allowBlank : true
 						},{
+							xtype : 'grid',
+							columnLines : true,
+							store: "core.basicinfomanage.wsmanage.store.NewParamStore",
+							bbar : [{
+									xtype : 'button',
+									text : '添加',
+									handler : function(button, e) {
+										var data=[{'paramName':'','remark':''}];
+										var store=button.ownerCt.ownerCt.getStore();
+										var count=store.getCount();
+										store.insert(count++,data);
+										return false;
+									}
+								 }, {
+									xtype : 'button',
+									text : '删除',
+									handler :function(button, e) {
+											var grid=button.ownerCt.ownerCt;
+											var store = grid.getStore();
+											store.remove(grid.getSelectionModel().getSelection());
+											return false;
+									}
+								}],
+							columns: [
+								{ header: '参数名',  dataIndex: 'paramName',editor: 'textfield' },
+								{ header: '备注', dataIndex: 'remark',editor: 'textfield' }
+							],
+							plugins: [ Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1 })],
+							height: 200,
+							width: 300
+						},{
 							 xtype: 'button',
 							 text: '添加',
 							 ref : 'addWS',
