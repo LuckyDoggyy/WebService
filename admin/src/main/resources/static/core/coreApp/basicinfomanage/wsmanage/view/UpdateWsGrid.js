@@ -7,13 +7,13 @@ Ext.define("core.basicinfomanage.wsmanage.view.UpdateWsGrid", {
 		mode : 'SIMPLE'
 	},
 	multiSelect : true,
-	columnLines : true, // 展示竖线
+	columnLines : true,
 	loadMask : {
 		msg : "数据加载中，请稍等..."
 	},
 	autoScroll : true,
 	disableSelection : false,
-	enableKeyNav : true, // 可以使用键盘控制上下
+	enableKeyNav : true,
 
 	dockedItems : [{
 		xtype : 'toolbar',

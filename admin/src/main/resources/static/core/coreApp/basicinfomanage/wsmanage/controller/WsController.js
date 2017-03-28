@@ -23,7 +23,8 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                             },
 
                             'wsgrid actioncolumn': {
-                                   itemclick: function (sid,node) {
+                                   itemclick: function (rec,node) {
+                                   var sid= rec.get('sid');
                                    if (node.action == 'viewParam') {
                                        var window = Ext.create(
                                                    'Ext.window.Window', {
@@ -64,10 +65,13 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                     region: 'center',
                                                     xtype : 'form',
                                                     layout: 'anchor',
+                                                    defaults : {
+                                                    		anchor : '100%'
+                                                    	},
                                                     items:[{
                                                             xtype : 'textarea',
-                                                            fieldLabel: 'Last Name',
-                                                            name: 'last'
+                                                            name: 'callResult',
+                                                            height: 800
                                                             }]
                                                 }]
                                         });
@@ -78,8 +82,9 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                  }
                                              });
                                         var form = window.down("panel[xtype=wscallform]");
+                                        form.loadRecord(rec);
                                         resObj.rows.forEach(function(e){
-                                            var fd = new Ext.form.TextField({name: e.paramName,fieldLabel:e.paramName});
+                                            var fd = new Ext.form.TextField({name: e.paramName,fieldLabel:e.paramName,allowBlank : true});
                                             //form.items.add(form.items.getCount()-1, fd);
                                             form.items.add(fd);
                                         });
@@ -89,6 +94,50 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                         }
                                     }
                              },
+
+
+                            "panel[xtype=wscallform] button[ref=call]" : {
+                                         click : function(btn) {
+                                             var wscallform = btn.up("panel[xtype=wscallform]");
+                                             var formObj = wscallform.getForm();
+                                             var params = self.getFormValue(formObj);
+                                             var resObj = self.ajax({
+                                                              url : "ws/listWsParam",
+                                                              params : {
+                                                                  sid : params.sid
+                                                              }
+                                                          });
+                                             var serviceParams = new Array();
+                                             resObj.rows.forEach(function(e){
+                                                var value=wscallform.down("textfield[name="+e.paramName+"]").getValue();
+                                                var obj={};
+                                                obj[e.paramName]=value
+                                                serviceParams.push(obj);
+                                             });
+                                             var paramStr=JSON.stringify(serviceParams);
+                                             params['callParams']=paramStr;
+                                             console.log(params);
+                                             if (formObj.isValid()) {
+                                                 var resObj = self.ajax({
+                                                             url : "ws/callWs",
+                                                             params : params
+                                                         });
+                                                 if (resObj.success) {
+                                                     self.msgbox(resObj.obj);
+                                                     wscallform.down("textfield[name=serviceName]").reset();
+                                                     store.removeAll();
+                                                     return false
+                                                 } else {
+                                                     Ext.Msg.alert("友情提示", resObj.obj);
+                                                     return false;
+                                                 }
+                                             } else {
+                                                 Ext.Msg.alert('友情提示', "请检查增加服务的数据");
+                                                 return false;
+                                             }
+                                             return false;
+                                         }
+                                     },
 
                             "wsgrid button[ref=searchWs]" : {
                                 click : function(btn) {

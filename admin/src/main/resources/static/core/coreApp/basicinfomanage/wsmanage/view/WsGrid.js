@@ -87,8 +87,7 @@ Ext.define("core.basicinfomanage.wsmanage.view.WsGrid", {
 						 tooltip: '调用服务',
 						 handler: function(grid, rowIndex, colIndex, node) {
 							 var rec = grid.getStore().getAt(rowIndex);
-							 var sid= rec.get('sid');
-							 this.fireEvent('itemclick', sid, node);
+							 this.fireEvent('itemclick', rec, node);
 						 }
 					 }]
 				 }],
