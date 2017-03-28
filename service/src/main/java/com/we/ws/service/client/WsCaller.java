@@ -2,9 +2,17 @@ package com.we.ws.service.client;
 
 import com.squareup.okhttp.*;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.*;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
 
 /**
@@ -15,21 +23,23 @@ import java.util.List;
  * @since 2017-03-23
  */
 public class WsCaller {
+    private static final Logger log = LoggerFactory.getLogger(WsCaller.class);
+
     private static OkHttpClient client = new OkHttpClient();
 
-    public static String call(String url, String targetNamespace, String method, List<KeyValuePair<String, String>> requestParams) throws Exception {
-        return exectueSoap12(url,generateSoap12Message(targetNamespace,method,requestParams));
+    public static String call(String url, String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
+        return exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
     }
 
-    private static String generateSoap12Message(String targetNamespace, String method, List<KeyValuePair<String, String>> requestParams) throws Exception {
+    private static String generateSoap12Message(String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
         return generateSoapMessage(SOAPConstants.SOAP_1_2_PROTOCOL, targetNamespace, method, requestParams);
     }
 
-    private static String generateSoap11Message(String targetNamespace, String method, List<KeyValuePair<String, String>> requestParams) throws Exception {
+    private static String generateSoap11Message(String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
         return generateSoapMessage(SOAPConstants.SOAP_1_1_PROTOCOL, targetNamespace, method, requestParams);
     }
 
-    private static String generateSoapMessage(String protocol, String targetNamespace, String method, List<KeyValuePair<String, String>> requestParams) throws Exception {
+    private static String generateSoapMessage(String protocol, String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
         MessageFactory factory = MessageFactory.newInstance(protocol);
         SOAPMessage message = factory.createMessage();
         SOAPPart part = message.getSOAPPart();
@@ -37,9 +47,8 @@ public class WsCaller {
         SOAPBody body = envelope.getBody();
         QName qname = new QName(targetNamespace, method);
         SOAPBodyElement ele = body.addBodyElement(qname);
-
-        for (KeyValuePair<String, String> pair : requestParams) {
-            ele.addChildElement(pair.getName()).setValue(pair.getValue());
+        for (RequestParam requestParam : requestParams) {
+            ele.addChildElement(requestParam.getName()).setValue(requestParam.getValue());
         }
         ByteOutputStream byteOutputStream = new ByteOutputStream();
         message.writeTo(byteOutputStream);
@@ -62,6 +71,24 @@ public class WsCaller {
         Request request = new Request.Builder().url(url).post(body).build();
         Response response = client.newCall(request).execute();
         String res = response.body().string();
-        return res;
+        return formatXml(res);
+    }
+
+    private static String formatXml(String xml) {
+        try {
+            SAXReader reader = new SAXReader();
+            StringReader in = new StringReader(xml);
+            Document doc = reader.read(in);
+            OutputFormat formater = OutputFormat.createPrettyPrint();
+            formater.setEncoding("utf-8");
+            StringWriter out = new StringWriter();
+            XMLWriter writer = new XMLWriter(out, formater);
+            writer.write(doc);
+            writer.close();
+            return out.toString();
+        } catch (Exception e) {
+            log.error("xml prase error :{}", e);
+            return xml;
+        }
     }
 }

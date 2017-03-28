@@ -4,7 +4,8 @@ import com.we.ws.admin.domain.Service;
 import com.we.ws.admin.domain.ServiceParam;
 import com.we.ws.admin.service.WsService;
 import com.we.ws.common.util.JsonUtils;
-import com.we.ws.service.client.KeyValuePair;
+import com.we.ws.service.client.RequestParam;
+import com.we.ws.service.client.WsCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +92,14 @@ public class WebServiceController extends BaseController {
     @ResponseBody
     public Map<String, Object> callWs(Service service, String callParams) {
         Map<String, Object> result = new HashMap<>();
-        List<KeyValuePair> list = JsonUtils.listFromJson(callParams, KeyValuePair.class);
+        List<RequestParam> list = JsonUtils.listFromJson(callParams, RequestParam.class);
         result.put("success", true);
-        result.put("obj", "服务修改失败");
+        try {
+            result.put("obj", WsCaller.call(service.getUrl(), service.getTargetNamespace(), service.getMethod(), list));
+        } catch (Exception e) {
+            log.error("webservice call error:{}",e);
+            result.put("obj", "调用异常");
+        }
         return result;
     }
 }

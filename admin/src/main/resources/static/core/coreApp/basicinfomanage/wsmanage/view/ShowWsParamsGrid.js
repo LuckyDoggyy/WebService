@@ -14,12 +14,12 @@ Ext.define("core.basicinfomanage.wsmanage.view.ShowWsParamsGrid", {
 						text : "参数名",
 						dataIndex : "paramName",
 						align: 'center',
-						width : 120
+						width : 150
 					}, {
 						text : "备注",
 						dataIndex : "remark",
 						align: 'center',
-						width : 80
+						width : 150
 					}],
 			store : "core.basicinfomanage.wsmanage.store.WsParamStore"
 		});

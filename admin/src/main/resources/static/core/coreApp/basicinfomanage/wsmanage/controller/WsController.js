@@ -95,7 +95,6 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                     }
                              },
 
-
                             "panel[xtype=wscallform] button[ref=call]" : {
                                          click : function(btn) {
                                              var wscallform = btn.up("panel[xtype=wscallform]");
@@ -110,25 +109,21 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                              var serviceParams = new Array();
                                              resObj.rows.forEach(function(e){
                                                 var value=wscallform.down("textfield[name="+e.paramName+"]").getValue();
-                                                var obj={};
-                                                obj[e.paramName]=value
-                                                serviceParams.push(obj);
+                                                serviceParams.push({'name':e.paramName,'value':value});
                                              });
                                              var paramStr=JSON.stringify(serviceParams);
                                              params['callParams']=paramStr;
-                                             console.log(params);
                                              if (formObj.isValid()) {
-                                                 var resObj = self.ajax({
+                                                 var res = self.ajax({
                                                              url : "ws/callWs",
                                                              params : params
                                                          });
-                                                 if (resObj.success) {
-                                                     self.msgbox(resObj.obj);
-                                                     wscallform.down("textfield[name=serviceName]").reset();
-                                                     store.removeAll();
-                                                     return false
+                                                 if (res.success) {
+                                                     wscallform.ownerCt.down("panel[xtype=form]").down("textfield[name=callResult]").setValue(res.obj);
+                                                     return false;
                                                  } else {
-                                                     Ext.Msg.alert("友情提示", resObj.obj);
+                                                     wscallform.ownerCt.down("panel[xtype=form]").down("textfield[name=callResult]").setValue(res.obj);
+                                                     Ext.Msg.alert("友情提示", "服务调用失败");
                                                      return false;
                                                  }
                                              } else {
@@ -231,7 +226,6 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                          }
                                      },
 
-
                                "panel[xtype=updatewsgrid] button[ref=updateService]" : {
                                         click : function(btn) {
                                                 var grid = btn.up("panel[xtype=updatewsgrid]");
@@ -300,7 +294,6 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                             "panel[xtype=updatewsform] button[ref=updateWs]" : {
                                     click : function(btn) {
                                         var updatewsform = btn.up("panel[xtype=updatewsform]");
-                                        console.log(updatewsform.ownerCt.down("panel[xtype=grid]").getStore());
                                         var formObj = updatewsform.getForm();
                                         var params = self.getFormValue(formObj);
                                         var store=updatewsform.ownerCt.down("panel[xtype=grid]").getStore();

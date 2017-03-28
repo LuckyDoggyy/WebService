@@ -1,6 +1,7 @@
 package com.we.ws.service.server;
 
 import com.we.ws.service.client.KeyValuePair;
+import com.we.ws.service.client.RequestParam;
 import com.we.ws.service.client.WsCaller;
 import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -40,14 +41,14 @@ public class ClientTest {
 
     @Test
     public void callerLocal() throws Exception {
-        List<KeyValuePair<String, String>> requestParams = Arrays.asList(KeyValuePair.of("myname", "上海"));
+        List<RequestParam> requestParams = Arrays.asList(new RequestParam("myname", "上海"));
         String res = WsCaller.call("http://localhost:9000/helloWorld", "http://services.ws.com", "sayHello", requestParams);
         System.out.println(res);
     }
 
     @Test
     public void caller() throws Exception {
-        List<KeyValuePair<String, String>> requestParams = Arrays.asList(KeyValuePair.of("theCityCode", "上海"));
+        List<RequestParam> requestParams = Arrays.asList(new RequestParam("theCityCode", "上海"));
         String body = "<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
                 "  <soap12:Body>\n" +
                 "    <sayHello xmlns=\"http://services.ws.com\">\n" +
