@@ -25,13 +25,13 @@ import java.util.Map;
 
 /**
  * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-01
  */
 @Controller
 public class IndexController extends BaseController {
+
     private Logger log = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private UserServiceImpl userService;

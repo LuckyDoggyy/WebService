@@ -34,7 +34,6 @@ import java.util.Map;
  * @since 2017-02-02
  */
 public class BaseController {
-
     private Logger log= LoggerFactory.getLogger(BaseController.class);
 
     @Autowired private Environment env;

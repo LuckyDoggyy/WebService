@@ -1,0 +1,66 @@
+Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
+	extend : "Ext.grid.Panel",
+	alias : "widget.bpgrid",
+	title : "<center height=40>流程浏览</center>",
+	multiSelect : true,
+	columnLines : true,
+	loadMask : {
+		msg : "数据加载中，请稍等..."
+	},
+	autoScroll : true,
+	disableSelection : false,
+	enableKeyNav : true,
+	dockedItems : [{
+		xtype : 'toolbar',
+		dock : 'top',
+		items : [{
+			xtype : 'textfield',
+			fieldLabel : '服务编号',
+			name : 'sid',
+			labelWidth : 65
+		}, {
+		    xtype : 'textfield',
+			fieldLabel : '服务名称',
+			name : 'serviceName',
+            labelWidth : 65
+		}, {
+			xtype : 'button',
+			text : '查询',
+			iconCls : 'search',
+			ref : 'searchBP'
+		}]
+	}],
+
+	columns : [{
+				text : "服务id",
+				dataIndex : "sid",
+				align: 'center',
+				width : 60
+			}, {
+				text : "服务名",
+				dataIndex : "serviceName",
+				align: 'center',
+				width : 120
+			}, {
+				text : "请求地址",
+				dataIndex : "url",
+				align: 'center',
+				width : 200
+			}, {
+				text : "命名空间",
+				dataIndex : "targetNamespace",
+				align: 'center',
+				width : 200
+			}, {
+				text : "请求方法",
+				dataIndex : "method",
+				align: 'center',
+				width : 150
+			},{
+				text : "备注",
+				dataIndex : "remark",
+				align: 'center',
+				width : 120
+			}]
+
+});
