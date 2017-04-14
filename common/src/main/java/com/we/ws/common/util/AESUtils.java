@@ -4,7 +4,6 @@ import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
 
 /**
  * Created by twogoods on 16/10/11.

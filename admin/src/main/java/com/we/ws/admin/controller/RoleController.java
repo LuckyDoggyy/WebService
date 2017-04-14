@@ -15,7 +15,6 @@ import java.util.Map;
 
 /**
  * Description:
- *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-04
@@ -23,7 +22,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/role/")
 public class RoleController extends BaseController {
-
     private Logger log = LoggerFactory.getLogger(RoleController.class);
 
     @Autowired

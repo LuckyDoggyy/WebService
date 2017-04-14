@@ -33,7 +33,8 @@ public class WsServiceImpl implements WsService {
 
     @Override
     public int countListService(String sid, String name) {
-        return webServiceMapper.countListService(sid, "%" + name + "%");
+        //TODO like
+        return webServiceMapper.countListService(sid, name);
     }
 
     @Override

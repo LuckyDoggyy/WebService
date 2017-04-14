@@ -1,10 +1,10 @@
-Ext.define("core.basicinfomanage.wsmanage.store.WsParamStore", {
+Ext.define("core.servicemanage.bpelmanage.store.BPStore", {
 			extend : 'Ext.data.Store',
-			model : 'core.basicinfomanage.wsmanage.model.WsParamModel',
-			pageSize : 50,
+			model : 'core.servicemanage.bpelmanage.model.BPModel',
+			pageSize : 500,
 			proxy : {
 				type : "ajax",
-				url : "ws/listWsParam",
+				url : "flow/listFlows",
 				actionMethods : {
 					create : 'POST',
 					read : 'POST',

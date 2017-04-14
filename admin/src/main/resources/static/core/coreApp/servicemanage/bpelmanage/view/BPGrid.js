@@ -15,13 +15,13 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 		dock : 'top',
 		items : [{
 			xtype : 'textfield',
-			fieldLabel : '服务编号',
-			name : 'sid',
+			fieldLabel : '业务标识',
+			name : 'flowid',
 			labelWidth : 65
 		}, {
 		    xtype : 'textfield',
-			fieldLabel : '服务名称',
-			name : 'serviceName',
+			fieldLabel : '业务名称',
+			name : 'flowname',
             labelWidth : 65
 		}, {
 			xtype : 'button',
@@ -32,35 +32,57 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 	}],
 
 	columns : [{
-				text : "服务id",
-				dataIndex : "sid",
+				text : "id",
+				dataIndex : "autoid",
 				align: 'center',
 				width : 60
 			}, {
-				text : "服务名",
-				dataIndex : "serviceName",
+				text : "业务标识",
+				dataIndex : "flowid",
 				align: 'center',
 				width : 120
 			}, {
-				text : "请求地址",
-				dataIndex : "url",
+				text : "业务名称",
+				dataIndex : "flowname",
 				align: 'center',
 				width : 200
 			}, {
-				text : "命名空间",
-				dataIndex : "targetNamespace",
+				text : "详情",
+				dataIndex : "desc",
 				align: 'center',
 				width : 200
-			}, {
-				text : "请求方法",
-				dataIndex : "method",
-				align: 'center',
-				width : 150
 			},{
-				text : "备注",
-				dataIndex : "remark",
-				align: 'center',
-				width : 120
+				  xtype:'actioncolumn',
+				  width:80,
+				  text: '查看流程图',
+				  align: 'center',
+				  items: [{
+					  action: 'flowview',
+					  icon: 'core/css/imgs/form/view.png',
+					  tooltip: '查看流程图',
+					  handler: function(grid, rowIndex, colIndex, node) {
+						  var rec = grid.getStore().getAt(rowIndex);
+						  this.fireEvent('itemclick', rec, node);
+					  }
+				  }]
+			  }],
+	store : "core.servicemanage.bpelmanage.store.BPStore",
+	bbar : [{
+				xtype : 'button',
+				text : '全选',
+				handler : function(button, e) {
+					button.ownerCt.ownerCt.getSelectionModel().selectAll();
+				}
+			}, {
+				xtype : 'button',
+				text : '取消',
+				handler : function(button, e) {
+					button.ownerCt.ownerCt.getSelectionModel().deselectAll();
+				}
+			}, {
+				xtype : 'pagingtoolbar',
+				store : "core.servicemanage.bpelmanage.store.BPStore",
+				displayInfo : true,
+				flex : 1
 			}]
-
 });

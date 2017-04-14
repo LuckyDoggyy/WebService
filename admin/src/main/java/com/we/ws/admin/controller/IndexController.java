@@ -33,6 +33,7 @@ import java.util.Map;
 public class IndexController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(IndexController.class);
+
     @Autowired
     private UserServiceImpl userService;
     @Autowired

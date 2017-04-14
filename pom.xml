@@ -15,7 +15,7 @@
     </modules>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <java.encoding>UTF-8</java.encoding>
     </properties>
 
@@ -29,6 +29,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>virtualwebservice</finalName>
@@ -41,6 +45,9 @@
                     <target>${java.version}</target>
                     <encoding>${java.encoding}</encoding>
                     <showWarnings>true</showWarnings>
+                    <compilerArguments>
+                        <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>
+                    </compilerArguments>
                 </configuration>
             </plugin>
             <plugin>

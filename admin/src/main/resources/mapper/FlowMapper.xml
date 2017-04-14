@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.we.ws.admin.mapper.FlowMapper" >
+
+    <insert id="insertReturnKey" parameterType="com.we.ws.admin.domain.Flow" useGeneratedKeys="true" keyProperty="autoid">
+        insert into T_Flow (flowid,flowname,description,flowjson) values(#{flowid},#{flowname},#{description},#{flowjson})
+    </insert>
+
+    <select id="listFlows" resultType="com.we.ws.admin.domain.Flow">
+        select autoid,flowid,flowname,description from T_Flow
+        <where>
+            state=0
+            <if test="flowid != null and flowid!=''">
+                and flowid = #{flowid}
+            </if>
+            <if test="flowname != null and flowname!=''">
+                and flowname like #{flowname}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="deleteFlows">
+        update T_Flow set state=1 where autoid in
+        <foreach collection="autoids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

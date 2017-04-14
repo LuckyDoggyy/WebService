@@ -7,5 +7,5 @@ Ext.define("core.servicemanage.bpelmanage.view.AddBP",
 					buttonAlign : 'center',
 					layout : 'anchor',
 					autoScroll:true,
-					html: '<iframe id="frame" src="myflow/view.html" frameborder="0" width="100%" height="100%"></iframe>'
+					html: '<iframe id="frame" src="myflow/add.html" frameborder="0" width="100%" height="100%"></iframe>'
 				});

@@ -588,7 +588,6 @@
             });
             b(C).trigger("rectresize", u)
         }
-
         this.toJson = function() {
             var r = "{type:'" + E.type + "',text:{text:'" + f.attr("text") + "'}, attr:{ x:" + Math.round(t.attr("x")) + ", y:" + Math.round(t.attr("y")) + ", width:" + Math.round(t.attr("width")) + ", height:" + Math.round(t.attr("height")) + "}, props:{";
             for (var o in E.props) {
@@ -600,7 +599,6 @@
             r += "}}";
             return r
         };
-
         this.restore = function(o) {
             var r = o;
             E = b.extend(true, E, o);
@@ -1100,7 +1098,8 @@
             return false
         }),
         e = c.find("table"),
-        g = f,i;
+        g = f,
+        i;
         var d = function(n, m, o) {
             if (i && i.getId() == o.getId()) {
                 return
@@ -1115,11 +1114,9 @@
             e.empty();
             c.show();
             for (var l in m) {
-                if(m[l].editor!=null){
-                    e.append("<tr><th>" + m[l].label + '</th><td><div id="p' + l + '" class="editor"></div></td></tr>');
-                    if (m[l].editor) {
-                        m[l].editor().init(m, l, "p" + l, o, g)
-                    }
+                e.append("<tr><th>" + m[l].label + '</th><td><div id="p' + l + '" class="editor"></div></td></tr>');
+                if (m[l].editor) {
+                    m[l].editor().init(m, l, "p" + l, o, g)
                 }
             }
 			 e.append('<tr id="myflowDelTR"><th>删除</th><td><input type="button" value="删除" onclick="if(confirm(\'确认删除？！\'))jQuery(document).trigger(\'keydown\',true);"/></td></tr>');
@@ -1220,13 +1217,13 @@
             b("#myflow_tools").draggable({
                 handle: "#myflow_tools_handle"
             }).css(a.config.tools.attr);
-            b("#myflow_tools.node").hover(function() {
+            b("#myflow_tools .node").hover(function() {
                 b(this).addClass("mover")
             },
             function() {
                 b(this).removeClass("mover")
             });
-            b("#myflow_tools.selectable").click(function() {
+            b("#myflow_tools .selectable").click(function() {
                 b(".selected").removeClass("selected");
                 b(this).addClass("selected");
                 b(y).data("mod", this.id)
@@ -1248,8 +1245,8 @@
                 }
             });
             b("#myflow_save").click(function() {
+                //var i = "{states:{";
                 var i = "{states:{";
-
                 for (var c in q) {
                     if (q[c]) {
                         i += q[c].getId() + ":" + q[c].toJson() + ","
@@ -1277,7 +1274,8 @@
                 i += "}}}";
                 a.config.tools.save.onclick(i)
             });
-            new a.props({},y)
+            new a.props({},
+            y)
         }
         if (r.restore) {
             var B = r.restore;
