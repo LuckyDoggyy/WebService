@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -86,5 +88,10 @@ public class WsServiceImpl implements WsService {
     @Override
     public int deleteParam(String autoid) {
         return webServiceMapper.deleteParam(autoid);
+    }
+
+    @Override
+    public List<Map<String, Object>> getWsOption() {
+        return webServiceMapper.getWsOption();
     }
 }

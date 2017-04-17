@@ -1,7 +1,7 @@
-Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
+Ext.define("core.servicemanage.bpelmanage.view.UpdateBPGrid", {
 	extend : "Ext.grid.Panel",
-	alias : "widget.bpgrid",
-	title : "<center height=40>流程浏览</center>",
+	alias : "widget.updatebpgrid",
+	title : "<center height=40>流程修改</center>",
 	multiSelect : true,
 	columnLines : true,
 	loadMask : {
@@ -64,28 +64,14 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 					}
 				}
 			},{
-			  xtype:'actioncolumn',
-			  width:80,
-			  text: '查看流程图',
-			  align: 'center',
-			  items: [{
-				  action: 'flowview',
-				  icon: 'core/css/imgs/form/view.png',
-				  tooltip: '查看流程图',
-				  handler: function(grid, rowIndex, colIndex, node) {
-					  var rec = grid.getStore().getAt(rowIndex);
-					  this.fireEvent('itemclick', rec, node);
-				  		}
-					}]
-		    },{
 				  xtype:'actioncolumn',
 				  width:80,
-				  text: '流程调用',
+				  text: '修改流程图',
 				  align: 'center',
 				  items: [{
-					  action: 'flowcall',
-					  icon: 'core/css/imgs/wf/take.png',
-					  tooltip: '调用流程',
+					  action: 'flowupdate',
+					  icon: 'core/css/imgs/form/view.png',
+					  tooltip: '修改流程图',
 					  handler: function(grid, rowIndex, colIndex, node) {
 						  var rec = grid.getStore().getAt(rowIndex);
 						  this.fireEvent('itemclick', rec, node);

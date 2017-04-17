@@ -11,11 +11,34 @@
  Target Server Version : 50717
  File Encoding         : utf-8
 
- Date: 04/11/2017 22:01:22 PM
+ Date: 04/17/2017 12:27:38 PM
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `T_Flow`
+-- ----------------------------
+DROP TABLE IF EXISTS `T_Flow`;
+CREATE TABLE `T_Flow` (
+  `autoid` int(11) NOT NULL AUTO_INCREMENT,
+  `flowid` varchar(11) NOT NULL,
+  `flowname` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `flowjson` text NOT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0启用，1停用，2删除',
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastupdatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`autoid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `T_Flow`
+-- ----------------------------
+BEGIN;
+INSERT INTO `T_Flow` VALUES ('1', 'test', 'test', 'test', '{\"states\":{\"rect1\":{\"type\":\"start\",\"text\":{\"text\":\"开始\"},\"attr\":{\"x\":380,\"y\":29,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"开始\"}}},\"rect2\":{\"type\":\"task\",\"text\":{\"text\":\"手机\"},\"attr\":{\"x\":382,\"y\":129,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"手机\"},\"taskremark\":{\"value\":\"\"},\"taskcategory\":{\"value\":\"1\"}}},\"rect3\":{\"type\":\"task\",\"text\":{\"text\":\"天气\"},\"attr\":{\"x\":380,\"y\":226,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"天气\"},\"taskremark\":{\"value\":\"天气\"},\"taskcategory\":{\"value\":\"2\"}}},\"rect4\":{\"type\":\"end\",\"text\":{\"text\":\"结束\"},\"attr\":{\"x\":379,\"y\":339,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"结束\"}}}},\"paths\":{\"path5\":{\"from\":\"rect1\",\"to\":\"rect2\",\"dots\":[],\"text\":{\"text\":\"TO 任务\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}},\"path6\":{\"from\":\"rect2\",\"to\":\"rect3\",\"dots\":[],\"text\":{\"text\":\"TO 任务\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}},\"path7\":{\"from\":\"rect3\",\"to\":\"rect4\",\"dots\":[],\"text\":{\"text\":\"TO 结束\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"TO 结束\"}}}},\"props\":{\"props\":{\"name\":{\"value\":\"test\"},\"flowid\":{\"value\":\"test\"},\"desc\":{\"value\":\"test\"}}}}', '0', '2017-04-14 21:22:43', '2017-04-17 10:22:28');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `T_Menu`
@@ -32,13 +55,13 @@ CREATE TABLE `T_Menu` (
   `viewcontroller` varchar(255) NOT NULL DEFAULT '',
   `state` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`autoid`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `T_Menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_Menu` VALUES ('1', '001001', '用户管理', '001', '0', '', '', '', '0'), ('2', '001002', '角色管理', '001', '0', '', '', '', '0'), ('3', '001003', '菜单管理', '001', '0', '', '', '', '0'), ('4', '001', '信息管理', 'root', '0', '', '', '', '0'), ('6', '001001001', '用户浏览', '001001', '0', 'peoplegrid', 'core.basicinfomanage.peoplemanage.view.PeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('7', '001001002', '添加用户', '001001', '0', 'addpeople', 'core.basicinfomanage.peoplemanage.view.AddPeople', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('8', '001001003', '修改用户', '001001', '0', 'updatepeoplegrid', 'core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('9', '001001004', '删除用户', '001001', '0', 'deletepeoplegrid', 'core.basicinfomanage.peoplemanage.view.DeletePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('10', '001001005', '用户角色设置', '001001', '0', 'setrolepeoplegrid', 'core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('11', '001002001', '角色浏览', '001002', '0', 'rolegrid', 'core.basicinfomanage.rolemanage.view.RoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('12', '001002002', '添加角色', '001002', '0', 'addrole', 'core.basicinfomanage.rolemanage.view.AddRole', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('13', '001002003', '角色删除', '001002', '0', 'deleterolegrid', 'core.basicinfomanage.rolemanage.view.DeleteRoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('14', '001002004', '角色菜单设置', '001002', '0', 'setrolemenugrid', 'core.basicinfomanage.rolemanage.view.SetRoleMenuGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('15', '001002005', '角色修改', '001002', '0', 'updaterolegrid', 'core.basicinfomanage.rolemanage.view.UpdateRoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('16', '001003001', '菜单浏览', '001003', '0', 'menugrid', 'core.basicinfomanage.menumanage.view.MenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('17', '001003002', '增加菜单', '001003', '0', 'addmenu', 'core.basicinfomanage.menumanage.view.AddMenu', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('18', '001003003', '删除菜单', '001003', '0', 'deletemenugrid', 'core.basicinfomanage.menumanage.view.DeleteMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('19', '001003004', '更新菜单', '001003', '0', 'updatemenugrid', 'core.basicinfomanage.menumanage.view.UpdateMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('20', 'root', 'root', 'null', '0', '', '', '', '0'), ('21', '002', '服务管理', 'root', '0', '', '', '', '0'), ('22', '002001', '基础服务管理', '002', '0', '', '', '', '0'), ('23', '002001001', '服务浏览', '002001', '0', 'wsgrid', 'core.basicinfomanage.wsmanage.view.WsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('24', '002001002', '服务添加', '002001', '0', 'addws', 'core.basicinfomanage.wsmanage.view.AddWS', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('25', '002001003', '服务修改', '002001', '0', 'updatewsgrid', 'core.basicinfomanage.wsmanage.view.UpdateWsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('26', '002001004', '服务删除', '002001', '0', 'deletewsgrid', 'core.basicinfomanage.wsmanage.view.DeleteWsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('27', '002002', '业务流程管理', '002', '0', '', '', '', '0'), ('28', '002002001', '流程查看', '002002', '0', 'bpgrid', 'core.servicemanage.bpelmanage.view.BPGrid', 'core.servicemanage.bpelmanage.controller.BpelController', '0'), ('29', '002002002', '添加流程', '002002', '0', 'addbp', 'core.servicemanage.bpelmanage.view.AddBP', 'core.servicemanage.bpelmanage.controller.BpelController', '0');
+INSERT INTO `T_Menu` VALUES ('1', '001001', '用户管理', '001', '0', '', '', '', '0'), ('2', '001002', '角色管理', '001', '0', '', '', '', '0'), ('3', '001003', '菜单管理', '001', '0', '', '', '', '0'), ('4', '001', '信息管理', 'root', '0', '', '', '', '0'), ('6', '001001001', '用户浏览', '001001', '0', 'peoplegrid', 'core.basicinfomanage.peoplemanage.view.PeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('7', '001001002', '添加用户', '001001', '0', 'addpeople', 'core.basicinfomanage.peoplemanage.view.AddPeople', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('8', '001001003', '修改用户', '001001', '0', 'updatepeoplegrid', 'core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('9', '001001004', '删除用户', '001001', '0', 'deletepeoplegrid', 'core.basicinfomanage.peoplemanage.view.DeletePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('10', '001001005', '用户角色设置', '001001', '0', 'setrolepeoplegrid', 'core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid', 'core.basicinfomanage.peoplemanage.controller.PeopleController', '0'), ('11', '001002001', '角色浏览', '001002', '0', 'rolegrid', 'core.basicinfomanage.rolemanage.view.RoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('12', '001002002', '添加角色', '001002', '0', 'addrole', 'core.basicinfomanage.rolemanage.view.AddRole', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('13', '001002003', '角色删除', '001002', '0', 'deleterolegrid', 'core.basicinfomanage.rolemanage.view.DeleteRoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('14', '001002004', '角色菜单设置', '001002', '0', 'setrolemenugrid', 'core.basicinfomanage.rolemanage.view.SetRoleMenuGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('15', '001002005', '角色修改', '001002', '0', 'updaterolegrid', 'core.basicinfomanage.rolemanage.view.UpdateRoleGrid', 'core.basicinfomanage.rolemanage.controller.RoleController', '0'), ('16', '001003001', '菜单浏览', '001003', '0', 'menugrid', 'core.basicinfomanage.menumanage.view.MenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('17', '001003002', '增加菜单', '001003', '0', 'addmenu', 'core.basicinfomanage.menumanage.view.AddMenu', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('18', '001003003', '删除菜单', '001003', '0', 'deletemenugrid', 'core.basicinfomanage.menumanage.view.DeleteMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('19', '001003004', '更新菜单', '001003', '0', 'updatemenugrid', 'core.basicinfomanage.menumanage.view.UpdateMenuGrid', 'core.basicinfomanage.menumanage.controller.MenuController', '0'), ('20', 'root', 'root', 'null', '0', '', '', '', '0'), ('21', '002', '服务管理', 'root', '0', '', '', '', '0'), ('22', '002001', '基础服务管理', '002', '0', '', '', '', '0'), ('23', '002001001', '服务浏览', '002001', '0', 'wsgrid', 'core.basicinfomanage.wsmanage.view.WsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('24', '002001002', '服务添加', '002001', '0', 'addws', 'core.basicinfomanage.wsmanage.view.AddWS', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('25', '002001003', '服务修改', '002001', '0', 'updatewsgrid', 'core.basicinfomanage.wsmanage.view.UpdateWsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('26', '002001004', '服务删除', '002001', '0', 'deletewsgrid', 'core.basicinfomanage.wsmanage.view.DeleteWsGrid', 'core.basicinfomanage.wsmanage.controller.WsController', '0'), ('27', '002002', '业务流程管理', '002', '0', '', '', '', '0'), ('28', '002002001', '流程查看', '002002', '0', 'bpgrid', 'core.servicemanage.bpelmanage.view.BPGrid', 'core.servicemanage.bpelmanage.controller.BpelController', '0'), ('29', '002002002', '添加流程', '002002', '0', 'addbp', 'core.servicemanage.bpelmanage.view.AddBP', 'core.servicemanage.bpelmanage.controller.BpelController', '0'), ('30', '002002003', '修改流程', '002002', '0', 'updatebpgrid', 'core.servicemanage.bpelmanage.view.UpdateBPGrid', 'core.servicemanage.bpelmanage.controller.BpelController', '0'), ('31', '002002004', '删除流程', '002002', '0', 'deletebpgrid', 'core.servicemanage.bpelmanage.view.DeleteBPGrid', 'core.servicemanage.bpelmanage.controller.BpelController', '0');
 COMMIT;
 
 -- ----------------------------
@@ -69,13 +92,13 @@ CREATE TABLE `T_RoleMenu` (
   `order` int(11) NOT NULL DEFAULT '0',
   `state` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`autoid`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Records of `T_RoleMenu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_RoleMenu` VALUES ('2', '001001001', '1', '0', '0'), ('3', '001001002', '1', '0', '0'), ('4', '001001003', '1', '0', '0'), ('5', '001001004', '1', '0', '0'), ('6', '001001005', '1', '0', '0'), ('7', '001002001', '1', '0', '0'), ('8', '001002002', '1', '0', '0'), ('9', '001002003', '1', '0', '0'), ('10', '001002004', '1', '0', '0'), ('11', '001002005', '1', '0', '0'), ('12', '001003001', '1', '0', '0'), ('13', '001003002', '1', '0', '0'), ('14', '001003003', '1', '0', '0'), ('15', '001003004', '1', '0', '0'), ('16', '002001001', '1', '0', '0'), ('17', '002001002', '1', '0', '0'), ('18', '002001003', '1', '0', '0'), ('19', '002001004', '1', '0', '0'), ('20', '002002001', '1', '0', '0'), ('21', '002002002', '1', '0', '0');
+INSERT INTO `T_RoleMenu` VALUES ('2', '001001001', '1', '0', '0'), ('3', '001001002', '1', '0', '0'), ('4', '001001003', '1', '0', '0'), ('5', '001001004', '1', '0', '0'), ('6', '001001005', '1', '0', '0'), ('7', '001002001', '1', '0', '0'), ('8', '001002002', '1', '0', '0'), ('9', '001002003', '1', '0', '0'), ('10', '001002004', '1', '0', '0'), ('11', '001002005', '1', '0', '0'), ('12', '001003001', '1', '0', '0'), ('13', '001003002', '1', '0', '0'), ('14', '001003003', '1', '0', '0'), ('15', '001003004', '1', '0', '0'), ('16', '002001001', '1', '0', '0'), ('17', '002001002', '1', '0', '0'), ('18', '002001003', '1', '0', '0'), ('19', '002001004', '1', '0', '0'), ('20', '002002001', '1', '0', '0'), ('21', '002002002', '1', '0', '0'), ('22', '002002003', '1', '0', '0'), ('23', '002002004', '1', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -99,7 +122,7 @@ CREATE TABLE `T_Service` (
 --  Records of `T_Service`
 -- ----------------------------
 BEGIN;
-INSERT INTO `T_Service` VALUES ('1', 'weather', '天气服务', 'http://ws.webxml.com.cn/WebServices/WeatherWS.asmx', 'http://ws.webxml.com.cn/WebServices/WeatherWS.asmx?wsdl', 'http://WebXml.com.cn/', 'getWeather', '2', '0'), ('4', 'MobileCodeInfo', '手机归属地服务', 'http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx', 'http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl', 'http://WebXml.com.cn/', 'getMobileCodeInfo', '2', '0'), ('5', '中英文翻译', '', 'http://fy.webxml.com.cn/webservices/EnglishChinese.asmx', 'http://fy.webxml.com.cn/webservices/EnglishChinese.asmx?wsdl', 'http://WebXml.com.cn/', 'TranslatorSentenceString', '2', '0');
+INSERT INTO `T_Service` VALUES ('1', 'weather', '天气服务', 'http://ws.webxml.com.cn/WebServices/WeatherWS.asmx', 'http://ws.webxml.com.cn/WebServices/WeatherWS.asmx?wsdl', 'http://WebXml.com.cn/', 'getWeather', '2', '0'), ('4', 'MobileCodeInfo', '手机归属地服务', 'http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx', 'http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx?wsdl', 'http://WebXml.com.cn/', 'getMobileCodeInfo', '2', '0'), ('5', '中英文翻译', '中英文翻译', 'http://fy.webxml.com.cn/webservices/EnglishChinese.asmx', 'http://fy.webxml.com.cn/webservices/EnglishChinese.asmx?wsdl', 'http://WebXml.com.cn/', 'TranslatorSentenceString', '2', '0');
 COMMIT;
 
 -- ----------------------------

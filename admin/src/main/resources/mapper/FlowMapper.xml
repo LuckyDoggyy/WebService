@@ -7,9 +7,9 @@
     </insert>
 
     <select id="listFlows" resultType="com.we.ws.admin.domain.Flow">
-        select autoid,flowid,flowname,description from T_Flow
+        select autoid,flowid,flowname,description,state from T_Flow
         <where>
-            state=0
+            state != 2
             <if test="flowid != null and flowid!=''">
                 and flowid = #{flowid}
             </if>
@@ -20,8 +20,8 @@
     </select>
 
 
-    <update id="deleteFlows">
-        update T_Flow set state=1 where autoid in
+    <update id="setFlowState">
+        update T_Flow set state=#{state} where autoid in
         <foreach collection="autoids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>

@@ -7,6 +7,8 @@ Ext.define("core.servicemanage.bpelmanage.model.BPModel", {
 					},{
 						name : "flowname",
 					},{
-						name : "desc"
+						name : "description"
+					},{
+						name : "state"
 					}]
 		});

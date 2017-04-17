@@ -5,6 +5,7 @@ import com.we.ws.admin.domain.ServiceParam;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -46,5 +47,8 @@ public interface WebServiceMapper {
 
     @Update("update T_ServiceParam set state=1 where autoid=#{autoid}")
     int deleteParam(String autoid);
+
+    @Select("select sid as value,remark as name from T_Service")
+    List<Map<String,Object>> getWsOption();
 
 }

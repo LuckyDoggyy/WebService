@@ -5,6 +5,7 @@ import com.we.ws.admin.domain.ServiceParam;
 import com.we.ws.common.data.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -31,5 +32,7 @@ public interface WsService {
     int updateParam(ServiceParam param);
 
     int deleteParam(String autoid);
+
+    List<Map<String,Object>> getWsOption();
 
 }

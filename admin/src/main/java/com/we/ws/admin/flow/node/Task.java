@@ -1,6 +1,5 @@
 package com.we.ws.admin.flow.node;
 
-import com.we.ws.admin.flow.node.Node;
 import com.we.ws.common.data.Pair;
 
 /**

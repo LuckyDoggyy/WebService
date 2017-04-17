@@ -97,9 +97,15 @@ public class WebServiceController extends BaseController {
         try {
             result.put("obj", WsCaller.call(service.getUrl(), service.getTargetNamespace(), service.getMethod(), list));
         } catch (Exception e) {
-            log.error("webservice call error:{}",e);
+            log.error("webservice call error:{}", e);
             result.put("obj", "调用异常");
         }
         return result;
+    }
+
+    @RequestMapping("getWsOption")
+    @ResponseBody
+    public List<Map<String, Object>> getWsOption() {
+        return wsService.getWsOption();
     }
 }

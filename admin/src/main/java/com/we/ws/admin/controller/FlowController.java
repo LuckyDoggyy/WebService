@@ -66,8 +66,40 @@ public class FlowController extends BaseController {
         if (flowService.deleteFlows(autoids)) {
             FlowCache.removeCache(autoids.split(","));
             map.put("success", true);
+            map.put("obj", "流程删除成功");
         } else {
             map.put("success", false);
+            map.put("obj", "流程删除失败");
+        }
+        return map;
+    }
+
+    @RequestMapping("enableFlows")
+    @ResponseBody
+    public Map<String, Object> enableFlows(String autoids) throws Exception {
+        Map<String, Object> map = new HashMap();
+        if (flowService.enableFlows(autoids)) {
+            FlowCache.removeCache(autoids.split(","));
+            map.put("success", true);
+            map.put("obj", "流程启用成功");
+        } else {
+            map.put("success", false);
+            map.put("obj", "流程企业失败");
+        }
+        return map;
+    }
+
+    @RequestMapping("unableFlows")
+    @ResponseBody
+    public Map<String, Object> unableFlows(String autoids) throws Exception {
+        Map<String, Object> map = new HashMap();
+        if (flowService.unableFlows(autoids)) {
+            FlowCache.removeCache(autoids.split(","));
+            map.put("success", true);
+            map.put("obj", "流程停用成功");
+        } else {
+            map.put("success", false);
+            map.put("obj", "流程停用失败");
         }
         return map;
     }

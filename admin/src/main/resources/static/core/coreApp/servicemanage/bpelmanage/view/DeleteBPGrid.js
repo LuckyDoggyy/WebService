@@ -1,7 +1,11 @@
-Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
+Ext.define("core.servicemanage.bpelmanage.view.DeleteBPGrid", {
 	extend : "Ext.grid.Panel",
-	alias : "widget.bpgrid",
-	title : "<center height=40>流程浏览</center>",
+	alias : "widget.deletebpgrid",
+	title : "<center height=40>流程删除</center>",
+	selModel : {
+    		selType : "checkboxmodel",
+    		mode : 'SIMPLE'
+    	},
 	multiSelect : true,
 	columnLines : true,
 	loadMask : {
@@ -14,23 +18,39 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 		xtype : 'toolbar',
 		dock : 'top',
 		items : [{
-			xtype : 'textfield',
-			fieldLabel : '业务标识',
-			name : 'flowid',
-			labelWidth : 65
-		}, {
-		    xtype : 'textfield',
-			fieldLabel : '业务名称',
-			name : 'flowname',
-            labelWidth : 65
-		}, {
-			xtype : 'button',
-			text : '查询',
-			iconCls : 'search',
-			ref : 'searchBP'
-		}]
+				xtype : 'textfield',
+				fieldLabel : '业务标识',
+				name : 'flowid',
+				labelWidth : 65
+			}, {
+				xtype : 'textfield',
+				fieldLabel : '业务名称',
+				name : 'flowname',
+				labelWidth : 65
+			}, {
+				xtype : 'button',
+				text : '查询',
+				iconCls : 'search',
+				ref : 'searchBP'
+			}]
+		},{
+			xtype : 'toolbar',
+			dock : 'top',
+			height : 36,
+			items : [{
+						xtype : 'button',
+						text : '停用流程',
+						ref : 'unableFlow'
+					 },{
+						xtype : 'button',
+						text : '启用流程',
+						ref : 'enableFlow'
+					 },{
+						xtype : 'button',
+						text : '删除流程',
+						ref : 'deleteFlow'
+				     }]
 	}],
-
 	columns : [{
 				text : "id",
 				dataIndex : "autoid",
@@ -77,20 +97,6 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 					  this.fireEvent('itemclick', rec, node);
 				  		}
 					}]
-		    },{
-				  xtype:'actioncolumn',
-				  width:80,
-				  text: '流程调用',
-				  align: 'center',
-				  items: [{
-					  action: 'flowcall',
-					  icon: 'core/css/imgs/wf/take.png',
-					  tooltip: '调用流程',
-					  handler: function(grid, rowIndex, colIndex, node) {
-						  var rec = grid.getStore().getAt(rowIndex);
-						  this.fireEvent('itemclick', rec, node);
-					  }
-				  }]
 			  }],
 	store : "core.servicemanage.bpelmanage.store.BPStore",
 	bbar : [{

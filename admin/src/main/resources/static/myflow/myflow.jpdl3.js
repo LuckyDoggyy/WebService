@@ -1,7 +1,24 @@
 (function($){
 var myflow = $.myflow;
+var services;
+$.ajax({
+        url:'../ws/getWsOption',
+        type:'POST',
+        async:false,
+        timeout:5000,
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            services=data;
+        },
+        error:function(xhr,textStatus){
+            alert("请求失败");
+        }
+        })
+
 
 $.extend(true,myflow.config.props.props,{
+//TODO 展示bug
 	name : {name:'name', label:'名称', value:'新建流程', editor:function(){return new myflow.editors.inputEditor();}},
 	flowid : {name:'flowid', label:'标识', value:'', editor:function(){return new myflow.editors.inputEditor();}},
 	desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
@@ -73,7 +90,7 @@ $.extend(true,myflow.config.tools.states,{
 				props : {
 					text: {name:'text', label: '显示', value:'任务', editor: function(){return new myflow.editors.textEditor();}},
 					taskremark: {name:'taskremark', label: '任务注释', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}},
-					taskcategory: {name:'taskcategory', label : '任务类别', value:'', editor: function(){return new myflow.editors.selectEditor([{name:'',value:0},{name:'手机归属地查询',value:1},{name:'天气',value:2}]);}}
+					taskcategory: {name:'taskcategory', label : '任务类别', value:'', editor: function(){return new myflow.editors.selectEditor(services);}}
 				}}
 });
 })(jQuery);

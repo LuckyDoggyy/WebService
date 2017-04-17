@@ -20,5 +20,9 @@ public interface FlowService {
 
     boolean deleteFlows(String autoids);
 
+    boolean enableFlows(String autoids);
+
+    boolean unableFlows(String autoids);
+
     String getJsonById(String autoid);
 }

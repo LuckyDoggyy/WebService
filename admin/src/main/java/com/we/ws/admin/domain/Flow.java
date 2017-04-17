@@ -13,6 +13,7 @@ public class Flow {
     private String flowname;
     private String description;
     private String flowjson;
+    private int state;
 
     public Flow() {
     }
@@ -64,6 +65,14 @@ public class Flow {
         this.flowjson = flowjson;
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "Flow{" +
@@ -72,6 +81,7 @@ public class Flow {
                 ", flowname='" + flowname + '\'' +
                 ", description='" + description + '\'' +
                 ", flowjson='" + flowjson + '\'' +
+                ", state=" + state +
                 '}';
     }
 }

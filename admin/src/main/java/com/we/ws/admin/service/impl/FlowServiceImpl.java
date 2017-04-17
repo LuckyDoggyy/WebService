@@ -39,7 +39,17 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public boolean deleteFlows(String autoids) {
-        return flowMapper.deleteFlows(autoids.split(",")) > 0;
+        return flowMapper.setFlowState(autoids.split(","), 2) > 0;
+    }
+
+    @Override
+    public boolean enableFlows(String autoids) {
+        return flowMapper.setFlowState(autoids.split(","), 0) > 0;
+    }
+
+    @Override
+    public boolean unableFlows(String autoids) {
+        return flowMapper.setFlowState(autoids.split(","), 1) > 0;
     }
 
     @Override
