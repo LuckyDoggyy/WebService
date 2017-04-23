@@ -1,10 +1,10 @@
 (function(b) {
-    var a = {};
-    a.config = {
+    var a = {};     //  a flow
+    a.config = {    //  状态
         editable: true,
         lineHeight: 15,
         basePath: "",
-        rect: {
+        rect: {     //      节点
             attr: {
                 x: 10,
                 y: 10,
@@ -15,7 +15,7 @@
                 stroke: "#000",
                 "stroke-width": 1
             },
-            showType: "image&text",
+            showType: "image&text",    //   iamge,text,image$text
             type: "state",
             name: {
                 text: "state",
@@ -29,7 +29,7 @@
             props: [],
             img: {}
         },
-        path: {
+        path: {     //    路径
             attr: {
                 path: {
                     path: "M10 10L100 100",
@@ -44,7 +44,7 @@
                     "stroke-width": 2,
                     radius: 4
                 },
-                fromDot: {
+                fromDot: {      //      起始点
                     width: 5,
                     height: 5,
                     stroke: "#fff",
@@ -52,7 +52,7 @@
                     cursor: "move",
                     "stroke-width": 2
                 },
-                toDot: {
+                toDot: {        //  终止点
                     width: 5,
                     height: 5,
                     stroke: "#fff",
@@ -77,16 +77,16 @@
                     "stroke-width": 3
                 }
             },
-            text: {
+            text: {         //      TO to节点
                 text: "TO {to}",
                 cursor: "move",
                 background: "#000"
             },
-            textPos: {
+            textPos: {      //      文本位置
                 x: 0,
                 y: -10
             },
-            props: {
+            props: {        //      路径属性
                 text: {
                     name: "text",
                     label: "显示",
@@ -97,7 +97,7 @@
                 }
             }
         },
-        tools: {
+        tools: {            //      工具栏
             attr: {
                 left: 10,
                 top: 10
@@ -105,13 +105,13 @@
             pointer: {},
             path: {},
             states: {},
-            save: {
+            save: {         //      保存按钮  c:json代码
                 onclick: function(c) {
                     alert(c)
                 }
             }
         },
-        props: {
+        props: {        //      属性编辑器
             attr: {
                 top: 10,
                 right: 30
@@ -119,14 +119,14 @@
             props: {}
         },
         restore: "",
-        activeRects: {
+        activeRects: {      //      当前激活状态
             rects: [],
             rectAttr: {
                 stroke: "#ff0000",
                 "stroke-width": 2
             }
         },
-        historyRects: {
+        historyRects: {     //      历史激活状态
             rects: [],
             pathAttr: {
                 path: {
@@ -139,8 +139,12 @@
             }
         }
     };
-    a.util = {
-        isLine: function(g, f, e) {
+
+
+    a.util = {          //    flow a 的组件
+
+
+        isLine: function(g, f, e) {     //      三点是否在一条直线上
             var d, c;
             if ((g.x - e.x) == 0) {
                 d = 1
@@ -154,7 +158,9 @@
             }
             return false
         },
-        center: function(d, c) {
+
+
+        center: function(d, c) {                //      选取中点
             return {
                 x: (d.x - c.x) / 2 + c.x,
                 y: (d.y - c.y) / 2 + c.y
@@ -166,19 +172,26 @@
                 return++c
             }
         })(),
-        connPoint: function(j, d) {
+
+
+        connPoint: function(j, d) {     //      计算矩形中心到p的连线与矩形的交叉点
             var c = d,
-            e = {
-                x: j.x + j.width / 2,
-                y: j.y + j.height / 2
-            };
+                e = {
+                    x: j.x + j.width / 2,
+                    y: j.y + j.height / 2
+                };
+            //      计算正切角度
             var l = (e.y - c.y) / (e.x - c.x);
             l = isNaN(l) ? 0 : l;
             var k = j.height / j.width;
+
+            // 计算箭头位置
             var h = c.y < e.y ? -1 : 1,
-            f = c.x < e.x ? -1 : 1,
-            g,
-            i;
+                f = c.x < e.x ? -1 : 1,
+                g,
+                i;
+
+            // 按角度判断箭头位置
             if (Math.abs(l) > k && h == -1) {
                 g = e.y - j.height / 2;
                 i = e.x + h * j.height / 2 / l
@@ -203,6 +216,8 @@
                 y: g
             }
         },
+
+        //      画箭头，p1 开始位置,p2 结束位置, r前头的边长
         arrow: function(l, k, d) {
             var g = Math.atan2(l.y - k.y, k.x - l.x) * (180 / Math.PI);
             var h = k.x - d * Math.cos(g * (Math.PI / 180));
@@ -215,65 +230,79 @@
                 x: e,
                 y: j
             },
-            {
-                x: c,
-                y: i
-            }]
+                {
+                    x: c,
+                    y: i
+                }]
         }
     };
+
+
     a.rect = function(p, m) {
         var u = this,
-        g = "rect" + a.util.nextId(),
-        E = b.extend(true, {},
-        a.config.rect, p),
-        C = m,
-        t,
-        e,
-        n,
-        f,
-        x,
-        v;
+            g = "rect" + a.util.nextId(),
+            E = b.extend(true, {},
+                a.config.rect, p),
+            C = m,      //      raphael画笔
+            t,      //  矩形
+            e,      //  图标
+            n,      //  状态名称
+            f,      //  显示文本
+            x,v;      //拖动时,保存起点位置
         t = C.rect(E.attr.x, E.attr.y, E.attr.width, E.attr.height, E.attr.r).hide().attr(E.attr);
         e = C.image(a.config.basePath + E.img.src, E.attr.x + E.img.width / 2, E.attr.y + (E.attr.height - E.img.height) / 2, E.img.width, E.img.height).hide();
+
+        //  文本
         n = C.text(E.attr.x + E.img.width + (E.attr.width - E.img.width) / 2, E.attr.y + a.config.lineHeight / 2, E.name.text).hide().attr(E.name);
         f = C.text(E.attr.x + E.img.width + (E.attr.width - E.img.width) / 2, E.attr.y + (E.attr.height - a.config.lineHeight) / 2 + a.config.lineHeight, E.text.text).hide().attr(E.text);
+
+
+        //      矩形拖动处理
         t.drag(function(r, o) {
-            A(r, o)
-        },
-        function() {
-            z()
-        },
-        function() {
-            l()
-        });
+                A(r, o)    //drag move
+            },
+            function() {
+                z()     //  drag start
+            },
+            function() {
+                l()     //  drag up
+            });
+
+        //      图标拖动
         e.drag(function(r, o) {
-            A(r, o)
-        },
-        function() {
-            z()
-        },
-        function() {
-            l()
-        });
+                A(r, o)
+            },
+            function() {
+                z()
+            },
+            function() {
+                l()
+            });
+
+        //      名字拖动
         n.drag(function(r, o) {
-            A(r, o)
-        },
-        function() {
-            z()
-        },
-        function() {
-            l()
-        });
+                A(r, o)
+            },
+            function() {
+                z()
+            },
+            function() {
+                l()
+            });
+
+        //      文本拖动
         f.drag(function(r, o) {
-            A(r, o)
-        },
-        function() {
-            z()
-        },
-        function() {
-            l()
-        });
-        var A = function(F, r) {
+                A(r, o)
+            },
+            function() {
+                z()
+            },
+            function() {
+                l()
+            });
+
+
+        var A = function(F, r) {        //拖动中  位置
             if (!a.config.editable) {
                 return
             }
@@ -283,7 +312,7 @@
             q.y = G - E.margin;
             B()
         };
-        var z = function() {
+        var z = function() {        //开始拖动  半透明
             x = t.attr("x");
             v = t.attr("y");
             t.attr({
@@ -296,7 +325,7 @@
                 opacity: 0.5
             })
         };
-        var l = function() {
+        var l = function() {        //拖动结束   恢复透明度
             t.attr({
                 opacity: 1
             });
@@ -307,178 +336,204 @@
                 opacity: 1
             })
         };
+
+        //  改变大小的边框     s:_bpath    i:bdots
         var s, i = {},
-        h = 5,
-        q = {
-            x: E.attr.x - E.margin,
-            y: E.attr.y - E.margin,
-            width: E.attr.width + E.margin * 2,
-            height: E.attr.height + E.margin * 2
-        };
-        s = C.path("M0 0L1 1").hide();
+            h = 5,
+            q = {       //  _bbox
+                x: E.attr.x - E.margin,
+                y: E.attr.y - E.margin,
+                width: E.attr.width + E.margin * 2,
+                height: E.attr.height + E.margin * 2
+            };
+        s = C.path("M0 0L1 1").hide();    //  _bpath = _r.path
+
+        //  上
         i.t = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "s-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "t")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "t")
-        },
-        function() {});
+                D(r, o, "t")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "t")
+            },
+            function() {});
+
+        //  改变大小的点
+        //  左上
         i.lt = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "nw-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "lt")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "lt")
-        },
-        function() {});
+                D(r, o, "lt")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "lt")
+            },
+            function() {});
+
+        //  左
         i.l = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "w-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "l")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "l")
-        },
-        function() {});
+                D(r, o, "l")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "l")
+            },
+            function() {});
+
+        //  左下
         i.lb = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "sw-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "lb")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "lb")
-        },
-        function() {});
+                D(r, o, "lb")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "lb")
+            },
+            function() {});
+
+        //  下
         i.b = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "s-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "b")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "b")
-        },
-        function() {});
+                D(r, o, "b")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "b")
+            },
+            function() {});
+
+        //  右下
         i.rb = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "se-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "rb")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "rb")
-        },
-        function() {});
+                D(r, o, "rb")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "rb")
+            },
+            function() {});
+
+        //  右
         i.r = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "w-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "r")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "r")
-        },
-        function() {});
+                D(r, o, "r")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "r")
+            },
+            function() {});
+
+
+        //  右上
         i.rt = C.rect(0, 0, h, h).attr({
             fill: "#000",
             stroke: "#fff",
             cursor: "ne-resize"
         }).hide().drag(function(r, o) {
-            D(r, o, "rt")
-        },
-        function() {
-            k(this.attr("x") + h / 2, this.attr("y") + h / 2, "rt")
-        },
-        function() {});
-        var D = function(F, r, G) {
+                D(r, o, "rt")
+            },
+            function() {
+                k(this.attr("x") + h / 2, this.attr("y") + h / 2, "rt")
+            },
+            function() {});
+
+
+        //      根据情况判定大小及位置改动
+        var D = function(F, r, G) {         //       var bdragMove = function(dx, dy, t)
             if (!a.config.editable) {
                 return
             }
             var o = _bx + F,
-            H = _by + r;
+                H = _by + r;
             switch (G) {
-            case "t":
-                q.height += q.y - H;
-                q.y = H;
-                break;
-            case "lt":
-                q.width += q.x - o;
-                q.height += q.y - H;
-                q.x = o;
-                q.y = H;
-                break;
-            case "l":
-                q.width += q.x - o;
-                q.x = o;
-                break;
-            case "lb":
-                q.height = H - q.y;
-                q.width += q.x - o;
-                q.x = o;
-                break;
-            case "b":
-                q.height = H - q.y;
-                break;
-            case "rb":
-                q.height = H - q.y;
-                q.width = o - q.x;
-                break;
-            case "r":
-                q.width = o - q.x;
-                break;
-            case "rt":
-                q.width = o - q.x;
-                q.height += q.y - H;
-                q.y = H;
-                break
+                case "t":
+                    q.height += q.y - H;
+                    q.y = H;
+                    break;
+                case "lt":
+                    q.width += q.x - o;
+                    q.height += q.y - H;
+                    q.x = o;
+                    q.y = H;
+                    break;
+                case "l":
+                    q.width += q.x - o;
+                    q.x = o;
+                    break;
+                case "lb":
+                    q.height = H - q.y;
+                    q.width += q.x - o;
+                    q.x = o;
+                    break;
+                case "b":
+                    q.height = H - q.y;
+                    break;
+                case "rb":
+                    q.height = H - q.y;
+                    q.width = o - q.x;
+                    break;
+                case "r":
+                    q.width = o - q.x;
+                    break;
+                case "rt":
+                    q.width = o - q.x;
+                    q.height += q.y - H;
+                    q.y = H;
+                    break
             }
-            B()
+            B()         //      resize()
         };
         var k = function(r, o, F) {
             _bx = r;
             _by = o
         };
+
+
+        //          事件处理         $([_rect.node, _text.node, _name.node, _img.node]).bind('click',
         b([t.node, f.node, n.node, e.node]).bind("click",
-        function() {
-            if (!a.config.editable) {
-                return
-            }
-            w();
-            var o = b(C).data("mod");
-            switch (o) {
-            case "pointer":
-                break;
-            case "path":
-                var r = b(C).data("currNode");
-                if (r && r.getId() != g && r.getId().substring(0, 4) == "rect") {
-                    b(C).trigger("addpath", [r, u])
+            function() {
+                if (!a.config.editable) {
+                    return
                 }
-                break
-            }
-            b(C).trigger("click", u);
-            b(C).data("currNode", u);
-            return false
-        });
+                w();
+                var o = b(C).data("mod");
+                switch (o) {
+                    case "pointer":
+                        break;
+                    case "path":
+                        var r = b(C).data("currNode");
+                        if (r && r.getId() != g && r.getId().substring(0, 4) == "rect") {
+                            b(C).trigger("addpath", [r, u])
+                        }
+                        break
+                }
+                b(C).trigger("click", u);
+                b(C).data("currNode", u);
+                return false
+            });
         var j = function(o, r) {
             if (!a.config.editable) {
                 return
             }
             if (r.getId() == g) {
-                b(C).trigger("showprops", [E.props, r])
+                b(C).trigger("showprops", [E.props, r])         //     点击展示属性
             } else {
                 d()
             }
@@ -487,31 +542,40 @@
         var c = function(o, F, r) {
             if (r.getId() == g) {
                 f.attr({
-                    text: F
+                    text: F        //       更改文本内容
                 })
             }
         };
         b(C).bind("textchange", c);
+
+
+        //      私有函数，边框路径
         function y() {
             return "M" + q.x + " " + q.y + "L" + q.x + " " + (q.y + q.height) + "L" + (q.x + q.width) + " " + (q.y + q.height) + "L" + (q.x + q.width) + " " + q.y + "L" + q.x + " " + q.y
-        }
-        function w() {
+        }       //      path字符串
+
+        //      显示边框
+        function w() {      //      根据rect边框上的顶点
             s.show();
             for (var o in i) {
                 i[o].show()
             }
         }
-        function d() {
+
+        //      隐藏边框
+        function d() {      //      隐藏边框上的顶点
             s.hide();
             for (var o in i) {
                 i[o].hide()
             }
         }
+
+        //      根据_bbox更新位置信息
         function B() {
             var F = q.x + E.margin,
-            r = q.y + E.margin,
-            G = q.width - E.margin * 2,
-            o = q.height - E.margin * 2;
+                r = q.y + E.margin,
+                G = q.width - E.margin * 2,
+                o = q.height - E.margin * 2;
             t.attr({
                 x: F,
                 y: r,
@@ -519,37 +583,37 @@
                 height: o
             });
             switch (E.showType) {
-            case "image":
-                e.attr({
-                    x:
-                    F + (G - E.img.width) / 2,
-                    y: r + (o - E.img.height) / 2
-                }).show();
-                break;
-            case "text":
-                t.show();
-                f.attr({
-                    x:
-                    F + G / 2,
-                    y: r + o / 2
-                }).show();
-                break;
-            case "image&text":
-                t.show();
-                n.attr({
-                    x:
-                    F + E.img.width + (G - E.img.width) / 2,
-                    y: r + a.config.lineHeight / 2
-                }).show();
-                f.attr({
-                    x: F + E.img.width + (G - E.img.width) / 2,
-                    y: r + (o - a.config.lineHeight) / 2 + a.config.lineHeight
-                }).show();
-                e.attr({
-                    x: F + E.img.width / 2,
-                    y: r + (o - E.img.height) / 2
-                }).show();
-                break
+                case "image":
+                    e.attr({
+                        x:
+                        F + (G - E.img.width) / 2,
+                        y: r + (o - E.img.height) / 2
+                    }).show();      //      展示图片
+                    break;
+                case "text":
+                    t.show();
+                    f.attr({
+                        x:
+                        F + G / 2,
+                        y: r + o / 2
+                    }).show();      //      展示内容
+                    break;
+                case "image&text":
+                    t.show();
+                    n.attr({
+                        x:
+                        F + E.img.width + (G - E.img.width) / 2,
+                        y: r + a.config.lineHeight / 2
+                    }).show();
+                    f.attr({
+                        x: F + E.img.width + (G - E.img.width) / 2,
+                        y: r + (o - a.config.lineHeight) / 2 + a.config.lineHeight
+                    }).show();
+                    e.attr({
+                        x: F + E.img.width / 2,
+                        y: r + (o - E.img.height) / 2
+                    }).show();
+                    break
             }
             i.t.attr({
                 x: q.x + q.width / 2 - h / 2,
@@ -583,13 +647,18 @@
                 x: q.x - h / 2 + q.width,
                 y: q.y - h / 2
             });
-            s.attr({
+            s.attr({        //  _bpath
                 path: y()
             });
             b(C).trigger("rectresize", u)
         }
+
+        //  rect转化为json字符串
         this.toJson = function() {
-            var r = "{type:'" + E.type + "',text:{text:'" + f.attr("text") + "'}, attr:{ x:" + Math.round(t.attr("x")) + ", y:" + Math.round(t.attr("y")) + ", width:" + Math.round(t.attr("width")) + ", height:" + Math.round(t.attr("height")) + "}, props:{";
+            var r = "{type:'" + E.type + "',text:{text:'" + f.attr("text") + "'}, attr:{ x:"
+                + Math.round(t.attr("x")) + ", y:" + Math.round(t.attr("y")) + ", width:"
+                + Math.round(t.attr("width")) + ", height:" + Math.round(t.attr("height"))
+                + "}, props:{";
             for (var o in E.props) {
                 r += o + ":{value:'" + E.props[o].value + "'},"
             }
@@ -599,6 +668,8 @@
             r += "}}";
             return r
         };
+
+        //  从数据中恢复图
         this.restore = function(o) {
             var r = o;
             E = b.extend(true, E, o);
@@ -623,67 +694,69 @@
                 i[o].remove()
             }
         };
+
+        //  设置文本内容
         this.text = function() {
             return f.attr("text")
         };
-        this.attr = function(o) {
+        this.attr = function(o) {       //  o:attr
             if (o) {
                 t.attr(o)
             }
         };
-        B()
+        B()     //  resize()
     };
-    a.path = function(q, n, u, e) {
+    a.path = function(q, n, u, e) {        // myflow.path = function(o, r, from, to)
         var v = this,
-        z = n,
-        B = b.extend(true, {},
-        a.config.path),
-        i,
-        t,
-        f,
-        h = B.textPos,
-        y,
-        w,
-        k = u,
-        s = e,
-        g = "path" + a.util.nextId(),
-        x;
+            z = n,
+            B = b.extend(true, {},
+                a.config.path),
+            i,
+            t,
+            f,
+            h = B.textPos,
+            y,
+            w,
+            k = u,
+            s = e,
+            g = "path" + a.util.nextId(),
+            x;
         function p(G, H, D, L) {
             var F = this,
-            M = G,
-            r, o = D,
-            O = L,
-            K, I, N = H;
+                M = G,
+                r, o = D,       //缓存移动前时的位置
+                O = L,
+                K, I, N = H;        //缓存位置信息，计算出的中点
             switch (M) {
-            case "from":
-                r = z.rect(H.x - B.attr.fromDot.width / 2, H.y - B.attr.fromDot.height / 2, B.attr.fromDot.width, B.attr.fromDot.height).attr(B.attr.fromDot);
-                break;
-            case "big":
-                r = z.rect(H.x - B.attr.bigDot.width / 2, H.y - B.attr.bigDot.height / 2, B.attr.bigDot.width, B.attr.bigDot.height).attr(B.attr.bigDot);
-                break;
-            case "small":
-                r = z.rect(H.x - B.attr.smallDot.width / 2, H.y - B.attr.smallDot.height / 2, B.attr.smallDot.width, B.attr.smallDot.height).attr(B.attr.smallDot);
-                break;
-            case "to":
-                r = z.rect(H.x - B.attr.toDot.width / 2, H.y - B.attr.toDot.height / 2, B.attr.toDot.width, B.attr.toDot.height).attr(B.attr.toDot);
-                break
+                case "from":
+                    r = z.rect(H.x - B.attr.fromDot.width / 2, H.y - B.attr.fromDot.height / 2, B.attr.fromDot.width, B.attr.fromDot.height).attr(B.attr.fromDot);
+                    break;
+                case "big":
+                    r = z.rect(H.x - B.attr.bigDot.width / 2, H.y - B.attr.bigDot.height / 2, B.attr.bigDot.width, B.attr.bigDot.height).attr(B.attr.bigDot);
+                    break;
+                case "small":
+                    r = z.rect(H.x - B.attr.smallDot.width / 2, H.y - B.attr.smallDot.height / 2, B.attr.smallDot.width, B.attr.smallDot.height).attr(B.attr.smallDot);
+                    break;
+                case "to":
+                    r = z.rect(H.x - B.attr.toDot.width / 2, H.y - B.attr.toDot.height / 2, B.attr.toDot.width, B.attr.toDot.height).attr(B.attr.toDot);
+                    break
             }
             if (r && (M == "big" || M == "small")) {
-                r.drag(function(Q, P) {
-                    C(Q, P)
-                },
-                function() {
-                    J()
-                },
-                function() {
-                    E()
-                });
-                var C = function(R, Q) {
+                r.drag(function(Q, P) {     //  初始化拖动
+                        C(Q, P)
+                    },
+                    function() {
+                        J()
+                    },
+                    function() {
+                        E()
+                    });
+                var C = function(R, Q) {       //拖动中
                     var P = (K + R),
-                    S = (I + Q);
+                        S = (I + Q);
                     F.moveTo(P, S)
                 };
-                var J = function() {
+                var J = function() {     //开始拖动
                     if (M == "big") {
                         K = r.attr("x") + B.attr.bigDot.width / 2;
                         I = r.attr("y") + B.attr.bigDot.height / 2
@@ -693,7 +766,7 @@
                         I = r.attr("y") + B.attr.smallDot.height / 2
                     }
                 };
-                var E = function() {}
+                var E = function() {}       //拖动结束
             }
             this.type = function(P) {
                 if (P) {
@@ -746,78 +819,82 @@
                     y: T
                 });
                 switch (M) {
-                case "from":
-                    if (O && O.right() && O.right().type() == "to") {
-                        O.right().pos(a.util.connPoint(s.getBBox(), N))
-                    }
-                    if (O && O.right()) {
-                        O.pos(a.util.center(N, O.right().pos()))
-                    }
-                    break;
-                case "big":
-                    if (O && O.right() && O.right().type() == "to") {
-                        O.right().pos(a.util.connPoint(s.getBBox(), N))
-                    }
-                    if (o && o.left() && o.left().type() == "from") {
-                        o.left().pos(a.util.connPoint(k.getBBox(), N))
-                    }
-                    if (O && O.right()) {
-                        O.pos(a.util.center(N, O.right().pos()))
-                    }
-                    if (o && o.left()) {
-                        o.pos(a.util.center(N, o.left().pos()))
-                    }
-                    var S = {
-                        x: N.x,
-                        y: N.y
-                    };
-                    if (a.util.isLine(o.left().pos(), S, O.right().pos())) {
-                        M = "small";
-                        r.attr(B.attr.smallDot);
-                        this.pos(S);
-                        var P = o;
-                        o.left().right(o.right());
-                        o = o.left();
-                        P.remove();
-                        var R = O;
-                        O.right().left(O.left());
-                        O = O.right();
-                        R.remove()
-                    }
-                    break;
-                case "small":
-                    if (o && O && !a.util.isLine(o.pos(), {
-                        x: N.x,
-                        y: N.y
-                    },
-                    O.pos())) {
-                        M = "big";
-                        r.attr(B.attr.bigDot);
-                        var P = new p("small", a.util.center(o.pos(), N), o, o.right());
-                        o.right(P);
-                        o = P;
-                        var R = new p("small", a.util.center(O.pos(), N), O.left(), O);
-                        O.left(R);
-                        O = R
-                    }
-                    break;
-                case "to":
-                    if (o && o.left() && o.left().type() == "from") {
-                        o.left().pos(a.util.connPoint(k.getBBox(), N))
-                    }
-                    if (o && o.left()) {
-                        o.pos(a.util.center(N, o.left().pos()))
-                    }
-                    break
+                    case "from":        //  起始点
+                        if (O && O.right() && O.right().type() == "to") {
+                            O.right().pos(a.util.connPoint(s.getBBox(), N))
+                        }
+                        if (O && O.right()) {
+                            O.pos(a.util.center(N, O.right().pos()))
+                        }
+                        break;
+
+
+                    case "big":         //      大点：起点、终点、中点
+                        if (O && O.right() && O.right().type() == "to") {
+                            O.right().pos(a.util.connPoint(s.getBBox(), N))
+                        }
+                        if (o && o.left() && o.left().type() == "from") {
+                            o.left().pos(a.util.connPoint(k.getBBox(), N))
+                        }
+                        if (O && O.right()) {
+                            O.pos(a.util.center(N, O.right().pos()))
+                        }
+                        if (o && o.left()) {
+                            o.pos(a.util.center(N, o.left().pos()))
+                        }
+
+
+                        var S = {       //三个大点在一条线上，移除中间小点
+                            x: N.x,
+                            y: N.y
+                        };
+                        if (a.util.isLine(o.left().pos(), S, O.right().pos())) {
+                            M = "small";
+                            r.attr(B.attr.smallDot);
+                            this.pos(S);
+                            var P = o;
+                            o.left().right(o.right());
+                            o = o.left();
+                            P.remove();
+                            var R = O;
+                            O.right().left(O.left());
+                            O = O.right();
+                            R.remove()
+                        }
+                        break;
+                    case "small":       // 移动小点时，转变为大点，增加俩个小点   移动中点时，出现折点
+                        if (o && O && !a.util.isLine(o.pos(), {
+                                    x: N.x,
+                                    y: N.y
+                                },
+                                O.pos())) {
+                            M = "big";
+                            r.attr(B.attr.bigDot);
+                            var P = new p("small", a.util.center(o.pos(), N), o, o.right());
+                            o.right(P);
+                            o = P;
+                            var R = new p("small", a.util.center(O.pos(), N), O.left(), O);
+                            O.left(R);
+                            O = R
+                        }
+                        break;
+                    case "to":      //      终点
+                        if (o && o.left() && o.left().type() == "from") {
+                            o.left().pos(a.util.connPoint(k.getBBox(), N))
+                        }
+                        if (o && o.left()) {
+                            o.pos(a.util.center(N, o.left().pos()))
+                        }
+                        break
                 }
                 m()
             }
         }
-        function j() {
-            var D, C, E = k.getBBox(),
-            F = s.getBBox(),
-            r,
-            o;
+        function j() {       // function dotList()  if(!_from) throw '没有from节点!'
+            var D, C, E = k.getBBox(),      //      getBBox获得起始的rect
+                F = s.getBBox(),
+                r,
+                o;
             r = a.util.connPoint(E, {
                 x: F.x + F.width / 2,
                 y: F.y + F.height / 2
@@ -830,24 +907,29 @@
             D.right().left(D);
             C = new p("to", o, D.right(), null);
             D.right().right(C);
+
+
+            //      转换为path格式字符串
             this.toPathString = function() {
                 if (!D) {
                     return ""
                 }
                 var J = D,
-                I = "M" + J.pos().x + " " + J.pos().y,
-                H = "";
+                    I = "M" + J.pos().x + " " + J.pos().y,      //线的路径
+                    H = "";
                 while (J.right()) {
                     J = J.right();
                     I += "L" + J.pos().x + " " + J.pos().y
                 }
+
+                //  箭头路径，箭头的方向
                 var G = a.util.arrow(J.left().pos(), J.pos(), B.attr.arrow.radius);
                 H = "M" + G[0].x + " " + G[0].y + "L" + G[1].x + " " + G[1].y + "L" + G[2].x + " " + G[2].y + "z";
                 return [I, H]
             };
             this.toJson = function() {
                 var G = "[",
-                H = D;
+                    H = D;
                 while (H) {
                     if (H.type() == "big") {
                         G += "{x:" + Math.round(H.pos().x) + ",y:" + Math.round(H.pos().y) + "},"
@@ -862,7 +944,7 @@
             };
             this.restore = function(H) {
                 var I = H,
-                J = D.right();
+                    J = D.right();
                 for (var G = 0; G < I.length; G++) {
                     J.moveTo(I[G].x, I[G].y);
                     J.moveTo(I[G].x, I[G].y);
@@ -876,9 +958,9 @@
             this.toDot = function() {
                 return C
             };
-            this.midDot = function() {
+            this.midDot = function() {      // 返回中间点
                 var H = D.right(),
-                G = D.right().right();
+                    G = D.right().right();
                 while (G.right() && G.right().right()) {
                     G = G.right().right();
                     H = H.right()
@@ -912,6 +994,9 @@
                 }
             }
         }
+
+
+        //      初始化操作
         B = b.extend(true, B, q);
         i = z.path(B.attr.path.path).attr(B.attr.path);
         t = z.path(B.attr.arrow.path).attr(B.attr.arrow);
@@ -921,54 +1006,62 @@
             text: B.text.text.replace("{from}", k.text()).replace("{to}", s.text())
         });
         f.drag(function(r, o) {
-            if (!a.config.editable) {
-                return
-            }
-            f.attr({
-                x: y + r,
-                y: w + o
-            })
-        },
-        function() {
-            y = f.attr("x");
-            w = f.attr("y")
-        },
-        function() {
-            var o = x.midDot().pos();
-            h = {
-                x: f.attr("x") - o.x,
-                y: f.attr("y") - o.y
-            }
-        });
-        m();
+                if (!a.config.editable) {
+                    return
+                }
+                f.attr({
+                    x: y + r,
+                    y: w + o
+                })
+            },
+            function() {
+                y = f.attr("x");
+                w = f.attr("y")
+            },
+            function() {
+                var o = x.midDot().pos();
+                h = {
+                    x: f.attr("x") - o.x,
+                    y: f.attr("y") - o.y
+                }
+            });
+        m();          // 初始化路径refreshpath();
+
+
+        //事件处理
         b([i.node, t.node]).bind("click",
-        function() {
-            if (!a.config.editable) {
-                return
-            }
-            b(z).trigger("click", v);
-            b(z).data("currNode", v);
-            return false
-        });
+            function() {
+                if (!a.config.editable) {
+                    return
+                }
+                b(z).trigger("click", v);
+                b(z).data("currNode", v);
+                return false
+            });
+
+        // 处理点击事件，线或矩形
         var l = function(r, C) {
             if (!a.config.editable) {
                 return
             }
             if (C && C.getId() == g) {
                 x.show();
-                b(z).trigger("showprops", [B.props, v])
+                b(z).trigger("showprops", [B.props, v])     //      点击显示属性框
             } else {
                 x.hide()
             }
             var o = b(z).data("mod");
             switch (o) {
-            case "pointer":
-                break;
-            case "path":
-                break
+                case "pointer":
+                    break;
+                case "path":
+                    break
             }
         };
         b(z).bind("click", l);
+
+
+        // 删除事件处理
         var A = function(o, r) {
             if (!a.config.editable) {
                 return
@@ -978,6 +1071,8 @@
             }
         };
         b(z).bind("removerect", A);
+
+        // 矩形移动时间处理
         var d = function(C, D) {
             if (!a.config.editable) {
                 return
@@ -1012,8 +1107,11 @@
             }
         };
         b(z).bind("rectresize", d);
+
+
+
         var c = function(r, o, C) {
-            if (C.getId() == g) {
+            if (C.getId() == g) {   // 改变自身文本
                 f.attr({
                     text: o
                 })
@@ -1026,6 +1124,8 @@
         this.to = function() {
             return s
         };
+
+        //      path转化为json数据
         this.toJson = function() {
             var r = "{from:'" + k.getId() + "',to:'" + s.getId() + "', dots:" + x.toJson() + ",text:{text:'" + f.attr("text") + "'},textPos:{x:" + Math.round(h.x) + ",y:" + Math.round(h.y) + "}, props:{";
             for (var o in B.props) {
@@ -1037,11 +1137,15 @@
             r += "}}";
             return r
         };
+
+        //      恢复
         this.restore = function(o) {
             var r = o;
             B = b.extend(true, B, o);
             x.restore(r.dots)
         };
+
+        //      删除
         this.remove = function() {
             x.remove();
             i.remove();
@@ -1060,9 +1164,12 @@
                 b(z).unbind("textchange", c)
             } catch(o) {}
         };
+
+
+        // 刷新路径
         function m() {
             var r = x.toPathString(),
-            o = x.midDot().pos();
+                o = x.midDot().pos();
             i.attr({
                 path: r[0]
             });
@@ -1089,23 +1196,28 @@
             }
         }
     };
+
+
+
     a.props = function(h, f) {
         var j = this,
-        c = b("#myflow_props").hide().draggable({
-            handle: "#myflow_props_handle"
-        }).resizable().css(a.config.props.attr).bind("click",
-        function() {
-            return false
-        }),
-        e = c.find("table"),
-        g = f,
-        i;
-        var d = function(n, m, o) {
+            c = b("#myflow_props").hide().draggable({
+                handle: "#myflow_props_handle"
+            }).resizable().css(a.config.props.attr).bind("click",
+                function() {
+                    return false
+                }),
+            e = c.find("table"),        //  table表单
+            g = f,
+            i;
+
+
+        var d = function(n, m, o) {     // showpropshandler
             if (i && i.getId() == o.getId()) {
                 return
             }
             i = o;
-            b(e).find(".editor").each(function() {
+            b(e).find(".editor").each(function() {      //      连续点击不刷新  b:$
                 var k = b(this).data("editor");
                 if (k) {
                     k.destroy()
@@ -1113,26 +1225,43 @@
             });
             e.empty();
             c.show();
-            for (var l in m) {
-                e.append("<tr><th>" + m[l].label + '</th><td><div id="p' + l + '" class="editor"></div></td></tr>');
+            for (var l in m) {        //    展示属性
+                console.log(m[l].label);
+                e.append('<tr><th>' + m[l].label + '</th><td><div id="p' + l + '" class="editor"></div></td></tr>');
                 if (m[l].editor) {
                     m[l].editor().init(m, l, "p" + l, o, g)
                 }
             }
-			 e.append('<tr id="myflowDelTR"><th>删除</th><td><input type="button" value="删除" onclick="if(confirm(\'确认删除？！\'))jQuery(document).trigger(\'keydown\',true);"/></td></tr>');
+
+            e.append('<tr id="myflowAddTR"><th>添加</th><td><input type="button" value="添加" id="myflowAddButton" onclick="b("#myflowAddButton").trigger(\'click\');"/></td></tr>');
+            e.append('<tr id="myflowDelTR"><th>删除</th><td><input type="button" value="删除" onclick="if(confirm(\'确认删除？！\'))jQuery(document).trigger(\'keydown\',true);"/></td></tr>');
+            b('#myflowAddButton').click(function(){
+                b('#myflowAddTR').before('<tr><th><input style="width:100%" id="templabel"></th><td><input style="width:100%" id="tempvalue"></div></td><td><input type="button" id="tempButton" value="确定" onclick=""></td></tr>');
+            });
+            b('#tempButton').click(function(){
+
+            });
         };
+
         b(g).bind("showprops", d)
     };
+
+
+
+
+
+    //属性编辑器
     a.editors = {
-        textEditor: function() {
+
+        textEditor: function() {    //textEditor()方法
             var d, e, c, g, f;
-            this.init = function(i, h, m, l, j) {
+            this.init = function(i, h, m, l, j) {       //   _props = props;_k = k;_div = div;_src = src;_r = r;
                 d = i;
                 e = h;
                 c = m;
                 g = l;
                 f = j;
-                b('<input  style="width:100%;"/>').val(g.text()).change(function() {
+                b('<input  style="width:100%;"/>').val(g.text()).change(function() {        //  <input>表单
                     i[e].value = b(this).val();
                     b(f).trigger("textchange", [b(this).val(), g])
                 }).appendTo("#" + c);
@@ -1145,25 +1274,45 @@
                 })
             }
         }
+
+
+
+
     };
+
+
+    //      初始化流程
     a.init = function(x, r) {
         var v = b(window).width(),
-        e = b(window).height(),
-        y = Raphael(x, v * 1.5, e * 1.5),
-        q = {},
-        g = {};
+            e = b(window).height(),
+            y = Raphael(x, v * 1.5, e * 1.5),
+            q = {},
+            g = {};
         b.extend(true, a.config, r);
-       b(document).keydown(function (i,byButton) {
+
+
+        /**
+         * 删除： 删除状态时，触发removerect事件，连接在这个状态上当路径监听到这个事件，触发removepath删除自身；
+         * 删除路径时，触发removepath事件
+         */
+
+      /*  b(document).click(function(){       //add props
+            $(this)prepend('<tr><th><input style='width:100%' id='templabel'></th><td><input style='width:100%' id='tempvalue'></div></td></tr>');
+
+            }
+        });*/
+
+        b(document).keydown(function (i,byButton) {     //delete删除
             if (!a.config.editable) {
                 return
             }
-            if (i.keyCode == 46||byButton) {//
+            if (i.keyCode == 46||byButton) {    //
                 var j = b(y).data("currNode");
                 if (j) {
-                    if (j.getId().substring(0, 4) == "rect") {
+                    if (j.getId().substring(0, 4) == "rect") {      //根据id删除rect
                         b(y).trigger("removerect", j)
                     } else {
-                        if (j.getId().substring(0, 4) == "path") {
+                        if (j.getId().substring(0, 4) == "path") {  //根据id删除path
                             b(y).trigger("removepath", j)
                         }
                     }
@@ -1171,19 +1320,24 @@
                 }
             }
         });
-        b(document).click(function() {
-            b(y).data("currNode", null);
-            b(y).trigger("click", {
-                getId: function() {
-                    return "00000000"
-                }
+
+
+        b(document).click(function () {
+                b(y).data("currNode", null);
+                b(y).trigger("click", {
+                    getId: function () {
+                        return "00000000"
+                    }
+                });
+                b(y).trigger("showprops", [a.config.props.props, {
+                    getId: function () {
+                        return "00000000"
+                    }
+                }])
             });
-            b(y).trigger("showprops", [a.config.props.props, {
-                getId: function() {
-                    return "00000000"
-                }
-            }])
-        });
+
+
+        //      删除事件
         var w = function(c, i) {
             if (!a.config.editable) {
                 return
@@ -1200,29 +1354,38 @@
         };
         b(y).bind("removepath", w);
         b(y).bind("removerect", w);
+
+
+        //添加状态
         b(y).bind("addrect",
-        function(j, c, k) {
-            var i = new a.rect(b.extend(true, {},
-            a.config.tools.states[c], k), y);
-            q[i.getId()] = i
-        });
+            function(j, c, k) {
+                var i = new a.rect(b.extend(true, {},
+                    a.config.tools.states[c], k), y);
+                q[i.getId()] = i
+            });
+
+
+        //添加路径
         var f = function(i, k, j) {
             var c = new a.path({},
-            y, k, j);
+                y, k, j);
             g[c.getId()] = c
         };
         b(y).bind("addpath", f);
+
+        //模式
         b(y).data("mod", "point");
         if (a.config.editable) {
+            //工具栏
             b("#myflow_tools").draggable({
                 handle: "#myflow_tools_handle"
             }).css(a.config.tools.attr);
             b("#myflow_tools .node").hover(function() {
-                b(this).addClass("mover")
-            },
-            function() {
-                b(this).removeClass("mover")
-            });
+                    b(this).addClass("mover")
+                },
+                function() {
+                    b(this).removeClass("mover")
+                });
             b("#myflow_tools .selectable").click(function() {
                 b(".selected").removeClass("selected");
                 b(this).addClass("selected");
@@ -1244,8 +1407,10 @@
                     }])
                 }
             });
+
+
+            //保存
             b("#myflow_save").click(function() {
-                //var i = "{states:{";
                 var i = "{states:{";
                 for (var c in q) {
                     if (q[c]) {
@@ -1274,16 +1439,21 @@
                 i += "}}}";
                 a.config.tools.save.onclick(i)
             });
+
+            //      属性框
             new a.props({},
-            y)
+                y)
         }
+
+
+        //恢复
         if (r.restore) {
             var B = r.restore;
             var z = {};
             if (B.states) {
                 for (var s in B.states) {
                     var d = new a.rect(b.extend(true, {},
-                    a.config.tools.states[B.states[s].type], B.states[s]), y);
+                        a.config.tools.states[B.states[s].type], B.states[s]), y);
                     d.restore(B.states[s]);
                     z[s] = d;
                     q[d.getId()] = d
@@ -1292,17 +1462,19 @@
             if (B.paths) {
                 for (var s in B.paths) {
                     var n = new a.path(b.extend(true, {},
-                    a.config.tools.path, B.paths[s]), y, z[B.paths[s].from], z[B.paths[s].to]);
+                        a.config.tools.path, B.paths[s]), y, z[B.paths[s].from], z[B.paths[s].to]);
                     n.restore(B.paths[s]);
                     g[n.getId()] = n
                 }
             }
         }
+
+        //历史状态
         var A = a.config.historyRects,
-        l = a.config.activeRects;
+            l = a.config.activeRects;
         if (A.rects.length || l.rects.length) {
             var m = {},
-            z = {};
+                z = {};
             for (var h in g) {
                 if (!z[g[h].from().text()]) {
                     z[g[h].from().text()] = {
@@ -1340,6 +1512,9 @@
             }
         }
     };
+
+
+    //  添加jquery方法
     b.fn.myflow = function(c) {
         return this.each(function() {
             a.init(this, c)
