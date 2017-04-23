@@ -1,27 +1,30 @@
-﻿
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
+﻿<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link type="text/css"
-	href="lib/jquery-ui-1.8.4.custom/css/smoothness/jquery-ui-1.8.4.custom.css"
-	rel="stylesheet" />
-
+<link type="text/css" href="lib/jquery-ui-1.8.4.custom/css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="lib/raphael-min.js"></script>
-<script type="text/javascript"
-	src="lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript"
-	src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="myflow.js"></script>
 <script type="text/javascript" src="myflow.jpdl3.js"></script>
 <script type="text/javascript" src="myflow.editors.js"></script>
 <script type="text/javascript">
+
+		function add(obj){
+            $(obj).parent('td').parent('tr').after('<tr><td><input></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr>');
+        };
+
+         function remove(obj){
+            $(obj).parent('td').parent('tr').remove();
+        };
+
 	$(function() {
 		$('#myflow')
 				.myflow(
 						{
 							basePath : "",
+							restore : {},
+							/*
 							restore : eval("({states:{rect1:{type:'start',text:{text:'开始'}, attr:{ x:384, y:10, width:101, height:50}, props:{text:{value:'start'},temp1:{value:''},temp2:{value:''}}}," +
 								"rect2:{type:'receive',text:{text:'接收'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'接收'},temp1:{value:''},temp2:{value:''},temp3:{value:'invoke',label:'what',editor:''}}}," +
 								"rect3:{type:'invoke',text:{text:'调用'}, attr:{ x:282, y:322, width:103, height:50}, props:{text:{value:'调用'},temp1:{value:'aaa'},temp2:{value:''}}}," +
@@ -36,7 +39,8 @@
 								"path14:{from:'rect11',to:'rect12', dots:[],text:{text:'TO 结束'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
 								"path15:{from:'rect12',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
 								"path16:{from:'rect11',to:'rect3', dots:[],text:{text:'TO 调用'},textPos:{x:0,y:-10}, props:{text:{value:''}}}}," +
-								"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"
+								"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),
+							*/
 									/*"({states:{rect1:{type:'start',text:{text:'开始'}, attr:{ x:384, y:10, width:101, height:50}, props:{text:{value:'start'},temp1:{value:''},temp2:{value:''}}}," +
 								"rect2:{type:'receive',text:{text:'接收'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'input value'},temp1:{value:''},temp2:{value:''},assignee:{value:''},form:{value:''},desc:{value:''}}}," +
 								"rect3:{type:'invoke',text:{text:'调用'}, attr:{ x:384, y:209, width:103, height:50}, props:{text:{value:'invoke'},temp1:{value:''},temp2:{value:''}}}," +
@@ -47,15 +51,19 @@
 										"path12:{from:'rect3',to:'rect5', dots:[],text:{text:'TO 返回'},textPos:{x:24,y:-5}, props:{text:{value:''}}}," +
 										"path13:{from:'rect5',to:'rect7', dots:[],text:{text:'TO 结束'},textPos:{x:41,y:8}, props:{text:{value:''}}}," +
 										"path14:{from:'rect7',to:'rect9', dots:[],text:{text:'TO 任务5'},textPos:{x:36,y:-5}, props:{text:{value:''}}}}," +
-										"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"*/),
+										"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),*/
 							tools : {
 								save : {
 									onclick : function(data) {
-									    console.log('save:\n' + data);
+									    console.log(data);
 									}
 								}
 							}
 						});
+
+
+
+
 
 	});
 </script>
@@ -166,13 +174,9 @@ body {
 	src="img/16/if.gif" />	判断</div>
 <div class="node state" id="end-error" type="end-error"><img
 	src="img/16/end_event_error.png" />&nbsp;&nbsp;错误</div>
-
-
-
-
 </div>
 
-<div id="myflow_props"	style="position: absolute; top: 30; right: 50; background-color: #fff; width: 220px; padding: 3px;"
+<div id="myflow_props"	style="position: absolute; top: 30; right: 50; background-color: #fff; width: 320px; padding: 3px;"
 	class="ui-widget-content">	<!-- 属性框 -->
 <div id="myflow_props_handle" class="ui-widget-header">属性</div>
 <table border="1" width="100%" cellpadding="0" cellspacing="0">

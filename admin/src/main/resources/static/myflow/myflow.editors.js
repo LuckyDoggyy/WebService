@@ -2,11 +2,45 @@
 var myflow = $.myflow;
 
 $.extend(true, myflow.editors, {
+
+
+	tableEditor : function(){
+		var _props,_k,_div,_src,_r;
+    		this.init = function(props, k, div, src, r){
+    			_props=props; _k=k; _div=div; _src=src; _r=r;
+				var value=_props[_k].value;
+
+				if(value){
+					var list=_props[_k].value.split(",");
+					var str='';
+					for (i in list){
+						str+='<tr><td><input value="'+list[i]+'"></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr>';
+					}
+					$('<table id="table_'+_div+'">'+str+'</table>').appendTo('#'+_div);
+				}else{
+					$('<table id="table"><tr><td><input style="width:100%;"/></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr></table>').appendTo('#'+_div);
+				}
+
+				$('#'+_div).data('editor', this);
+    		};
+
+    		this.destroy = function(){
+    			var array=new Array();
+    			$('#'+_div).find("tr").each(function(){
+				   var tdArr = $(this).children();
+				   var value = tdArr.eq(0).find("input").val();
+				   array.push(value);
+				});
+				_props[_k].value = array.join(",");
+    		}
+    	},
+
+
 	inputEditor : function(){
 		var _props,_k,_div,_src,_r;
 		this.init = function(props, k, div, src, r){
 			_props=props; _k=k; _div=div; _src=src; _r=r;
-			
+			//console.log(props[_k].value);
 			$('<input style="width:100%;"/>').val(props[_k].value).change(function(){
 				props[_k].value = $(this).val();
 			}).appendTo('#'+_div);

@@ -1226,27 +1226,26 @@
             e.empty();
             c.show();
             for (var l in m) {        //    展示属性
-                console.log(m[l].label);
                 e.append('<tr><th>' + m[l].label + '</th><td><div id="p' + l + '" class="editor"></div></td></tr>');
                 if (m[l].editor) {
                     m[l].editor().init(m, l, "p" + l, o, g)
                 }
             }
-
-            e.append('<tr id="myflowAddTR"><th>添加</th><td><input type="button" value="添加" id="myflowAddButton" onclick="b("#myflowAddButton").trigger(\'click\');"/></td></tr>');
             e.append('<tr id="myflowDelTR"><th>删除</th><td><input type="button" value="删除" onclick="if(confirm(\'确认删除？！\'))jQuery(document).trigger(\'keydown\',true);"/></td></tr>');
+
+            /*
+            e.append('<tr id="myflowAddTR"><th>添加</th><td><input type="button" value="添加" id="myflowAddButton" onclick="b("#myflowAddButton").trigger(\'click\');"/></td></tr>');
             b('#myflowAddButton').click(function(){
                 b('#myflowAddTR').before('<tr><th><input style="width:100%" id="templabel"></th><td><input style="width:100%" id="tempvalue"></div></td><td><input type="button" id="tempButton" value="确定" onclick=""></td></tr>');
             });
             b('#tempButton').click(function(){
 
             });
+            */
         };
 
         b(g).bind("showprops", d)
     };
-
-
 
 
 
