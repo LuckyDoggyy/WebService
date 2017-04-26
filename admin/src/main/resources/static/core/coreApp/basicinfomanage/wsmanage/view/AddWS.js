@@ -88,6 +88,14 @@ Ext.define("core.basicinfomanage.wsmanage.view.AddWS",
 							height: 200,
 							width: 300
 						},{
+							xtype : 'textarea',
+							fieldLabel : '输出配置',
+							anchor: '18%',
+							labelWidth: 70,
+							width: 230,
+							name : 'output',
+							allowBlank : true
+						},{
 							 xtype: 'button',
 							 text: '添加',
 							 ref : 'addWS',
