@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class FlowPraser {
 
+    //TODO 修改bug
     public static Node prase(String json) throws Exception {
         JsonPraseModel model = JsonUtils.objectFromJson(json, JsonPraseModel.class);
         Node head = null;

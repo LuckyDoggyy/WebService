@@ -72,7 +72,7 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
             text: {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'返回'},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
         }},
-    IF : {
+    if : {
         type : 'if',
         name : {text:'<<if>>'},
         text : {text:'判断'},

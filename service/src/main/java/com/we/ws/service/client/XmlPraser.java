@@ -1308,6 +1308,7 @@ public class XmlPraser {
             "<string>1.gif</string>\n" +
             "<string>2.gif</string>\n" +
             "</ArrayOfString>";
+    //private static String arrayconfig = "root.ArrayOfString.list(string)\n";
     private static String arrayconfig = "root.ArrayOfString.string\n";
 
     public static BeanMap praseXMl(Map<String, Object> configMap, String xml) throws Exception {
@@ -1331,6 +1332,7 @@ public class XmlPraser {
             if (ConfigConstant.MAPROOT.equals(property)) continue;
             if (root.getTagName().equals(property)) {
                 Object type = entry.getValue();
+                //TODO bug
                 if (type instanceof String && property.equals("ArrayOfString")) {
                     List<String> list = new ArrayList<>();
                     NodeList nodeList = root.getElementsByTagName(type.toString());
@@ -1475,8 +1477,8 @@ public class XmlPraser {
 
     private static void placeholder() {
         String sql = "1575175601: 江苏 扬州 江苏移动全球通卡";
-        String palce = "{mobile}: {pr} {city} {property}";
-        Pattern pattern = Pattern.compile("?<name>exp)");
+        String palce = "{mobile}: {p} {city} {property}";
+        Pattern pattern = Pattern.compile("([0-9]+): ([^ ]+) ([^ ]+) ([^ ]+)");
         Matcher matcher = pattern.matcher(sql);
         if (matcher.find()) {
             System.out.println(matcher.group(0));
@@ -1487,8 +1489,8 @@ public class XmlPraser {
     }
 
     public static void main(String[] args) throws Exception {
-        Map<String, Object> configmap = praseConfig(arrayconfig);
-        System.out.println(praseXMl(configmap, array));
+        Map<String, Object> configmap = praseConfig(tttconfig);
+        System.out.println(praseXMl(configmap, ttt));
 
 //        String json = XmlUtil.xml2Json(name);
 //        System.out.println(JsonUtils.toMap(json));
