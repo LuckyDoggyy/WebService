@@ -1,7 +1,5 @@
 package com.we.ws.service.client;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 /**
  * Description:
  *
@@ -14,11 +12,20 @@ public class ConfigLine {
     private String property;
     private String alies;
     private String type;
+    private String rule;
 
     private ConfigLine() {
     }
 
     public static ConfigLine of(String line) {
+        int start = line.indexOf("[");
+        int end = line.lastIndexOf("]");
+        String rule = null;
+        if (start != -1 && end != -1) {
+            rule = line.substring(start + 1, end);
+            line = line.substring(0, start - 1);
+        }
+
         String[] token = line.split("\\.");
         if (token.length != 3) {
             return null;
@@ -26,15 +33,17 @@ public class ConfigLine {
         ConfigLine configLine = new ConfigLine();
         configLine.setObjName(token[0]);
         configLine.setType(token[2]);
+        configLine.setRule(rule);
         try {
-            praseProperty(configLine, token[1]);
+            parseProperty(configLine, token[1]);
         } catch (Exception e) {
             return null;
         }
+
         return configLine;
     }
 
-    private static void praseProperty(ConfigLine configLine, String placeTwo) throws Exception {
+    private static void parseProperty(ConfigLine configLine, String placeTwo) throws Exception {
         int index = placeTwo.indexOf("(");
         if (index == -1) {
             configLine.setProperty(placeTwo);
@@ -45,7 +54,7 @@ public class ConfigLine {
         }
     }
 
-    public boolean typeIsBasic() {
+    public boolean typeIsDefined() {
         switch (type) {
             case ConfigConstant.STRING:
                 return true;
@@ -89,5 +98,17 @@ public class ConfigLine {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
+
+    public String getTypeWithRule() {
+        return type + "|" + rule;
     }
 }

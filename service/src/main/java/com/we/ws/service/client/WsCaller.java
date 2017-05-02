@@ -87,7 +87,7 @@ public class WsCaller {
             writer.close();
             return out.toString();
         } catch (Exception e) {
-            log.error("xml prase error :{}", e);
+            log.error("xml parse error :{}", e);
             return xml;
         }
     }
