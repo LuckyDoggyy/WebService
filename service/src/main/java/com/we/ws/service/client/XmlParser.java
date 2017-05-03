@@ -12,19 +12,37 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * soap:Envelope.soap:Envelope.soap:Body
+ * soap:Body.soap:Body.getMobileCodeInfoResponse
+ * getMobileCodeInfoResponse.getMobileCodeInfoResult.string
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * root.soap:Envelope.soap:Envelope
+ * soap:Envelope.soap:Body.soap:Body
+ * soap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse
+ * getMobileCodeInfoResponse.getMobileCodeInfoResult.string
  *
  * @author twogoods
  * @version 0.1
  * @since 2017-04-24
  */
 public class XmlParser {
-    public static BeanMap parseXMl(Map<String, Object> configMap, String xml) throws Exception {
+    public static Map<String, Object> parseXMl(Map<String, Object> configMap, String xml) throws Exception {
         Element root = preParser(xml);
-        BeanMap beanMap = doParse(configMap, root);
+        Map<String, Object> beanMap = doParseXml(configMap, root);
         return beanMap;
     }
 
@@ -55,8 +73,46 @@ public class XmlParser {
         }
     }
 
-    private static BeanMap doParse(Map<String, Object> configMap, Element root) throws Exception {
-        BeanGenerator generator = new BeanGenerator();
+    private static Map<String, Object> doParse(Map<String, Object> configMap, Element root) throws Exception {
+        Map<String, Object> valueMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : configMap.entrySet()) {
+
+            String[] properties = entry.getKey().split("\\|");
+            String property = null;
+            String alies = null;
+            if (properties.length == 2) {
+                property = properties[0];
+                alies = properties[1];
+            } else {
+                property = entry.getKey();
+            }
+
+
+            Object type = entry.getValue();
+            if (type instanceof String) {
+                NodeList propertyNode = root.getElementsByTagName(property);
+                if (propertyNode.getLength() == 1) {
+                    String value = propertyNode.item(0).getTextContent();
+                    valueMap.put(property, value);
+                } else {
+                    List<String> list = new ArrayList<>();
+                    for (int i = 0; i < propertyNode.getLength(); i++) {
+                        list.add(propertyNode.item(i).getTextContent());
+                    }
+                    valueMap.put(property, list);
+                }
+            } else {
+                Map<String, Object> config = (Map<String, Object>) type;
+                //上面是处理string和list,此处是有类嵌套结构的解析
+                Map<String, Object> map = doParseXml(config, root);
+                valueMap.put(property, map);
+            }
+        }
+        return valueMap;
+    }
+
+    private static Map<String, Object> doParseXml(Map<String, Object> configMap, Element root) throws Exception {
+        Element originRoot = root;
         Map<String, Object> valueMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : configMap.entrySet()) {
             String[] properties = entry.getKey().split("\\|");
@@ -68,153 +124,68 @@ public class XmlParser {
             } else {
                 property = entry.getKey();
             }
-            if (ConfigConstant.MAPROOT.equals(property)) continue;
-            if (root.getTagName().equals(property)) {
-                Object type = entry.getValue();
-                if (type instanceof String) {
-                    setMapValue(property, alies, (String) type, root.getTextContent(), String.class, generator, valueMap);
+            boolean rootChanged = false;
+            if (!root.getTagName().equals(property)) {
+                NodeList nodeList = root.getElementsByTagName(property);
+                if (nodeList.getLength() == 1) {
+                    root = (Element) nodeList.item(0);
+                    rootChanged = true;
                 } else {
-                    Map<String, Object> config = (Map<String, Object>) type;
-                    String typeStr = config.get(ConfigConstant.MAPROOT).toString();
-                    if (ConfigConstant.ARRAY.equals(typeStr)) {
-                        List<String> list = new ArrayList<>();
-                        String tagname = null;
-                        for (Map.Entry<String, Object> listentry : config.entrySet()) {
-                            tagname = listentry.getKey();
-                            if (!ConfigConstant.MAPROOT.equals(tagname)) {
-                                break;
-                            }
-                        }
-                        NodeList nodeList = root.getElementsByTagName(tagname);
+                    if (entry.getValue() instanceof Map) {
+                        List<Map> list = new ArrayList<>();
                         for (int i = 0; i < nodeList.getLength(); i++) {
-                            Node node = nodeList.item(i);
-                            list.add(node.getTextContent());
+                            list.add(doParseXml((Map<String, Object>) entry.getValue(), (Element) nodeList.item(i)));
                         }
-                        setMapValue(property, alies, null, list, List.class, generator, valueMap);
+                        setValue(property, alies, list, valueMap, null);
+                        continue;
                     } else {
-                        //上面是处理string和list,此处是有类嵌套结构的解析
-                        BeanMap beanMap = doParseXml((Map<String, Object>) type, root.getElementsByTagName(typeStr));
-                        setMapValue(property, alies, null, beanMap, BeanMap.class, generator, valueMap);
+                        //字符串数组里各字符串的rule切割,先不考虑
+                        List<String> list = new ArrayList<>();
+                        for (int i = 0; i < nodeList.getLength(); i++) {
+                            list.add(nodeList.item(i).getTextContent());
+                        }
+                        setValue(property, alies, list, valueMap, null);
+                        continue;
                     }
                 }
-            } else {
-                //TODO 这里程序不可达,TagName和设置的property要一样
-                System.out.println("TagName和设置的property的不一样!!!");
-//                NodeList list = root.getElementsByTagName(root.getTagName());
-//                BeanMap beanMap = doParseXml(configMap, list);
-//                valueMap.put(property, beanMap);
-            }
-        }
-        BeanMap beanMap = BeanMap.create(generator.create());
-        for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
-            beanMap.put(WordUtils.uncapitalize(entry.getKey()), entry.getValue());
-        }
-        return beanMap;
-    }
-
-    private static BeanMap doParseXml(Map<String, Object> configMap, NodeList elementList) {
-        BeanMap beanMap = null;
-        if(configMap.size()==1){
-
-        }
-        if (elementList.getLength() > 1) {
-            //list
-            BeanGenerator generator = new BeanGenerator();
-            String propertyList = configMap.get(ConfigConstant.MAPROOT).toString();
-            generator.addProperty(propertyList, List.class);
-            List<BeanMap> beanMaps = new ArrayList<>(elementList.getLength());
-            for (int i = 0; i < elementList.getLength(); i++) {
-                Node node = elementList.item(i);
-                if (node instanceof Element) {
-                    beanMaps.add(parseXmlItem(configMap, (Element) node));
-                }
-            }
-            beanMap = BeanMap.create(generator.create());
-            beanMap.put(WordUtils.uncapitalize(propertyList), beanMaps);
-        } else if (elementList.getLength() == 1) {
-            //单独的
-            BeanGenerator generator = new BeanGenerator();
-            String property = configMap.get(ConfigConstant.MAPROOT).toString();
-            generator.addProperty(property, BeanMap.class);
-            Node node = elementList.item(0);
-            BeanMap bean = null;
-            if (node instanceof Element) {
-                bean = parseXmlItem(configMap, (Element) node);
-            }
-            beanMap = BeanMap.create(generator.create());
-            beanMap.put(WordUtils.uncapitalize(property), bean);
-        }
-        return beanMap;
-    }
-
-    private static BeanMap getInType(Map<String, Object> configMap, NodeList elementList) {
-
-        return null;
-    }
-
-    private static BeanMap parseXmlItem(Map<String, Object> configMap, Element ele) {
-        BeanGenerator generator = new BeanGenerator();
-        Map<String, Object> valueMap = new HashMap<>();
-        for (Map.Entry<String, Object> entry : configMap.entrySet()) {
-            String[] properties;
-            if (configMap.size() == 1) {
-                properties = entry.getValue().toString().split("\\|");
-            } else {
-                properties = entry.getKey().split("\\|");
-            }
-            String property = null;
-            String alies = null;
-            if (properties.length == 2) {
-                property = properties[0];
-                alies = properties[1];
-            } else {
-                property = properties[0];
             }
 
-            if (ConfigConstant.MAPROOT.equals(property)) continue;
             Object type = entry.getValue();
             if (type instanceof String) {
-                NodeList propertyNode = ele.getElementsByTagName(property);
-                if (propertyNode.getLength() == 1) {
-                    String value = propertyNode.item(0).getTextContent();
-                    setMapValue(property, alies, (String) null, value, String.class, generator, valueMap);
-                } else {
-                    List<String> list = new ArrayList<>();
-                    for (int i = 0; i < propertyNode.getLength(); i++) {
-                        list.add(propertyNode.item(i).getTextContent());
-                    }
-                    setMapValue(property, alies, (String) null, list, List.class, generator, valueMap);
-                }
+                setValue(property, alies, root.getTextContent(), valueMap, (String) type);
             } else {
                 Map<String, Object> config = (Map<String, Object>) type;
-                String typeStr = config.get(ConfigConstant.MAPROOT).toString();
-                if (ConfigConstant.ARRAY.equals(typeStr)) {
-                    List<String> list = new ArrayList<>();
-                    String tagname = null;
-                    for (Map.Entry<String, Object> listentry : config.entrySet()) {
-                        tagname = listentry.getKey();
-                        if (!ConfigConstant.MAPROOT.equals(tagname)) {
-                            break;
-                        }
+                //上面是处理string和list,此处是有类嵌套结构的解析
+                Map<String, Object> map = doParseXml(config, root);
+                setValue(property, alies, map, valueMap, null);
+            }
+            if (rootChanged) {
+                root = originRoot;
+            }
+        }
+        return valueMap;
+    }
+
+    private static void setValue(String property, String alies, Object value, Map<String, Object> valueMap, String typeWithRule) {
+        valueMap.put(property, value);
+        if (!StringUtils.isEmpty(alies)) {
+            valueMap.put(alies, value);
+        }
+        if (!StringUtils.isEmpty(typeWithRule)) {
+            String[] token = typeWithRule.split("\\|");
+            if (token.length == 2) {
+                Map<String, String> values = new HashMap<>();
+                if(value instanceof String){
+                    parseplaceholder((String) value, token[1], values);
+                    for (Map.Entry<String, String> entry : values.entrySet()) {
+                        valueMap.put(entry.getKey(), entry.getValue());
                     }
-                    NodeList nodeList = ele.getElementsByTagName(tagname);
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        Node node = nodeList.item(i);
-                        list.add(node.getTextContent());
-                    }
-                    setMapValue(property, alies, null, list, List.class, generator, valueMap);
-                } else {
-                    BeanMap beanMap = doParseXml((Map<String, Object>) type, ele.getElementsByTagName(typeStr));
-                    setMapValue(property, alies, null, beanMap, BeanMap.class, generator, valueMap);
                 }
             }
         }
-        BeanMap beanMap = BeanMap.create(generator.create());
-        for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
-            beanMap.put(WordUtils.uncapitalize(entry.getKey()), entry.getValue());
-        }
-        return beanMap;
     }
+
+
 
     public static Map<String, Object> parseConfig(String config) {
         List<ConfigLine> configs = loadConfig(config);
@@ -235,7 +206,6 @@ public class XmlParser {
 
     private static Map<String, Object> doParseConfig(List<ConfigLine> configLines, String objName) {
         Map<String, Object> map = new HashMap<>();
-        map.put(ConfigConstant.MAPROOT, objName);
         for (ConfigLine configLine : configLines) {
             if (objName.equals(configLine.getObjName())) {
                 if (configLine.typeIsDefined()) {

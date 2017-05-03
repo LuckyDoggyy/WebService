@@ -9,9 +9,10 @@ import java.util.Map;
  *
  * @author twogoods
  * @version 0.1
- * @since 2017-05-02
+ * @since 2017-05-03
  */
 public class XmlParserTest {
+
 
     private static String ttt = "<DataSet xmlns=\"http://WebXml.com.cn/\">\n" +
             "<xs:schema xmlns=\"\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:msdata=\"urn:schemas-microsoft-com:xml-msdata\" id=\"Airlines\">\n" +
@@ -52,72 +53,7 @@ public class XmlParserTest {
             "<Week>12345</Week>\n" +
             "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +
             "<string>直辖市 上海</string>\n" +
-            "<string>上海</string>\n" +
-            "<string>2013</string>\n" +
-            "<string>2017/04/26 13:49:15</string>\n" +
             "<string>今日天气实况：气温：19℃；风向/风力：西北风 2级；湿度：69%</string>\n" +
-            "<string>紫外线强度：最弱。空气质量：良。</string>\n" +
-            "<string>\n" +
-            "紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。 感冒指数：易发，大幅度降温，湿度大，易感冒。 穿衣指数：较舒适，建议穿薄外套或牛仔裤等服装。 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。 运动指数：较不宜，有降水，推荐您在室内进行休闲运动。 空气污染指数：良，气象条件有利于空气污染物扩散。\n" +
-            "</string>\n" +
-            "<string>4月26日 小雨转阴</string>\n" +
-            "<string>14℃/20℃</string>\n" +
-            "<string>东北风3-4级转北风微风</string>\n" +
-            "<string>7.gif</string>\n" +
-            "</ArrayOfString>" +
-            "</AirlinesTime>\n" +
-
-            "<AirlinesTime diffgr:id=\"AirlinesTime102\" msdata:rowOrder=\"101\">\n" +
-            "<Company>东方航空</Company>\n" +
-            "<AirlineCode>MU3927</AirlineCode>\n" +
-            "<StartDrome>上海虹桥国际机场</StartDrome>\n" +
-            "<ArriveDrome>北京首都国际机场</ArriveDrome>\n" +
-            "<StartTime>21:50</StartTime>\n" +
-            "<ArriveTime>00:20</ArriveTime>\n" +
-            "<Mode>320</Mode>\n" +
-            "<AirlineStop>0</AirlineStop>\n" +
-            "<Week>123456日</Week>\n" +
-            "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +
-            "<string>直辖市 上海</string>\n" +
-            "<string>上海</string>\n" +
-            "<string>2013</string>\n" +
-            "<string>2017/04/26 13:49:15</string>\n" +
-            "<string>今日天气实况：气温：19℃；风向/风力：西北风 2级；湿度：69%</string>\n" +
-            "<string>紫外线强度：最弱。空气质量：良。</string>\n" +
-            "<string>\n" +
-            "紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。 感冒指数：易发，大幅度降温，湿度大，易感冒。 穿衣指数：较舒适，建议穿薄外套或牛仔裤等服装。 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。 运动指数：较不宜，有降水，推荐您在室内进行休闲运动。 空气污染指数：良，气象条件有利于空气污染物扩散。\n" +
-            "</string>\n" +
-            "<string>4月26日 小雨转阴</string>\n" +
-            "<string>14℃/20℃</string>\n" +
-            "<string>东北风3-4级转北风微风</string>\n" +
-            "<string>7.gif</string>\n" +
-            "</ArrayOfString>" +
-            "</AirlinesTime>\n" +
-
-            "<AirlinesTime diffgr:id=\"AirlinesTime103\" msdata:rowOrder=\"102\">\n" +
-            "<Company>吉祥航空</Company>\n" +
-            "<AirlineCode>HO1251</AirlineCode>\n" +
-            "<StartDrome>上海虹桥国际机场</StartDrome>\n" +
-            "<ArriveDrome>北京首都国际机场</ArriveDrome>\n" +
-            "<StartTime>21:50</StartTime>\n" +
-            "<ArriveTime>00:20</ArriveTime>\n" +
-            "<Mode>320</Mode>\n" +
-            "<AirlineStop>0</AirlineStop>\n" +
-            "<Week>123456日</Week>\n" +
-            "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +
-            "<string>直辖市 上海</string>\n" +
-            "<string>上海</string>\n" +
-            "<string>2013</string>\n" +
-            "<string>2017/04/26 13:49:15</string>\n" +
-            "<string>今日天气实况：气温：19℃；风向/风力：西北风 2级；湿度：69%</string>\n" +
-            "<string>紫外线强度：最弱。空气质量：良。</string>\n" +
-            "<string>\n" +
-            "紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。 感冒指数：易发，大幅度降温，湿度大，易感冒。 穿衣指数：较舒适，建议穿薄外套或牛仔裤等服装。 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。 运动指数：较不宜，有降水，推荐您在室内进行休闲运动。 空气污染指数：良，气象条件有利于空气污染物扩散。\n" +
-            "</string>\n" +
-            "<string>4月26日 小雨转阴</string>\n" +
-            "<string>14℃/20℃</string>\n" +
-            "<string>东北风3-4级转北风微风</string>\n" +
-            "<string>7.gif</string>\n" +
             "</ArrayOfString>" +
             "</AirlinesTime>\n" +
 
@@ -133,104 +69,48 @@ public class XmlParserTest {
             "<Week>1234</Week>\n" +
             "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +
             "<string>直辖市 上海</string>\n" +
-            "<string>上海</string>\n" +
-            "<string>2013</string>\n" +
-            "<string>2017/04/26 13:49:15</string>\n" +
             "<string>今日天气实况：气温：19℃；风向/风力：西北风 2级；湿度：69%</string>\n" +
-            "<string>紫外线强度：最弱。空气质量：良。</string>\n" +
-            "<string>\n" +
-            "紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。 感冒指数：易发，大幅度降温，湿度大，易感冒。 穿衣指数：较舒适，建议穿薄外套或牛仔裤等服装。 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。 运动指数：较不宜，有降水，推荐您在室内进行休闲运动。 空气污染指数：良，气象条件有利于空气污染物扩散。\n" +
-            "</string>\n" +
-            "<string>4月26日 小雨转阴</string>\n" +
-            "<string>14℃/20℃</string>\n" +
-            "<string>东北风3-4级转北风微风</string>\n" +
-            "<string>7.gif</string>\n" +
             "</ArrayOfString>" +
             "</AirlinesTime>\n" +
             "</Airlines>\n" +
             "</diffgr:diffgram>\n" +
             "</DataSet>";
 
-    private static String tttconfig = "root.DataSet.diffgr:diffgram\n" +
-            "diffgr:diffgram.Airlines(air).AirlinesTime\n" +
+    private static String tttconfig = "root.DataSet.DataSet\n" +
+            "DataSet.diffgr:diffgram.diffgr:diffgram\n" +
+            "diffgr:diffgram.Airlines(air).Airlines\n" +
+            "Airlines.AirlinesTime.AirlinesTime\n" +
             "AirlinesTime.Company.string\n" +
-            "AirlinesTime.ArrayOfString(weather).list\n" +
-            "list.string.string\n" +
+            "AirlinesTime.ArrayOfString.ArrayOfString\n" +
+            "ArrayOfString.string(weather).string\n" +
             "AirlinesTime.AirlineCode.string\n";
 
     @Test
     public void test1() throws Exception {
         Map<String, Object> configmap = XmlParser.parseConfig(tttconfig);
         System.out.println(configmap);
-        System.out.println(XmlParser.parseXMl(configmap, ttt));
+        Map<String,Object> result= XmlParser.parseXMl(configmap, ttt);
+        System.out.println(result);
     }
-
 
     private static String name = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
             "  <soap:Body>\n" +
             "    <getMobileCodeInfoResponse xmlns=\"http://WebXml.com.cn/\">\n" +
             "      <getMobileCodeInfoResult>1575175601：江苏 扬州 江苏移动全球通卡</getMobileCodeInfoResult>\n" +
-            "      <test>1575175601：江苏 扬州 江苏移动全球通卡</test>\n"+
             "    </getMobileCodeInfoResponse>\n" +
             "  </soap:Body>\n" +
             "</soap:Envelope>";
-    //private static String nameconfig = "root.soap:Envelope.soap:Body\nsoap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse\ngetMobileCodeInfoResponse.getMobileCodeInfoResult.string\n";
     private static String nameconfig = "root.soap:Envelope.soap:Envelope\n" +
             "soap:Envelope.soap:Body.soap:Body\n" +
             "soap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse\n" +
-            "getMobileCodeInfoResponse.getMobileCodeInfoResult.string\n";
+            "getMobileCodeInfoResponse.getMobileCodeInfoResult.string.[{mobile}：{province} {city} {property}]\n";
 
     @Test
     public void test2() throws Exception {
         Map<String, Object> configmap = XmlParser.parseConfig(nameconfig);
         System.out.println(configmap);
-        //System.out.println(XmlParser.parseXMl(configmap, name));
+        System.out.println(XmlParser.parseXMl(configmap, name));
 
-    }
-
-    private static String array = "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +
-            "<string>直辖市 上海</string>\n" +
-            "<string>上海</string>\n" +
-            "<string>2013</string>\n" +
-            "<string>2017/04/26 13:49:15</string>\n" +
-            "<string>今日天气实况：气温：19℃；风向/风力：西北风 2级；湿度：69%</string>\n" +
-            "<string>紫外线强度：最弱。空气质量：良。</string>\n" +
-            "<string>\n" +
-            "紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。 感冒指数：易发，大幅度降温，湿度大，易感冒。 穿衣指数：较舒适，建议穿薄外套或牛仔裤等服装。 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。 运动指数：较不宜，有降水，推荐您在室内进行休闲运动。 空气污染指数：良，气象条件有利于空气污染物扩散。\n" +
-            "</string>\n" +
-            "<string>4月26日 小雨转阴</string>\n" +
-            "<string>14℃/20℃</string>\n" +
-            "<string>东北风3-4级转北风微风</string>\n" +
-            "<string>7.gif</string>\n" +
-            "<string>2.gif</string>\n" +
-            "<string>4月27日 多云转晴</string>\n" +
-            "<string>14℃/22℃</string>\n" +
-            "<string>北风转西风微风</string>\n" +
-            "<string>1.gif</string>\n" +
-            "<string>0.gif</string>\n" +
-            "<string>4月28日 晴</string>\n" +
-            "<string>16℃/27℃</string>\n" +
-            "<string>西风转西南风微风</string>\n" +
-            "<string>0.gif</string>\n" +
-            "<string>0.gif</string>\n" +
-            "<string>4月29日 多云</string>\n" +
-            "<string>17℃/27℃</string>\n" +
-            "<string>西南风微风</string>\n" +
-            "<string>1.gif</string>\n" +
-            "<string>1.gif</string>\n" +
-            "<string>4月30日 多云转阴</string>\n" +
-            "<string>18℃/28℃</string>\n" +
-            "<string>南风转东北风微风</string>\n" +
-            "<string>1.gif</string>\n" +
-            "<string>2.gif</string>\n" +
-            "</ArrayOfString>";
-    private static String arrayconfig = "root.ArrayOfString(weather).list\nlist.string.string\n";
-
-    @Test
-    public void test3() throws Exception {
-        Map<String, Object> configmap = XmlParser.parseConfig(arrayconfig);
-        System.out.println(configmap);
-        System.out.println(XmlParser.parseXMl(configmap, array));
     }
 
 }
