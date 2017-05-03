@@ -60,7 +60,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                             items : [{
                                                      region: 'west',
                                                      xtype : 'wscallform',
-                                                     width: 360
+                                                     width: 460
                                                  },{
                                                     region: 'center',
                                                     xtype : 'form',
@@ -84,15 +84,48 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                         var form = window.down("panel[xtype=wscallform]");
                                         form.loadRecord(rec);
                                         resObj.rows.forEach(function(e){
-                                            var fd = new Ext.form.TextField({name: e.paramName,fieldLabel:e.paramName,allowBlank : true});
+                                            fd = new Ext.form.TextField({name: e.paramName,fieldLabel:e.paramName,allowBlank : true});
                                             //form.items.add(form.items.getCount()-1, fd);
                                             form.items.add(fd);
                                         });
+                                        fd = new Ext.form.TextField({name: 'out',fieldLabel:'输出参数',allowBlank : true});
+                                        form.items.add(fd);
                                         form.doLayout();
                                         window.show();
                                         return false;
-                                        }
-                                    }
+                                   }else if(node.action == 'viewOutput'){
+                                            var out= rec.get('output');
+                                            console.log(out);
+                                            var window = Ext.create('Ext.window.Window', {
+                                                       title : '输出配置',
+                                                       height : 280,
+                                                      width : 550,
+                                                      constrain : true,
+                                                      maximizable : true,
+                                                      layout : 'fit',
+                                                      fixed : true,
+                                                      modal : true,
+                                                       items : [{
+                                                                    region: 'center',
+                                                                    xtype : 'form',
+                                                                    layout: 'anchor',
+                                                                    defaults : {
+                                                                            anchor : '100%'
+                                                                        },
+                                                                    items:[{
+                                                                            xtype : 'textarea',
+                                                                            name: 'output',
+                                                                            height: 800
+                                                                            }]
+                                                                }]
+                                                    });
+                                            var area = window.down("panel[xtype=form]").down("textarea[name=output]");
+                                            area.setValue(out);
+                                            window.show();
+                                            return false;
+
+                                   }
+                                }
                              },
 
                             "panel[xtype=wscallform] button[ref=call]" : {
@@ -111,8 +144,11 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                 var value=wscallform.down("textfield[name="+e.paramName+"]").getValue();
                                                 serviceParams.push({'name':e.paramName,'value':value});
                                              });
+                                             var output=wscallform.down("textfield[name=out]").getValue();
                                              var paramStr=JSON.stringify(serviceParams);
+                                             params['sid']=params.sid;
                                              params['callParams']=paramStr;
+                                             params['out']=output;
                                              if (formObj.isValid()) {
                                                  var res = self.ajax({
                                                              url : "ws/callWs",
@@ -236,8 +272,8 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                 };
                                                 var window = Ext.create('Ext.window.Window', {
                                                             title : '修改服务信息',
-                                                            height : 320,
-                                                            width : 680,
+                                                            height : 400,
+                                                            width : 880,
                                                             constrain : true,
                                                             maximizable : true,
                                                             layout : 'border',
@@ -247,7 +283,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                                      region: 'west',
                                                                      xtype : 'updatewsform',
                                                                      id : 'updatewsform',
-                                                                     width: 360
+                                                                     width: 660
                                                                  },{
                                                                     region: 'center',
                                                                     xtype : 'grid',

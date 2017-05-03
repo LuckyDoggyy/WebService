@@ -39,7 +39,6 @@ public class ConfigLine {
         } catch (Exception e) {
             return null;
         }
-
         return configLine;
     }
 
@@ -109,6 +108,9 @@ public class ConfigLine {
     }
 
     public String getTypeWithRule() {
-        return type + "|" + rule;
+        if (rule != null) {
+            return type + "|" + rule;
+        }
+        return type;
     }
 }

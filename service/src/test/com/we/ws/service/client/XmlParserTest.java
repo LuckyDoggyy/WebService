@@ -166,14 +166,26 @@ public class XmlParserTest {
     }
 
 
-    private static String name = "<string xmlns=\"http://WebXml.com.cn/\">1575175601：江苏 扬州 江苏移动全球通卡</string>";
-    private static String nameconfig = "root.string.string.[{mobile}：{province} {city} {property}]\n";
+    private static String name = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+            "  <soap:Body>\n" +
+            "    <getMobileCodeInfoResponse xmlns=\"http://WebXml.com.cn/\">\n" +
+            "      <getMobileCodeInfoResult>1575175601：江苏 扬州 江苏移动全球通卡</getMobileCodeInfoResult>\n" +
+            "      <test>1575175601：江苏 扬州 江苏移动全球通卡</test>\n"+
+            "    </getMobileCodeInfoResponse>\n" +
+            "  </soap:Body>\n" +
+            "</soap:Envelope>";
+    //private static String nameconfig = "root.soap:Envelope.soap:Body\nsoap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse\ngetMobileCodeInfoResponse.getMobileCodeInfoResult.string\n";
+    private static String nameconfig = "root.soap:Envelope.soap:Envelope\n" +
+            "soap:Envelope.soap:Body.soap:Body\n" +
+            "soap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse\n" +
+            "getMobileCodeInfoResponse.getMobileCodeInfoResult.string\n";
 
     @Test
     public void test2() throws Exception {
         Map<String, Object> configmap = XmlParser.parseConfig(nameconfig);
         System.out.println(configmap);
-        System.out.println(XmlParser.parseXMl(configmap, name));
+        //System.out.println(XmlParser.parseXMl(configmap, name));
+
     }
 
     private static String array = "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://WebXml.com.cn/\">\n" +

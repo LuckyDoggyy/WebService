@@ -64,6 +64,20 @@ Ext.define("core.basicinfomanage.wsmanage.view.WsGrid", {
 			},{
 				  xtype:'actioncolumn',
 				  width:80,
+				  text: '输出配置',
+				  align: 'center',
+				  items: [{
+					  action: 'viewOutput',
+					  icon: 'core/css/imgs/form/view.png',
+					  tooltip: '查看输出配置',
+					  handler: function(grid, rowIndex, colIndex, node) {
+						  var rec = grid.getStore().getAt(rowIndex);
+						  this.fireEvent('itemclick', rec, node);
+					  }
+				  }]
+			  },{
+				  xtype:'actioncolumn',
+				  width:80,
 				  text: '请求参数',
 				  align: 'center',
 				  items: [{

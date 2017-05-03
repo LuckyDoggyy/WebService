@@ -90,12 +90,12 @@ public class WebServiceController extends BaseController {
 
     @RequestMapping("callWs")
     @ResponseBody
-    public Map<String, Object> callWs(Service service, String callParams) {
+    public Map<String, Object> callWs(Service service, String callParams, String out) {
         Map<String, Object> result = new HashMap<>();
         List<RequestParam> list = JsonUtils.listFromJson(callParams, RequestParam.class);
         result.put("success", true);
         try {
-            result.put("obj", WsCaller.call(service.getUrl(), service.getTargetNamespace(), service.getMethod(), list));
+            result.put("obj", WsCaller.call(service.getUrl(), service.getTargetNamespace(), service.getMethod(), list, service.getOutput(), out));
         } catch (Exception e) {
             log.error("webservice call error:{}", e);
             result.put("obj", "调用异常");

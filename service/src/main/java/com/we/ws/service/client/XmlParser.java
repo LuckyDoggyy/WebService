@@ -114,6 +114,9 @@ public class XmlParser {
 
     private static BeanMap doParseXml(Map<String, Object> configMap, NodeList elementList) {
         BeanMap beanMap = null;
+        if(configMap.size()==1){
+
+        }
         if (elementList.getLength() > 1) {
             //list
             BeanGenerator generator = new BeanGenerator();
@@ -144,24 +147,44 @@ public class XmlParser {
         return beanMap;
     }
 
+    private static BeanMap getInType(Map<String, Object> configMap, NodeList elementList) {
+
+        return null;
+    }
+
     private static BeanMap parseXmlItem(Map<String, Object> configMap, Element ele) {
         BeanGenerator generator = new BeanGenerator();
         Map<String, Object> valueMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : configMap.entrySet()) {
-            String[] properties = entry.getKey().split("\\|");
+            String[] properties;
+            if (configMap.size() == 1) {
+                properties = entry.getValue().toString().split("\\|");
+            } else {
+                properties = entry.getKey().split("\\|");
+            }
             String property = null;
             String alies = null;
             if (properties.length == 2) {
                 property = properties[0];
                 alies = properties[1];
             } else {
-                property = entry.getKey();
+                property = properties[0];
             }
+
             if (ConfigConstant.MAPROOT.equals(property)) continue;
             Object type = entry.getValue();
             if (type instanceof String) {
-                String value = getSingleValueInEle(ele, property);
-                setMapValue(property, alies, (String) null, value, String.class, generator, valueMap);
+                NodeList propertyNode = ele.getElementsByTagName(property);
+                if (propertyNode.getLength() == 1) {
+                    String value = propertyNode.item(0).getTextContent();
+                    setMapValue(property, alies, (String) null, value, String.class, generator, valueMap);
+                } else {
+                    List<String> list = new ArrayList<>();
+                    for (int i = 0; i < propertyNode.getLength(); i++) {
+                        list.add(propertyNode.item(i).getTextContent());
+                    }
+                    setMapValue(property, alies, (String) null, list, List.class, generator, valueMap);
+                }
             } else {
                 Map<String, Object> config = (Map<String, Object>) type;
                 String typeStr = config.get(ConfigConstant.MAPROOT).toString();
@@ -204,7 +227,7 @@ public class XmlParser {
         List<ConfigLine> configLines = new ArrayList<>(lines.length);
         for (String line : lines) {
             ConfigLine configLine = ConfigLine.of(line);
-            if (config == null) continue;
+            if (configLine == null) continue;
             configLines.add(configLine);
         }
         return configLines;

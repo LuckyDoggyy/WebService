@@ -21,15 +21,15 @@ public interface WebServiceMapper {
 
     int countListService(@Param("sid") String sid, @Param("servicename") String serviceName);
 
-    @Insert("insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method, version) " +
-            "values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{version})")
+    @Insert("insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method,output, version) " +
+            "values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{output},#{version})")
     int insertWS(Service service);
 
 
     int insertWSReturnKey(Service service);
 
     @Update("update T_Service set servicename=#{serviceName}, remark=#{remark},url=#{url}, wsdlurl=#{wsdlUrl}, " +
-            "targetnamespace=#{targetNamespace}, method=#{method} where sid=#{sid}")
+            "targetnamespace=#{targetNamespace}, method=#{method},output=#{output} where sid=#{sid}")
     int updateWS(Service service);
 
     int delete(@Param("sids") String[] sids);

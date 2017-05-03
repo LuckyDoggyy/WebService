@@ -57,6 +57,15 @@ Ext.define("core.basicinfomanage.wsmanage.view.AddWS",
 							name : 'remark',
 							allowBlank : true
 						},{
+							xtype : 'textarea',
+							fieldLabel : '输出配置',
+							anchor: '18%',
+							style:"wrap : soft;",
+							labelWidth: 70,
+							width: 560,
+							name : 'output',
+							allowBlank : true
+						},{
 							xtype : 'grid',
 							columnLines : true,
 							store: "core.basicinfomanage.wsmanage.store.NewParamStore",
@@ -87,14 +96,6 @@ Ext.define("core.basicinfomanage.wsmanage.view.AddWS",
 							plugins: [ Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1 })],
 							height: 200,
 							width: 300
-						},{
-							xtype : 'textarea',
-							fieldLabel : '输出配置',
-							anchor: '18%',
-							labelWidth: 70,
-							width: 230,
-							name : 'output',
-							allowBlank : true
 						},{
 							 xtype: 'button',
 							 text: '添加',

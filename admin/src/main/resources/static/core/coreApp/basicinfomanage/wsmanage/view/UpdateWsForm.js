@@ -53,6 +53,14 @@ Ext.define("core.basicinfomanage.wsmanage.view.UpdateWsForm", {
 						 width: 230,
 						name : 'remark',
 						allowBlank : true
+					},{
+						xtype : 'textarea',
+						fieldLabel : '输出配置',
+						style:"wrap:soft;",
+						labelWidth: 70,
+						width: 280,
+						name : 'output',
+						allowBlank : true
 					}],
 			buttons : [{
 						text : '修改',

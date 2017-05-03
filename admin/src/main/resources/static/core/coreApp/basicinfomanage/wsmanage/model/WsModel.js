@@ -17,6 +17,8 @@ Ext.define("core.basicinfomanage.wsmanage.model.WsModel", {
 					},{
 						name : "method"
 					},{
+						name : "output"
+					},{
 						name : "version"
 					}]
 		});
