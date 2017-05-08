@@ -10,7 +10,7 @@ import java.util.Map;
  * @version 0.1
  * @since 2017-04-14
  */
-public class JsonPraseModel {
+public class JsonParseModel {
     private Map<String, State> states;
     private Map<String, Path> paths;
     private Map<String, FlowProp> props;

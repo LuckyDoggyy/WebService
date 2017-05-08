@@ -2,6 +2,8 @@ package com.we.ws.service.client;
 
 import com.squareup.okhttp.*;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import com.we.ws.common.util.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -13,7 +15,9 @@ import javax.xml.namespace.QName;
 import javax.xml.soap.*;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -27,8 +31,59 @@ public class WsCaller {
 
     private static OkHttpClient client = new OkHttpClient();
 
+    public static String generateCallout(String originXml, String outConfig, String out) throws Exception {
+        String[] outputs = out.split(",");
+        Map<String, Object> configmap = XmlParser.parseConfig(outConfig);
+        System.out.println("config:--" + configmap);
+        Map<String, Object> callResult = XmlParser.parseXMl(configmap, originXml);
+        System.out.println("map:--" + callResult);
+        if (outputs.length == 1) {
+            Object value = getMapValue(callResult, outputs[0]);
+            if (value == null) {
+                return "";
+            }
+            return JsonUtils.jsonFromObject(value);
+        }
+        Map<String, Object> valueMap = new HashMap<>();
+        for (String param : outputs) {
+            Object value = getMapValue(callResult, param);
+            if (value != null) {
+                valueMap.put(param, value);
+            }
+        }
+        if (valueMap.size() > 1) {
+            return JsonUtils.jsonFromObject(valueMap);
+        }
+        return "";
+    }
+
+    private static Object getMapValue(Map<String, Object> map, String param) {
+        Object value = map.get(param);
+        if (value == null) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if (entry.getValue() instanceof Map) {
+                    value = getMapValue((Map<String, Object>) entry.getValue(), param);
+                    break;
+                }
+            }
+        }
+        return value;
+    }
+
     public static String call(String url, String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
-        return exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
+        return formatXml(exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams)));
+    }
+
+    public static String call(String url, String targetNamespace, String method, List<RequestParam> requestParams, String outConfig, String out) throws Exception {
+        if (StringUtils.isEmpty(out) || StringUtils.isEmpty(outConfig)) {
+            return call(url, targetNamespace, method, requestParams);
+        }
+        String originXml = exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
+        try {
+            return JsonUtils.formatJson(generateCallout(originXml, outConfig, out));
+        } catch (Exception e) {
+            return formatXml(originXml);
+        }
     }
 
     private static String generateSoap12Message(String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
@@ -70,8 +125,7 @@ public class WsCaller {
         RequestBody body = RequestBody.create(mediaType, soapStr);
         Request request = new Request.Builder().url(url).post(body).build();
         Response response = client.newCall(request).execute();
-        String res = response.body().string();
-        return formatXml(res);
+        return response.body().string();
     }
 
     private static String formatXml(String xml) {
@@ -87,7 +141,7 @@ public class WsCaller {
             writer.close();
             return out.toString();
         } catch (Exception e) {
-            log.error("xml prase error :{}", e);
+            log.error("xml parse error :{}", e);
             return xml;
         }
     }

@@ -2,7 +2,7 @@ package com.we.ws.admin.flow;
 
 import com.we.ws.admin.domain.Flow;
 import com.we.ws.admin.flow.json.FlowProp;
-import com.we.ws.admin.flow.json.JsonPraseModel;
+import com.we.ws.admin.flow.json.JsonParseModel;
 import com.we.ws.admin.flow.json.Path;
 import com.we.ws.admin.flow.json.State;
 import com.we.ws.admin.flow.node.*;
@@ -17,20 +17,21 @@ import java.util.Map;
  * @version 0.1
  * @since 2017-04-14
  */
-public class FlowPraser {
+public class FlowParser {
 
-    public static Node prase(String json) throws Exception {
-        JsonPraseModel model = JsonUtils.objectFromJson(json, JsonPraseModel.class);
+    //TODO 修改bug
+    public static Node parse(String json) throws Exception {
+        JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
         Node head = null;
-        Map<String, Node> prasedNodes = new HashMap<>();
+        Map<String, Node> parsedNodes = new HashMap<>();
         Map<String, State> states = model.getStates();
         Map<String, Path> pathes = model.getPaths();
         for (Map.Entry<String, Path> entry : pathes.entrySet()) {
             Path path = entry.getValue();
             State fromState = states.get(path.getFrom());
             State toState = states.get(path.getTo());
-            Node toNode = getOrGenNode(toState, path.getTo(), prasedNodes);
-            Node fromNode = getOrGenNode(fromState, path.getFrom(), prasedNodes);
+            Node toNode = getOrGenNode(toState, path.getTo(), parsedNodes);
+            Node fromNode = getOrGenNode(fromState, path.getFrom(), parsedNodes);
             if (fromNode instanceof If) {
                 handleIfNode(fromNode, toNode, path);
             } else if (fromNode instanceof Start) {
@@ -47,18 +48,18 @@ public class FlowPraser {
         return head;
     }
 
-    public static Pair<Node, Flow> praseWithFlow(String json) throws Exception {
-        JsonPraseModel model = JsonUtils.objectFromJson(json, JsonPraseModel.class);
+    public static Pair<Node, Flow> parseWithFlow(String json) throws Exception {
+        JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
         Node head = null;
-        Map<String, Node> prasedNodes = new HashMap<>();
+        Map<String, Node> parsedNodes = new HashMap<>();
         Map<String, State> states = model.getStates();
         Map<String, Path> pathes = model.getPaths();
         for (Map.Entry<String, Path> entry : pathes.entrySet()) {
             Path path = entry.getValue();
             State fromState = states.get(path.getFrom());
             State toState = states.get(path.getTo());
-            Node toNode = getOrGenNode(toState, path.getTo(), prasedNodes);
-            Node fromNode = getOrGenNode(fromState, path.getFrom(), prasedNodes);
+            Node toNode = getOrGenNode(toState, path.getTo(), parsedNodes);
+            Node fromNode = getOrGenNode(fromState, path.getFrom(), parsedNodes);
             if (fromNode instanceof If) {
                 handleIfNode(fromNode, toNode, path);
             } else if (fromNode instanceof Start) {
@@ -75,16 +76,16 @@ public class FlowPraser {
 
 
         FlowProp flowProp = model.getProps();
-        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(),json);
+        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json);
         return Pair.of(head, flow);
     }
 
 
-    private static Node getOrGenNode(State state, String nodeName, Map<String, Node> prasedNodes) {
+    private static Node getOrGenNode(State state, String nodeName, Map<String, Node> parsedNodes) {
         Node node;
-        if ((node = prasedNodes.get(nodeName)) == null) {
+        if ((node = parsedNodes.get(nodeName)) == null) {
             node = generateNodebyState(state);
-            prasedNodes.put(nodeName, node);
+            parsedNodes.put(nodeName, node);
         }
         return node;
     }

@@ -14,6 +14,7 @@ public class Service {
     private String wsdlUrl;
     private String targetNamespace;
     private String method;
+    private String output;
     private int version=2;
     private int state;
 
@@ -89,6 +90,14 @@ public class Service {
         this.targetNamespace = targetNamespace;
     }
 
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
     @Override
     public String toString() {
         return "Service{" +
@@ -99,6 +108,7 @@ public class Service {
                 ", wsdlUrl='" + wsdlUrl + '\'' +
                 ", targetNamespace='" + targetNamespace + '\'' +
                 ", method='" + method + '\'' +
+                ", output='" + output + '\'' +
                 ", version=" + version +
                 ", state=" + state +
                 '}';

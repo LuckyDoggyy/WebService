@@ -2,7 +2,7 @@ package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Flow;
 import com.we.ws.admin.flow.FlowCache;
-import com.we.ws.admin.flow.FlowPraser;
+import com.we.ws.admin.flow.FlowParser;
 import com.we.ws.admin.flow.node.Node;
 import com.we.ws.admin.service.FlowService;
 import com.we.ws.common.data.Pair;
@@ -35,7 +35,7 @@ public class FlowController extends BaseController {
     @ResponseBody
     public Map<String, Object> addFlow(String json) throws Exception {
         Map<String, Object> map = new HashMap();
-        Pair<Node, Flow> pair = FlowPraser.praseWithFlow(json);
+        Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
         flowService.add(flow);
         FlowCache.addCache(flow.getAutoid(), pair.getL());
@@ -47,7 +47,7 @@ public class FlowController extends BaseController {
     @ResponseBody
     public Map<String, Object> updateFlow(Integer autoid, String json) throws Exception {
         Map<String, Object> map = new HashMap();
-        Pair<Node, Flow> pair = FlowPraser.praseWithFlow(json);
+        Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
         flow.setAutoid(autoid);
         if (flowService.update(flow)) {
