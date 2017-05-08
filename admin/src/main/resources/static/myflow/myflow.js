@@ -243,7 +243,7 @@
             g = "rect" + a.util.nextId(),
             E = b.extend(true, {},
                 a.config.rect, p),
-            C = m,      //      raphael画笔
+            C = m,      //  raphael画笔
             t,      //  矩形
             e,      //  图标
             n,      //  状态名称

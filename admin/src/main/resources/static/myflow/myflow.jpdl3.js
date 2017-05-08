@@ -49,10 +49,11 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         text : {text:'调用'},
         img : {src : 'img/16/invoke.gif',width : 16, height:16},
         props : {
-            text: {name:'text',label: '名称', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'调用'},
+		    id:{name:'serviceId',label:'服务ID',value:'',editor: function(){return new myflow.editors.inputEditor();}},
+            text: {name:'text',label: '名称', value:'调用', editor: function(){return new myflow.editors.textEditor();}},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
-            input: {name:'input', label : '输入', editor: function(){return new myflow.editors.tableEditor();}},
-            output: {name:'output', label : '输出', value:'', editor: function(){return new myflow.editors.tableEditor();}}
+            input: {name:'input', label : '输入', value:'',editor: function(){return new myflow.editors.multiEditor();}},
+            output: {name:'output', label : '输出', value:'', editor: function(){return new myflow.editors.multiEditor();}}
         }},
     receive : {
         type : 'invoke',
@@ -61,7 +62,8 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         img : {src : 'img/16/receive.gif',width : 16, height:16},
         props : {
             text: {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'接收'},
-            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
+            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+            input: {name:'input', label : '流程输入', value:'',editor: function(){return new myflow.editors.multiEditor();}}
         }},
     reply : {
         type : 'invoke',
@@ -70,15 +72,47 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         img : {src : 'img/16/reply.gif',width : 16, height:16},
         props : {
             text: {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'返回'},
-            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
+            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+            output: {name:'input', label : '流程结果', value:'',editor: function(){return new myflow.editors.inputEditor();}},
         }},
-    IF : {
+    if : {
         type : 'if',
         name : {text:'<<if>>'},
         text : {text:'判断'},
         img : {src : 'img/16/if.gif',width : 16, height:16},
         props : {
-            text: {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'if'},
+            text : {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.inputEditor();}},
+            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+            input: {name:'input', label : '条件', value:'',editor: function(){return new myflow.editors.multiEditor();}},
+            judge: {name:'judge', label: '判断', value:'', editor: function(){return new myflow.editors.inputEditor();}}
+        }},
+    while : {
+        type : 'while',
+        name : {text:'<<while>>'},
+        text : {text:'循环'},
+        img : {src : 'img/16/while.gif',width : 16, height:16},
+        props : {
+            text : {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}},
+            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+            judge: {name:'judge', label: '循环条件', value:'', editor: function(){return new myflow.editors.inputEditor();}}
+        }},
+    assign : {
+        type : 'assign',
+        name : {text:'<<assign>>'},
+        text : {text:'node'},
+        img : {src : 'img/16/assign.gif',width : 16, height:16},
+        props : {
+            text : {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}},
+            desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+            judge: {name:'judge', label: '判断', value:'', editor: function(){return new myflow.editors.inputEditor();}}
+        }},
+    flow : {
+        type : 'flow',
+        name : {text:'<<flow>>'},
+        text : {text:'并行'},
+        img : {src : 'img/16/flow.gif',width : 16, height:16},
+        props : {
+            text : {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
             judge: {name:'judge', label: '判断', value:'', editor: function(){return new myflow.editors.inputEditor();}}
         }},

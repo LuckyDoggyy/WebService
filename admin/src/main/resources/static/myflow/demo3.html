@@ -23,49 +23,32 @@
 				.myflow(
 						{
 							basePath : "",
-							restore : eval("({states:{rect1:{type:'start',text:{text:'开始'}, attr:{ x:384, y:10, width:101, height:50}, props:{text:{value:'start'}}}," +
-                                "rect2:{type:'receive',text:{text:'接收'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'接收'}}}," +
-                                "rect3:{type:'invoke',text:{text:'调用'}, attr:{ x:282, y:322, width:103, height:50}, props:{text:{value:'调用'}}}," +
-                                "rect4:{type:'reply',text:{text:'返回'}, attr:{ x:390, y:417, width:100, height:50}, props:{text:{value:'返回'}}}," +
-                                "rect5:{type:'end',text:{text:'结束'}, attr:{ x:390, y:517, width:103, height:50}, props:{text:{value:'结束'}}}," +
-                                "rect11:{type:'if',text:{text:'判断天气'}, attr:{ x:397, y:205, width:100, height:50}, props:{text:{value:'判断天气'}}}," +
-                                "rect12:{type:'invoke',text:{text:'结束'}, attr:{ x:482, y:311, width:100, height:50}, props:{text:{value:'结束'}}}}," +
-                                "paths:{path6:{from:'rect1',to:'rect2', dots:[],text:{text:'TO 接收'},textPos:{x:37,y:-4}, props:{text:{value:''}}}," +
-                                "path8:{from:'rect3',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:24,y:-5}, props:{text:{value:''}}}," +
-                                "path9:{from:'rect4',to:'rect5', dots:[],text:{text:'TO 结束'},textPos:{x:41,y:8}, props:{text:{value:''}}}," +
-                                "path13:{from:'rect2',to:'rect11', dots:[],text:{text:'TO 判断'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-                                "path14:{from:'rect11',to:'rect12', dots:[],text:{text:'TO 结束'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-                                "path15:{from:'rect12',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-                                "path16:{from:'rect11',to:'rect3', dots:[],text:{text:'TO 调用'},textPos:{x:0,y:-10}, props:{text:{value:''}}}}," +
-                                "props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),
-							/*
-							restore : eval("({states:{rect1:{type:'start',text:{text:'开始'}, attr:{ x:384, y:10, width:101, height:50}, props:{text:{value:'start'},temp1:{value:''},temp2:{value:''}}}," +
-								"rect2:{type:'receive',text:{text:'接收'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'接收'},temp1:{value:''},temp2:{value:''},temp3:{value:'invoke',label:'what',editor:''}}}," +
-								"rect3:{type:'invoke',text:{text:'调用'}, attr:{ x:282, y:322, width:103, height:50}, props:{text:{value:'调用'},temp1:{value:'aaa'},temp2:{value:''}}}," +
-								"rect4:{type:'reply',text:{text:'返回'}, attr:{ x:390, y:417, width:100, height:50}, props:{text:{value:'返回'},temp1:{value:''},temp2:{value:''}}}," +
-								"rect5:{type:'end',text:{text:'结束'}, attr:{ x:390, y:517, width:103, height:50}, props:{text:{value:'结束'},temp1:{value:''},temp2:{value:''}}}," +
-								"rect11:{type:'if',text:{text:'判断天气'}, attr:{ x:397, y:205, width:100, height:50}, props:{text:{value:'判断天气'},temp1:{value:'晴'},temp2:{value:''}}}," +
-								"rect12:{type:'invoke',text:{text:'结束'}, attr:{ x:482, y:311, width:100, height:50}, props:{text:{value:'结束'},temp1:{value:''},temp2:{value:''}}}}," +
-								"paths:{path6:{from:'rect1',to:'rect2', dots:[],text:{text:'TO 接收'},textPos:{x:37,y:-4}, props:{text:{value:''}}}," +
-								"path8:{from:'rect3',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:24,y:-5}, props:{text:{value:''}}}," +
-								"path9:{from:'rect4',to:'rect5', dots:[],text:{text:'TO 结束'},textPos:{x:41,y:8}, props:{text:{value:''}}}," +
-								"path13:{from:'rect2',to:'rect11', dots:[],text:{text:'TO 判断'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-								"path14:{from:'rect11',to:'rect12', dots:[],text:{text:'TO 结束'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-								"path15:{from:'rect12',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
-								"path16:{from:'rect11',to:'rect3', dots:[],text:{text:'TO 调用'},textPos:{x:0,y:-10}, props:{text:{value:''}}}}," +
-								"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),
-							*/
-									/*"({states:{rect1:{type:'start',text:{text:'开始'}, attr:{ x:384, y:10, width:101, height:50}, props:{text:{value:'start'},temp1:{value:''},temp2:{value:''}}}," +
-								"rect2:{type:'receive',text:{text:'接收'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'input value'},temp1:{value:''},temp2:{value:''},assignee:{value:''},form:{value:''},desc:{value:''}}}," +
-								"rect3:{type:'invoke',text:{text:'调用'}, attr:{ x:384, y:209, width:103, height:50}, props:{text:{value:'invoke'},temp1:{value:''},temp2:{value:''}}}," +
-								"rect5:{type:'reply',text:{text:'返回'}, attr:{ x:385, y:317, width:100, height:50}, props:{text:{value:'reply'},temp1:{value:''},temp2:{value:''},assignee:{value:''},form:{value:'invoke'},desc:{value:''}}}," +
-								"rect7:{type:'end',text:{text:'结束'}, attr:{ x:386, y:416, width:103, height:50}, props:{text:{value:'end'},temp1:{value:''},temp2:{value:''}}}}," +
-										"paths:{path10:{from:'rect1',to:'rect2', dots:[],text:{text:'TO 接收'},textPos:{x:37,y:-4}, props:{text:{value:''}}}," +
-										"path11:{from:'rect2',to:'rect3', dots:[],text:{text:'TO 调用'},textPos:{x:56,y:-1}, props:{text:{value:''}}}," +
-										"path12:{from:'rect3',to:'rect5', dots:[],text:{text:'TO 返回'},textPos:{x:24,y:-5}, props:{text:{value:''}}}," +
-										"path13:{from:'rect5',to:'rect7', dots:[],text:{text:'TO 结束'},textPos:{x:41,y:8}, props:{text:{value:''}}}," +
-										"path14:{from:'rect7',to:'rect9', dots:[],text:{text:'TO 任务5'},textPos:{x:36,y:-5}, props:{text:{value:''}}}}," +
-										"props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),*/
+							restore : eval("({states:" +
+								"{rect1:{type:'start',text:{text:'开始'}, attr:{ x:366, y:12, width:101, height:50}, props:{text:{value:'开始'}}}," +
+								"rect2:{type:'receive',text:{text:'接收'}, attr:{ x:363, y:91, width:100, height:50}, props:{text:{value:'接收'},desc:{value:'接受流程输入'},input:{value:':'}}}," +
+								"rect3:{type:'invoke',text:{text:'service1'}, attr:{ x:286, y:376, width:103, height:50}, props:{id:{value:''},text:{value:'service1'},desc:{value:''},input:{value:'phone number:11111'},output:{value:'city1:shanghai,city2:beijing'}}}," +
+								"rect4:{type:'reply',text:{text:'返回'}, attr:{ x:364, y:643, width:100, height:50}, props:{text:{value:'返回'},desc:{value:'返回流程结果'},output:{value:''}}}," +
+								"rect5:{type:'end',text:{text:'结束'}, attr:{ x:362, y:727, width:103, height:50}, props:{text:{value:'结束'}}}," +
+								"rect6:{type:'if',text:{text:'判断'}, attr:{ x:364, y:279, width:100, height:50}, props:{text:{value:'判断'},desc:{value:'根据条件判断'},input:{value:'param:value'},judge:{value:'if(param satisfy condition) choose path'}}}," +
+								"rect7:{type:'invoke',text:{text:'service2'}, attr:{ x:457, y:372, width:100, height:50}, props:{id:{value:''},text:{value:'service2'},desc:{value:''},input:{value:':'},output:{value:':'}}}," +
+								"rect15:{type:'assign',text:{text:'ifnode'}, attr:{ x:367, y:474, width:100, height:50}, props:{text:{value:''},desc:{value:'if result'},judge:{value:''}}}," +
+								"rect16:{type:'assign',text:{text:'whilenode'}, attr:{ x:369, y:555, width:100, height:50}, props:{text:{value:''},desc:{value:'while result'},judge:{value:''}}}," +
+								"rect17:{type:'while',text:{text:'循环'}, attr:{ x:363, y:180, width:100, height:50}, props:{text:{value:''},desc:{value:'循环'},judge:{value:''}}}}," +
+								"paths:{" +
+								"path8:{from:'rect1',to:'rect2', dots:[],text:{text:'TO 接收'},textPos:{x:37,y:-4}, props:{text:{value:''}}}," +
+								"path10:{from:'rect4',to:'rect5', dots:[],text:{text:'TO 结束'},textPos:{x:33,y:-3}, props:{text:{value:''}}}," +
+								"path12:{from:'rect6',to:'rect7', dots:[],text:{text:'TO 结束'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path14:{from:'rect6',to:'rect3', dots:[],text:{text:'TO 调用'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path18:{from:'rect3',to:'rect15', dots:[],text:{text:'TO ifnode'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path19:{from:'rect7',to:'rect15', dots:[],text:{text:'TO ifnode'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path20:{from:'rect15',to:'rect16', dots:[],text:{text:'TO whilenode'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path21:{from:'rect16',to:'rect4', dots:[],text:{text:'TO 返回'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path22:{from:'rect16',to:'rect17', dots:[{x:646,y:580},{x:643,y:204}],text:{text:'TO 循环'},textPos:{x:0,y:-10}, props:{text:{value:'TO 循环'}}}," +
+								"path23:{from:'rect17',to:'rect6', dots:[],text:{text:'TO 判断'},textPos:{x:0,y:-10}, props:{text:{value:''}}}," +
+								"path24:{from:'rect2',to:'rect17', dots:[],text:{text:'TO 循环'},textPos:{x:0,y:-10}, props:{text:{value:''}}}}," +
+								"props:" +
+								"{props:{name:{value:'新建流程'},flowid:{value:''},desc:{value:''}}}})"),
+
 							tools : {
 								save : {
 									onclick : function(data) {
@@ -186,8 +169,15 @@ body {
 	<hr />
 <div class="node state" id="if" type="if"><img
 	src="img/16/if.gif" />	判断</div>
+<div class="node state" id="while" type="while"><img
+	src="img/16/while.gif" />&nbsp;&nbsp;循环</div>
+<div class="node state" id="flow" type="flow"><img
+	src="img/16/flow.gif" />&nbsp;&nbsp;并行</div>
+<div class="node state" id="assign" type="assign"><img
+	src="img/16/assign.gif" />&nbsp;&nbsp;node</div>
 <div class="node state" id="end-error" type="end-error"><img
 	src="img/16/end_event_error.png" />&nbsp;&nbsp;错误</div>
+
 </div>
 
 <div id="myflow_props"	style="position: absolute; top: 30; right: 50; background-color: #fff; width: 320px; padding: 3px;"
