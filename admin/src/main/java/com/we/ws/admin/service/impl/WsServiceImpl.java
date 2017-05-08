@@ -40,6 +40,11 @@ public class WsServiceImpl implements WsService {
     }
 
     @Override
+    public Service getServiceBySid(String sid) {
+        return webServiceMapper.getServiceBySid(sid);
+    }
+
+    @Override
     public boolean addNewWS(Service service, String serviceParams) {
         if (!StringUtils.isEmpty(serviceParams)) {
             List<ServiceParam> list = JsonUtils.listFromJson(serviceParams, ServiceParam.class);

@@ -19,6 +19,8 @@ public interface WsService {
 
     int countListService(String sid, String name);
 
+    Service getServiceBySid(String sid);
+
     boolean addNewWS(Service service, String serviceParams);
 
     boolean updateWS(Service service, String serviceParams);

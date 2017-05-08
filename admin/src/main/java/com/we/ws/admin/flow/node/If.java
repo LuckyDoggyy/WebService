@@ -2,6 +2,8 @@ package com.we.ws.admin.flow.node;
 
 import com.we.ws.common.data.Pair;
 
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -21,7 +23,7 @@ public class If extends Node {
     }
 
     @Override
-    public Pair<Node, Object> handle(Object param) {
+    public Pair<Node, Map<String, Object>> handle(Map<String, Object> param) {
         return null;
     }
 

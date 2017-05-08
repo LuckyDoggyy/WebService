@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,9 +9,16 @@
     <script type="text/javascript" src="myflow.jpdl3.js"></script>
     <script type="text/javascript" src="myflow.editors.js"></script>
     <script type="text/javascript">
+    function add(obj){
+        $(obj).parent('td').parent('tr').after('<tr><td><input></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr>');
+    };
 
-$(function(){
-    var autoid=window.location.search.substring(1);
+    function remove(obj){
+        $(obj).parent('td').parent('tr').remove();
+    };
+
+	$(function() {
+	var autoid=window.location.search.substring(1);
     $.ajax({
         url:'../flow/getJson',
         type:'POST',
@@ -23,20 +29,46 @@ $(function(){
         timeout:5000,
         dataType:'json',
         success:function(data){
-            $('#myflow').myflow(
-	        $.extend(true,{
-					basePath : "",
-					restore : data,
-					editable : false
-				},{"activeRects":{"rects":[]},"historyRects":{"rects":[]}})
-			);
+            $('#myflow').myflow({
+							basePath : "",
+							restore : data,
+							tools : {
+								save : {
+									onclick : function(data) {
+										var json=JSON.stringify(eval("("+data+")"));
+										$.ajax({
+                                                url:'../flow/updateFlow',
+                                                type:'POST',
+                                                async:false,
+                                                data:{
+                                                    autoid:autoid,
+                                                    json:json
+                                                },
+                                                timeout:5000,
+                                                dataType:'json',
+                                                success:function(data){
+                                                    if (data.success) {
+                                                     alert("修改成功");
+                                                     return false;
+                                                 } else {
+                                                     alert(data.msg);
+                                                     return false;
+                                                 }
+                                                },
+                                                error:function(xhr,textStatus){
+                                                    alert("请求错误");
+                                                }
+                                                })
+									}
+								}
+							}
+						});
         },
         error:function(xhr,textStatus){
             alert("请求失败");
         }
         })
-
-});
+	});
 
     </script>
     <style type="text/css">
@@ -68,6 +100,7 @@ $(function(){
         }
 
         .state {
+
         }
 
         #myflow_props table {
@@ -89,32 +122,87 @@ $(function(){
         #pointer {
             background-repeat: no-repeat;
             background-position: center;
-
         }
 
         #path {
             background-repeat: no-repeat;
             background-position: center;
-
         }
 
         #task {
             background-repeat: no-repeat;
             background-position: center;
-
         }
 
         #state {
             background-repeat: no-repeat;
             background-position: center;
-
         }
     </style>
 </head>
 <body>
+<div id="myflow_tools"
+     style="position: absolute; top: 10; left: 10; background-color: #fff; width: 70px; cursor: default; padding: 3px;"
+     class="ui-widget-content">
+    <div id="myflow_tools_handle" style="text-align: center;"
+         class="ui-widget-header">工具集
+    </div>
+    <div class="node selectable" id="pointer"><img
+            src="img/select16.gif"/>&nbsp;&nbsp;选择
+    </div>
+    <div class="node selectable" id="path"><img
+            src="img/16/flow_sequence.png"/>&nbsp;&nbsp;转换
+    </div>
+    <div>
+        <hr/>
+    </div>
 
-<div id="myflow">
+    <!--type -->
+    <div class="node state" id="start" type="start"><img
+            src="img/16/startnode.gif"/>&nbsp;&nbsp;开始
+    </div>
+    <div class="node state" id="empty" type="empty"><img
+            src="img/16/empty.gif"/>&nbsp;&nbsp;空操作
+    </div>
+    <div class="node state" id="invoke" type="invoke"><img
+            src="img/16/invoke.gif"/>&nbsp;&nbsp;调用
+    </div>
+    <div class="node state" id="receive" type="receive"><img
+            src="img/16/receive.gif"/>&nbsp;&nbsp;接收
+    </div>
+    <div class="node state" id="reply" type="reply"><img
+            src="img/16/reply.gif"/>&nbsp;&nbsp;返回
+    </div>
+    <div class="node state" id="end" type="end"><img
+            src="img/16/endnode.gif"/>&nbsp;&nbsp;结束
+    </div>
+    <hr/>
+    <div class="node state" id="if" type="if"><img
+            src="img/16/if.gif"/> 判断
+    </div>
+    <div class="node state" id="while" type="while"><img
+            src="img/16/while.gif"/>&nbsp;&nbsp;循环
+    </div>
+    <div class="node state" id="flow" type="flow"><img
+            src="img/16/flow.gif"/>&nbsp;&nbsp;并行
+    </div>
+    <div class="node state" id="assign" type="assign"><img
+            src="img/16/assign.gif"/>&nbsp;&nbsp;node
+    </div>
+    <div class="node state" id="end-error" type="end-error"><img
+            src="img/16/end_event_error.png"/>&nbsp;&nbsp;错误
+    </div>
 
 </div>
+
+<div id="myflow_props"	style="position: absolute; top: 30; right: 50; background-color: #fff; width: 320px; padding: 3px;"
+     class="ui-widget-content">	<!-- 属性框 -->
+    <div id="myflow_props_handle" class="ui-widget-header">属性</div>
+    <table border="1" width="100%" cellpadding="0" cellspacing="0">
+    </table>
+    <div>&nbsp;</div>
+</div>
+
+<div id="myflow"></div>
 </body>
 </html>

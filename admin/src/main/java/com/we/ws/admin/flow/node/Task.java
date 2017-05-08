@@ -1,6 +1,9 @@
 package com.we.ws.admin.flow.node;
 
+import com.we.ws.admin.flow.json.State;
 import com.we.ws.common.data.Pair;
+
+import java.util.Map;
 
 /**
  * Description:
@@ -19,9 +22,16 @@ public class Task extends Node {
     }
 
     @Override
-    public Pair<Node, Object> handle(Object param) {
+    public Pair<Node, Map<String, Object>> handle(Map<String, Object> param) {
         //TODO 服务调用
         return Pair.of(next, null);
+    }
+
+    public static Task of(State state) {
+        Map<String, Map<String, String>> props = state.getProps();
+        String taskremark = props.get("taskremark").get("value");
+        String taskcategory = props.get("taskcategory").get("value");
+        return new Task(taskremark, taskcategory);
     }
 
     public String getTaskremark() {

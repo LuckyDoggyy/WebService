@@ -1,0 +1,92 @@
+package com.we.ws.admin.flow.node;
+
+import com.we.ws.admin.controller.SpringContextUtil;
+import com.we.ws.admin.domain.Service;
+import com.we.ws.admin.domain.ServiceParam;
+import com.we.ws.admin.flow.FlowException;
+import com.we.ws.admin.flow.json.State;
+import com.we.ws.admin.service.WsService;
+import com.we.ws.common.data.Pair;
+import com.we.ws.service.client.RequestParam;
+import com.we.ws.service.client.WsCaller;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.print.FlavorException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Description:
+ *
+ * @author twogoods
+ * @version 0.1
+ * @since 2017-05-08
+ */
+public class Invoke extends Node {
+    private String serviceId;
+    private String name;
+    private String desc;
+    private Map<String, Object> input;
+    private Map<String, Object> output;
+
+    public Invoke(String serviceId, String name, String desc, String input, String output) {
+        this.serviceId = serviceId;
+        this.name = name;
+        this.desc = desc;
+        this.input = parseInput(input);
+        this.output = parseOutput(output);
+    }
+
+    @Override
+    public Pair<Node, Map<String, Object>> handle(Map<String, Object> param) throws Exception {
+        if (StringUtils.isEmpty(serviceId)) {
+            return Pair.of(null, null);
+            //匹配算法
+        } else {
+            WsService wsService = SpringContextUtil.getBean("wsServiceImpl");
+            Service service = wsService.getServiceBySid(serviceId);
+            //TODO 实际请求参数和输入参数匹配的问题
+            List<ServiceParam> serviceParams = wsService.listParams(serviceId);
+            List<RequestParam> list = new ArrayList<>();
+            for (ServiceParam serviceParam : serviceParams) {
+                if ("4".equals(serviceId)) {
+                    list.add(new RequestParam("mobileCode", param.get("mobile").toString()));
+                    list.add(new RequestParam("userID", ""));
+                } else if ("1".equals(serviceId)) {
+                    list.add(new RequestParam("theCityCode", param.get("city").toString()));
+                    list.add(new RequestParam("theUserID", ""));
+                }
+            }
+//            for (Map.Entry<String, Object> entry : input.entrySet()) {
+//                String property = entry.getKey();
+//                Object v = WsCaller.getMapValue(param, property);
+//                if (v instanceof String) {
+//                    list.add(new RequestParam(property, (String) v));
+//                } else {
+//                    list.add(new RequestParam(property, entry.getValue().toString()));
+//                }
+//            }
+            List<String> out = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : output.entrySet()) {
+                out.add(entry.getKey());
+            }
+            Map<String, Object> callRes = WsCaller.callInFlow(service.getUrl(), service.getTargetNamespace(), service.getMethod(), list, service.getOutput(), StringUtils.join(out, ","));
+            if (callRes == null || callRes.size() == 0) {
+                throw new FlowException(String.format("Invoke '%s' handled but return nothing!", name));
+            }
+            return Pair.of(next, callRes);
+        }
+    }
+
+    public static Invoke of(State state) {
+        Map<String, Map<String, String>> props = state.getProps();
+        String name = props.get("text").get("value");
+        String serviceId = props.get("serviceId").get("value");
+        String desc = props.get("desc").get("value");
+        String input = props.get("input").get("value");
+        String output = props.get("output").get("value");
+        return new Invoke(serviceId, name, desc, input, output);
+    }
+
+}

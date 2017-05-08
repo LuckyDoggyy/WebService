@@ -3,6 +3,7 @@ package com.we.ws.admin.service;
 import com.we.ws.admin.domain.Flow;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -25,4 +26,7 @@ public interface FlowService {
     boolean unableFlows(String autoids);
 
     String getJsonById(String autoid);
+
+    Map<String, Object> call(String flowId, String callParams) throws Exception;
+
 }

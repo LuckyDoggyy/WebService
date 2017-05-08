@@ -1,7 +1,8 @@
 package com.we.ws.admin.flow.node;
 
-import com.we.ws.admin.flow.node.Node;
 import com.we.ws.common.data.Pair;
+
+import java.util.Map;
 
 /**
  * Description:
@@ -13,7 +14,7 @@ import com.we.ws.common.data.Pair;
 public class Start extends Node {
 
     @Override
-    public Pair<Node, Object> handle(Object param) {
-        return Pair.of(next, null);
+    public Pair<Node, Map<String, Object>> handle(Map<String, Object> param) {
+        return Pair.of(next, param);
     }
 }

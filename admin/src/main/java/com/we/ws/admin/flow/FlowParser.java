@@ -8,6 +8,7 @@ import com.we.ws.admin.flow.json.State;
 import com.we.ws.admin.flow.node.*;
 import com.we.ws.common.data.Pair;
 import com.we.ws.common.util.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,36 +20,10 @@ import java.util.Map;
  */
 public class FlowParser {
 
-    //TODO 修改bug
-    public static Node parse(String json) throws Exception {
-        JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
-        Node head = null;
-        Map<String, Node> parsedNodes = new HashMap<>();
-        Map<String, State> states = model.getStates();
-        Map<String, Path> pathes = model.getPaths();
-        for (Map.Entry<String, Path> entry : pathes.entrySet()) {
-            Path path = entry.getValue();
-            State fromState = states.get(path.getFrom());
-            State toState = states.get(path.getTo());
-            Node toNode = getOrGenNode(toState, path.getTo(), parsedNodes);
-            Node fromNode = getOrGenNode(fromState, path.getFrom(), parsedNodes);
-            if (fromNode instanceof If) {
-                handleIfNode(fromNode, toNode, path);
-            } else if (fromNode instanceof Start) {
-                if (head == null) {
-                    head = fromNode;
-                } else {
-                    throw new FlowException("有多个start节点");
-                }
-                fromNode.setNext(toNode);
-            } else {
-                fromNode.setNext(toNode);
-            }
-        }
-        return head;
-    }
-
     public static Pair<Node, Flow> parseWithFlow(String json) throws Exception {
+        if (StringUtils.isEmpty(json)) {
+            return Pair.of(null, null);
+        }
         JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
         Node head = null;
         Map<String, Node> parsedNodes = new HashMap<>();
@@ -73,8 +48,6 @@ public class FlowParser {
                 fromNode.setNext(toNode);
             }
         }
-
-
         FlowProp flowProp = model.getProps();
         Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json);
         return Pair.of(head, flow);
@@ -105,8 +78,10 @@ public class FlowParser {
 
     public static final String START = "start";
     public static final String TASK = "task";
+    public static final String INVOKE = "invoke";
     public static final String END = "end";
     public static final String IF = "fork";
+    public static final String RECEIVE = "receive";
 
     private static Node generateNodebyState(State state) {
         switch (state.getType()) {
@@ -115,13 +90,14 @@ public class FlowParser {
             case END:
                 return new End();
             case TASK:
-                Map<String, Map<String, String>> props = state.getProps();
-                String taskremark = props.get("taskremark").get("value");
-                String taskcategory = props.get("taskcategory").get("value");
-                return new Task(taskremark, taskcategory);
+                return Task.of(state);
             case IF:
                 String judgeExpress = state.getProps().get("judge").get("value");
                 return new If(judgeExpress);
+            case INVOKE:
+                return Invoke.of(state);
+            case RECEIVE:
+                return Receive.of(state);
         }
         return null;
     }

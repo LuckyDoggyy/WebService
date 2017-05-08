@@ -13,9 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2017-04-14
  */
 public class FlowCache {
-
     public static Map<Integer, Node> cache = new ConcurrentHashMap<>();
-
 
     public static Node getFlowTree(int autoid) {
         return cache.get(autoid);

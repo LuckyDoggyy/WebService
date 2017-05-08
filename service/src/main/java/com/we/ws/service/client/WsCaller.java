@@ -31,19 +31,18 @@ public class WsCaller {
 
     private static OkHttpClient client = new OkHttpClient();
 
-    public static String generateCallout(String originXml, String outConfig, String out) throws Exception {
+    public static String generateCalloutStr(String originXml, String outConfig, String out) throws Exception {
+        Map<String, Object> output = generateCallout(originXml, outConfig, out);
+        if (out == null) {
+            return "";
+        }
+        return JsonUtils.jsonFromObject(output);
+    }
+
+    public static Map<String, Object> generateCallout(String originXml, String outConfig, String out) throws Exception {
         String[] outputs = out.split(",");
         Map<String, Object> configmap = XmlParser.parseConfig(outConfig);
-        System.out.println("config:--" + configmap);
         Map<String, Object> callResult = XmlParser.parseXMl(configmap, originXml);
-        System.out.println("map:--" + callResult);
-        if (outputs.length == 1) {
-            Object value = getMapValue(callResult, outputs[0]);
-            if (value == null) {
-                return "";
-            }
-            return JsonUtils.jsonFromObject(value);
-        }
         Map<String, Object> valueMap = new HashMap<>();
         for (String param : outputs) {
             Object value = getMapValue(callResult, param);
@@ -51,13 +50,10 @@ public class WsCaller {
                 valueMap.put(param, value);
             }
         }
-        if (valueMap.size() > 1) {
-            return JsonUtils.jsonFromObject(valueMap);
-        }
-        return "";
+        return valueMap;
     }
 
-    private static Object getMapValue(Map<String, Object> map, String param) {
+    public static Object getMapValue(Map<String, Object> map, String param) {
         Object value = map.get(param);
         if (value == null) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -80,9 +76,25 @@ public class WsCaller {
         }
         String originXml = exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
         try {
-            return JsonUtils.formatJson(generateCallout(originXml, outConfig, out));
+            return JsonUtils.formatJson(generateCalloutStr(originXml, outConfig, out));
         } catch (Exception e) {
             return formatXml(originXml);
+        }
+    }
+
+    public static Map<String, Object> callInFlow(String url, String targetNamespace, String method, List<RequestParam> requestParams, String outConfig, String out) throws Exception {
+        if (StringUtils.isEmpty(out) || StringUtils.isEmpty(outConfig)) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("root", call(url, targetNamespace, method, requestParams));
+            return result;
+        }
+        String originXml = exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
+        try {
+            return generateCallout(originXml, outConfig, out);
+        } catch (Exception e) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("root", formatXml(originXml));
+            return result;
         }
     }
 

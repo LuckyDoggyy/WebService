@@ -4,7 +4,7 @@ var myflow = $.myflow;
 $.extend(true, myflow.editors, {
 
 
-	/*tableEditor : function(){
+	tableEditor : function(){
 		var _props,_k,_div,_src,_r;
     		this.init = function(props, k, div, src, r){
     			_props=props; _k=k; _div=div; _src=src; _r=r;
@@ -33,7 +33,7 @@ $.extend(true, myflow.editors, {
 				});
 				_props[_k].value = array.join(",");
     		}
-    	},*/
+    	},
 
 
 	inputEditor : function(){
@@ -62,7 +62,7 @@ $.extend(true, myflow.editors, {
                 var arr=x.split(':');
                 return {a:arr[0]||'',b:arr[1]||''}
             });
-            console.log(value);
+            //console.log(value);
             newRow=function (a,b) {
                 a=a||'';
                 b=b||'';

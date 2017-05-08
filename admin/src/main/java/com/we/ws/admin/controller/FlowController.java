@@ -1,6 +1,7 @@
 package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Flow;
+import com.we.ws.admin.domain.Service;
 import com.we.ws.admin.flow.FlowCache;
 import com.we.ws.admin.flow.FlowParser;
 import com.we.ws.admin.flow.node.Node;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 /**
  * Description:
+ *
  * @author twogoods
  * @version 0.1
  * @since 2017-04-14
@@ -30,6 +32,13 @@ public class FlowController extends BaseController {
 
     @Autowired
     private FlowService flowService;
+
+
+    @RequestMapping("callFlow")
+    @ResponseBody
+    public Map<String, Object> callFlow(String flowId, String callParams) throws Exception {
+        return flowService.call(flowId, callParams);
+    }
 
     @RequestMapping("addFlow")
     @ResponseBody

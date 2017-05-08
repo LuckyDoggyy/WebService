@@ -19,21 +19,6 @@ import java.util.Map;
 
 /**
  * Description:
- * <p>
- * <p>
- * <p>
- * <p>
- * soap:Envelope.soap:Envelope.soap:Body
- * soap:Body.soap:Body.getMobileCodeInfoResponse
- * getMobileCodeInfoResponse.getMobileCodeInfoResult.string
- * <p>
- * <p>
- * <p>
- * <p>
- * root.soap:Envelope.soap:Envelope
- * soap:Envelope.soap:Body.soap:Body
- * soap:Body.getMobileCodeInfoResponse.getMobileCodeInfoResponse
- * getMobileCodeInfoResponse.getMobileCodeInfoResult.string
  *
  * @author twogoods
  * @version 0.1
@@ -71,44 +56,6 @@ public class XmlParser {
                 }
             }
         }
-    }
-
-    private static Map<String, Object> doParse(Map<String, Object> configMap, Element root) throws Exception {
-        Map<String, Object> valueMap = new HashMap<>();
-        for (Map.Entry<String, Object> entry : configMap.entrySet()) {
-
-            String[] properties = entry.getKey().split("\\|");
-            String property = null;
-            String alies = null;
-            if (properties.length == 2) {
-                property = properties[0];
-                alies = properties[1];
-            } else {
-                property = entry.getKey();
-            }
-
-
-            Object type = entry.getValue();
-            if (type instanceof String) {
-                NodeList propertyNode = root.getElementsByTagName(property);
-                if (propertyNode.getLength() == 1) {
-                    String value = propertyNode.item(0).getTextContent();
-                    valueMap.put(property, value);
-                } else {
-                    List<String> list = new ArrayList<>();
-                    for (int i = 0; i < propertyNode.getLength(); i++) {
-                        list.add(propertyNode.item(i).getTextContent());
-                    }
-                    valueMap.put(property, list);
-                }
-            } else {
-                Map<String, Object> config = (Map<String, Object>) type;
-                //上面是处理string和list,此处是有类嵌套结构的解析
-                Map<String, Object> map = doParseXml(config, root);
-                valueMap.put(property, map);
-            }
-        }
-        return valueMap;
     }
 
     private static Map<String, Object> doParseXml(Map<String, Object> configMap, Element root) throws Exception {

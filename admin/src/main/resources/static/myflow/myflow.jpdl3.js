@@ -10,7 +10,6 @@ $.ajax({
         timeout:5000,
         dataType:'json',
         success:function(data){
-            console.log(data);
             services=data;
         },
         error:function(xhr,textStatus){
@@ -49,14 +48,14 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         text : {text:'调用'},
         img : {src : 'img/16/invoke.gif',width : 16, height:16},
         props : {
-		    id:{name:'serviceId',label:'服务ID',value:'',editor: function(){return new myflow.editors.inputEditor();}},
+		    serviceId:{name:'serviceId',label:'服务ID',value:'',editor: function(){return new myflow.editors.inputEditor();}},
             text: {name:'text',label: '名称', value:'调用', editor: function(){return new myflow.editors.textEditor();}},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
             input: {name:'input', label : '输入', value:'',editor: function(){return new myflow.editors.multiEditor();}},
             output: {name:'output', label : '输出', value:'', editor: function(){return new myflow.editors.multiEditor();}}
         }},
     receive : {
-        type : 'invoke',
+        type : 'receive',
         name : {text:'<<receive>>'},
         text : {text:'接收'},
         img : {src : 'img/16/receive.gif',width : 16, height:16},
@@ -66,7 +65,7 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
             input: {name:'input', label : '流程输入', value:'',editor: function(){return new myflow.editors.multiEditor();}}
         }},
     reply : {
-        type : 'invoke',
+        type : 'reply',
         name : {text:'<<reply>>'},
         text : {text:'返回'},
         img : {src : 'img/16/reply.gif',width : 16, height:16},

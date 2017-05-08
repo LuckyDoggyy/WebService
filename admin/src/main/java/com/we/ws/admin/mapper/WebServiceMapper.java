@@ -21,10 +21,12 @@ public interface WebServiceMapper {
 
     int countListService(@Param("sid") String sid, @Param("servicename") String serviceName);
 
+    @Select("select * from T_Service where sid=#{sid}")
+    Service getServiceBySid(String sid);
+
     @Insert("insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method,output, version) " +
             "values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{output},#{version})")
     int insertWS(Service service);
-
 
     int insertWSReturnKey(Service service);
 
@@ -49,6 +51,7 @@ public interface WebServiceMapper {
     int deleteParam(String autoid);
 
     @Select("select sid as value,remark as name from T_Service")
-    List<Map<String,Object>> getWsOption();
+    List<Map<String, Object>> getWsOption();
+
 
 }
