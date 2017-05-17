@@ -13,17 +13,21 @@ public class Flow {
     private String flowname;
     private String description;
     private String flowjson;
+    private String input;
     private int state;
 
-    public Flow() {
-    }
+    public Flow() {}
 
-    public Flow(String flowid, String flowname, String description, String flowjson) {
+
+    public Flow(String flowid, String flowname, String description, String flowjson, String input) {
         this.flowid = flowid;
         this.flowname = flowname;
         this.description = description;
         this.flowjson = flowjson;
+        this.input = input;
     }
+
+
 
     public int getAutoid() {
         return autoid;
@@ -65,6 +69,14 @@ public class Flow {
         this.flowjson = flowjson;
     }
 
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
     public int getState() {
         return state;
     }
@@ -81,6 +93,7 @@ public class Flow {
                 ", flowname='" + flowname + '\'' +
                 ", description='" + description + '\'' +
                 ", flowjson='" + flowjson + '\'' +
+                ", input='" + input + '\'' +
                 ", state=" + state +
                 '}';
     }

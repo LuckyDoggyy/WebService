@@ -72,6 +72,11 @@ Ext.define("core.servicemanage.bpelmanage.view.DeleteBPGrid", {
 				align: 'center',
 				width : 200
 			},{
+              text : "输入",
+              dataIndex : "input",
+              align: 'center',
+              width : 200
+          },{
 				text : "状态",
 				dataIndex : "state",
 				align: 'center',

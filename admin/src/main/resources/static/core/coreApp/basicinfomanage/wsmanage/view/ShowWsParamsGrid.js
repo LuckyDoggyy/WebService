@@ -15,7 +15,12 @@ Ext.define("core.basicinfomanage.wsmanage.view.ShowWsParamsGrid", {
 						dataIndex : "paramName",
 						align: 'center',
 						width : 150
-					}, {
+					},{
+                        text : "别名",
+                        dataIndex : "alies",
+                        align: 'center',
+                        width : 150
+                    }, {
 						text : "备注",
 						dataIndex : "remark",
 						align: 'center',

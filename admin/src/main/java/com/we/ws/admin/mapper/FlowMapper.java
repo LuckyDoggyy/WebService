@@ -29,4 +29,7 @@ public interface FlowMapper {
     @Select("select flowjson from T_Flow where autoid=#{autoid}")
     String getJsonById(@Param("autoid")String autoid);
 
+    @Select("select autoid,flowid,flowname,description,input from T_Flow where autoid=#{autoid}")
+    String getById(@Param("autoid")String autoid);
+
 }

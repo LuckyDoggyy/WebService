@@ -11,6 +11,7 @@ public class ServiceParam {
     private long autoid;
     private long sid;
     private String paramName;
+    private String alies;
     private String remark;
     private int state;
 
@@ -38,6 +39,14 @@ public class ServiceParam {
         this.paramName = paramName;
     }
 
+    public String getAlies() {
+        return alies;
+    }
+
+    public void setAlies(String alies) {
+        this.alies = alies;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -60,6 +69,7 @@ public class ServiceParam {
                 "autoid=" + autoid +
                 ", sid=" + sid +
                 ", paramName='" + paramName + '\'' +
+                ", alies='" + alies + '\'' +
                 ", remark='" + remark + '\'' +
                 ", state=" + state +
                 '}';

@@ -37,9 +37,9 @@
     </delete>
 
     <insert id="batchInsertParam">
-        insert into T_ServiceParam (sid,paramname,remark) values
+        insert into T_ServiceParam (sid,paramname,alies,remark) values
         <foreach collection="params" item="item" index="index" separator=",">
-            (#{allsid},#{item.paramName},#{item.remark})
+            (#{allsid},#{item.paramName},#{item.alies},#{item.remark})
         </foreach>
     </insert>
     

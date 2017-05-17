@@ -49,8 +49,22 @@ public class FlowParser {
             }
         }
         FlowProp flowProp = model.getProps();
-        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json);
+        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));
         return Pair.of(head, flow);
+    }
+
+    private static String getReceiveParam(Node head) {
+        Node node = head;
+        if (node instanceof Receive) {
+            Receive receive = (Receive) node;
+            return receive.getParamName();
+        } else {
+            node = node.getNext();
+            if (node == null) {
+                return "";
+            }
+            return getReceiveParam(node);
+        }
     }
 
 

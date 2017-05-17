@@ -91,11 +91,12 @@ Ext.define("core.basicinfomanage.wsmanage.view.AddWS",
 								}],
 							columns: [
 								{ header: '参数名',  dataIndex: 'paramName',editor: 'textfield' },
+								{ header: '别名',  dataIndex: 'alies',editor: 'textfield' },
 								{ header: '备注', dataIndex: 'remark',editor: 'textfield' }
 							],
 							plugins: [ Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1 })],
 							height: 200,
-							width: 300
+							width: 320
 						},{
 							 xtype: 'button',
 							 text: '添加',

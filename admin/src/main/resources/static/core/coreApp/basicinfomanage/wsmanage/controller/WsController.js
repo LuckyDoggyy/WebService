@@ -30,7 +30,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                    'Ext.window.Window', {
                                                        title : '服务参数',
                                                        height : 280,
-                                                       width : 350,
+                                                       width : 550,
                                                        constrain : true,
                                                        maximizable : true,
                                                        layout : 'fit',
@@ -114,6 +114,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                                         },
                                                                     items:[{
                                                                             xtype : 'textarea',
+                                                                            style:"wrap:soft;",
                                                                             name: 'output',
                                                                             height: 800
                                                                             }]
@@ -230,7 +231,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                              store.each(function(record){
                                                 var name=record.get('paramName');
                                                 if(name!=''){
-                                                    serviceParams.push({'paramName':name,'remark':record.get('remark')});
+                                                    serviceParams.push({'paramName':name,'alies':record.get('alies'),'remark':record.get('remark')});
                                                 }
                                              })
                                              var paramStr=JSON.stringify(serviceParams);
@@ -283,7 +284,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                                      region: 'west',
                                                                      xtype : 'updatewsform',
                                                                      id : 'updatewsform',
-                                                                     width: 660
+                                                                     width: 600
                                                                  },{
                                                                     region: 'center',
                                                                     xtype : 'grid',
@@ -311,6 +312,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                                                         }],
                                                                     columns: [
                                                                         { header: '参数名',  dataIndex: 'paramName',editor: 'textfield' },
+                                                                        { header: '别名',  dataIndex: 'alies',editor: 'textfield' },
                                                                         { header: '备注', dataIndex: 'remark',editor: 'textfield' }
                                                                     ],
                                                                     plugins: [ Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1 })]
@@ -337,7 +339,7 @@ Ext.define("core.basicinfomanage.wsmanage.controller.WsController",
                                         store.each(function(record){
                                             var name=record.get('paramName');
                                             if(name!=''){
-                                                serviceParams.push({'autoid':record.get('autoid'),'paramName':name,'remark':record.get('remark')});
+                                                serviceParams.push({'autoid':record.get('autoid'),'paramName':name,'alies':record.get('alies'),'remark':record.get('remark')});
                                             }
                                         })
                                         var paramStr=JSON.stringify(serviceParams);

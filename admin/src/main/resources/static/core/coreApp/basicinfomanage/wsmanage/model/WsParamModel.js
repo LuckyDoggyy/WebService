@@ -7,6 +7,8 @@ Ext.define("core.basicinfomanage.wsmanage.model.WsParamModel", {
 					},{
 						name : "paramName"
 					},{
+                        name : "alies"
+                    },{
 						name : "remark"
 					}]
 		});

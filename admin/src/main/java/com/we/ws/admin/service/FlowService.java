@@ -27,6 +27,6 @@ public interface FlowService {
 
     String getJsonById(String autoid);
 
-    Map<String, Object> call(String flowId, String callParams) throws Exception;
+    Map<String, Object> call(String autoId, String callParams) throws Exception;
 
 }

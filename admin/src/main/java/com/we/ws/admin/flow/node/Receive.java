@@ -41,4 +41,16 @@ public class Receive extends Node {
         String input = props.get("input").get("value");
         return new Receive(name, desc, input);
     }
+
+    public String getParamName() {
+        StringBuffer sb = new StringBuffer();
+        if (input.size() == 0) {
+            return "";
+        }
+        for (Map.Entry<String, Object> entry : input.entrySet()) {
+            sb.append(",");
+            sb.append(entry.getKey());
+        }
+        return sb.substring(1);
+    }
 }

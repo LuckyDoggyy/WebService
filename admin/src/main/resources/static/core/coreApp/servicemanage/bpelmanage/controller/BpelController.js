@@ -5,6 +5,7 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 						suppleUtil : "core.util.SuppleUtil",
 						messageUtil : "core.util.MessageUtil",
 						formUtil : "core.util.FormUtil",
+						jsonUtil : "core.util.JsonUtil",
 						treeUtil : "core.util.TreeUtil"
 					},
 					init : function() {
@@ -142,10 +143,34 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                                                             }
                                                                         });
                                                                 }
-                                                            }
+                                                            },
+                                    "panel[xtype=flowcallform] button[ref=call]" : {
+                                                  click : function(btn) {
+                                                      var flowcallform = btn.up("panel[xtype=flowcallform]");
+                                                      var formObj = flowcallform.getForm();
+                                                      var params = self.getFormValue(formObj);
+                                                      var serviceParams = new Array();
+                                                      params.input.split(",").forEach(function(name){
+                                                         var value=flowcallform.down("textfield[name="+name+"]").getValue();
+                                                         serviceParams.push({'name':name,'value':value});
+                                                      });
+                                                      var paramStr=JSON.stringify(serviceParams);
+                                                      var res = self.ajax({
+                                                                  url : "flow/callFlow",
+                                                                  params : {
+                                                                       autoId:params.autoid,
+                                                                       callParams:paramStr
+                                                                  }
+                                                              });
+                                                      var json=self.formatJson(res,false);
+                                                      flowcallform.ownerCt.down("panel[xtype=form]").down("textfield[name=callResult]").setValue(json);
+                                                      return false;
+                                                  }
+                                              }
 						});
 					},
 					views : ["core.servicemanage.bpelmanage.view.BPGrid",
+					        "core.servicemanage.bpelmanage.view.FlowCallForm",
 							"core.servicemanage.bpelmanage.view.UpdateBPGrid",
 							"core.servicemanage.bpelmanage.view.DeleteBPGrid",
 							"core.servicemanage.bpelmanage.view.AddBP",
@@ -183,19 +208,44 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 							   window.show();
 							   return false;
 							}else if(node.action =='flowcall'){
-								var window = Ext.create(
-									   'Ext.window.Window', {
-										  title : '流程调用',
-										  constrain : true,
-										  maximizable : true,
-										  maximized : true,
-										  layout : 'fit',
-										  fixed : true,
-										  modal : false,
-										  html: '<iframe id="frame" src="myflow/update.html?'+autoid+'" frameborder="0" width="100%" height="100%"></iframe>'
-									   });
-							   window.show();
-							   return false;
+								var window = Ext.create('Ext.window.Window', {
+                                       title : '流程调用',
+                                       constrain : true,
+                                       maximizable : true,
+                                       maximized : true,
+                                       layout : 'border',
+                                       fixed : true,
+                                       modal : true,
+                                        items : [{
+                                                 region: 'west',
+                                                 xtype : 'flowcallform',
+                                                 width: 460
+                                             },{
+                                                region: 'center',
+                                                xtype : 'form',
+                                                layout: 'anchor',
+                                                defaults : {
+                                                        anchor : '100%'
+                                                    },
+                                                items:[{
+                                                        xtype : 'textarea',
+                                                        style:'overflow-y:scroll;',
+                                                        name: 'callResult',
+                                                        height: 800
+                                                        }]
+                                            }]
+                                    });
+                                    var form = window.down("panel[xtype=flowcallform]");
+                                    form.loadRecord(rec);
+                                    var array=rec.get('input').split(",");
+                                    array.forEach(function(e){
+                                        fd = new Ext.form.TextField({name: e,fieldLabel:e,allowBlank : true});
+                                        //form.items.add(form.items.getCount()-1, fd);
+                                        form.items.add(fd);
+                                    });
+                                    form.doLayout();
+                                    window.show();
+                                    return false;
 							}else if(node.action =='flowupdate'){
 								var window = Ext.create(
 									   'Ext.window.Window', {

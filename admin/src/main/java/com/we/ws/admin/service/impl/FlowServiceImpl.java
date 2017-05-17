@@ -67,15 +67,15 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public Map<String, Object> call(String flowId, String callParams) throws Exception {
-        Node node = FlowCache.getFlowTree(Integer.parseInt(flowId));
+    public Map<String, Object> call(String autoId, String callParams) throws Exception {
+        Node node = FlowCache.getFlowTree(Integer.parseInt(autoId));
         if (node == null) {
-            Pair<Node, Flow> flow = FlowParser.parseWithFlow(getJsonById(flowId));
+            Pair<Node, Flow> flow = FlowParser.parseWithFlow(getJsonById(autoId));
             node = flow.getL();
             if (node == null) {
-                throw new FlowException(String.format("can't find flow id: %s", flowId));
+                throw new FlowException(String.format("can't find flow id: %s", autoId));
             }
-            FlowCache.addCache(Integer.parseInt(flowId), node);
+            FlowCache.addCache(Integer.parseInt(autoId), node);
         }
         List<RequestParam> list = JsonUtils.listFromJson(callParams, RequestParam.class);
         Map<String, Object> param = new HashMap<>();

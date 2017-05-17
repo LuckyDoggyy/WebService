@@ -51,11 +51,16 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 				dataIndex : "description",
 				align: 'center',
 				width : 200
-			},{
+			}, {
+                text : "输入",
+                dataIndex : "input",
+                align: 'center',
+                width : 200
+            },{
 				text : "状态",
 				dataIndex : "state",
 				align: 'center',
-				width : 200,
+				width : 80,
 				renderer : function(value) {
 					if (value == 0) {
 						return "启用";
@@ -65,7 +70,7 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
 				}
 			},{
 			  xtype:'actioncolumn',
-			  width:80,
+			  width:120,
 			  text: '查看流程图',
 			  align: 'center',
 			  items: [{

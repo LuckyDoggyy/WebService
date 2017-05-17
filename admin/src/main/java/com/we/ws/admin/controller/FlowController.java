@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 /**
  * Description:
@@ -33,11 +36,10 @@ public class FlowController extends BaseController {
     @Autowired
     private FlowService flowService;
 
-
     @RequestMapping("callFlow")
     @ResponseBody
-    public Map<String, Object> callFlow(String flowId, String callParams) throws Exception {
-        return flowService.call(flowId, callParams);
+    public Map<String, Object> callFlow(String autoId, String callParams) throws Exception {
+        return flowService.call(autoId, callParams);
     }
 
     @RequestMapping("addFlow")
@@ -47,7 +49,7 @@ public class FlowController extends BaseController {
         Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
         flowService.add(flow);
-        FlowCache.addCache(flow.getAutoid(), pair.getL());
+        CompletableFuture.runAsync(() -> FlowCache.addCache(flow.getAutoid(), pair.getL()));
         map.put("success", true);
         return map;
     }

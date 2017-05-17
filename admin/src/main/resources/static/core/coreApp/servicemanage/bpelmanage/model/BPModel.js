@@ -9,6 +9,8 @@ Ext.define("core.servicemanage.bpelmanage.model.BPModel", {
 					},{
 						name : "description"
 					},{
+                        name : "input"
+                    },{
 						name : "state"
 					}]
 		});

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.we.ws.admin.mapper.FlowMapper" >
+<mapper namespace="com.we.ws.admin.mapper.FlowMapper">
 
-    <insert id="insertReturnKey" parameterType="com.we.ws.admin.domain.Flow" useGeneratedKeys="true" keyProperty="autoid">
-        insert into T_Flow (flowid,flowname,description,flowjson) values(#{flowid},#{flowname},#{description},#{flowjson})
+    <insert id="insertReturnKey" parameterType="com.we.ws.admin.domain.Flow" useGeneratedKeys="true"
+            keyProperty="autoid">
+        insert into T_Flow (flowid,flowname,description,flowjson,input)
+        values(#{flowid},#{flowname},#{description},#{flowjson},#{input})
     </insert>
 
     <select id="listFlows" resultType="com.we.ws.admin.domain.Flow">
-        select autoid,flowid,flowname,description,state from T_Flow
+        select autoid,flowid,flowname,description,input,state from T_Flow
         <where>
             state != 2
             <if test="flowid != null and flowid!=''">

@@ -1,5 +1,6 @@
 package com.we.ws.admin.controller;
 
+import com.we.ws.admin.domain.User;
 import com.we.ws.admin.domain.UserRole;
 import com.we.ws.admin.service.UserService;
 import org.apache.commons.lang3.tuple.Pair;
@@ -14,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 /**
  * @author twogoods
@@ -80,11 +84,22 @@ public class UserController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Map<String, Object> list(int page, int start, int limit, String uid, String name) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("totalCount", userService.countUser(uid, name));
-        result.put("rows", userService.listUser(uid, name, limit, start));
-        return result;
+    public Map<String, Object> list(int page, int start, int limit, String uid, String name) throws Exception {
+        CompletableFuture<Integer> count = CompletableFuture.supplyAsync(() -> userService.countUser(uid, name));
+        CompletableFuture<List<User>> list = CompletableFuture.supplyAsync(() -> userService.listUser(uid, name, limit, start));
+
+        CompletableFuture<Map> ret = CompletableFuture.supplyAsync(() -> {
+            Map<String, Object> result = new HashMap<>();
+            try {
+                result.put("totalCount", count.get());
+                result.put("rows", list.get());
+            } catch (Exception e) {
+                //TODO 异步的异常处理
+                e.printStackTrace();
+            }
+            return result;
+        });
+        return ret.get();
     }
 
     @RequestMapping("listUserRole")

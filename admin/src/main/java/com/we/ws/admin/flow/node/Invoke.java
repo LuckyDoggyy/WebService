@@ -50,13 +50,7 @@ public class Invoke extends Node {
             List<ServiceParam> serviceParams = wsService.listParams(serviceId);
             List<RequestParam> list = new ArrayList<>();
             for (ServiceParam serviceParam : serviceParams) {
-                if ("4".equals(serviceId)) {
-                    list.add(new RequestParam("mobileCode", param.get("mobile").toString()));
-                    list.add(new RequestParam("userID", ""));
-                } else if ("1".equals(serviceId)) {
-                    list.add(new RequestParam("theCityCode", param.get("city").toString()));
-                    list.add(new RequestParam("theUserID", ""));
-                }
+                list.add(new RequestParam(serviceParam.getParamName(), getValueFromOutput(serviceParam, param)));
             }
 //            for (Map.Entry<String, Object> entry : input.entrySet()) {
 //                String property = entry.getKey();
@@ -77,6 +71,19 @@ public class Invoke extends Node {
             }
             return Pair.of(next, callRes);
         }
+    }
+
+    private String getValueFromOutput(ServiceParam serviceParam, Map<String, Object> output) {
+        String param = serviceParam.getParamName();
+        String alies = serviceParam.getAlies();
+        Object value;
+        if ((value = output.get(param)) == null) {
+            value = output.get(alies);
+        }
+        if (value == null) {
+            return "";
+        }
+        return value.toString();
     }
 
     public static Invoke of(State state) {
