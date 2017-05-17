@@ -63,7 +63,7 @@ $.extend(true, myflow.editors, {
                 return {a:arr[0]||'',b:arr[1]||''}
             });
             //console.log(value);
-            newRow=function (a,b) {
+            newRow=function (obj,a,b) {
                 a=a||'';
                 b=b||'';
                 var input1=$('<td><input style="width: 50px;" type="text" name="a"  value="'+a+'" /></td>');
@@ -72,17 +72,18 @@ $.extend(true, myflow.editors, {
                 var tr=$('<tr></tr>');
                 $(tr).append(input1);
                 $(tr).append(input2);
-                $(tr).append('<td><input type="button" value="添加" onclick="newRow()" /></td>');
                 $(tr).append('<td><input type="button" value="删除" onclick="remove(this)"/></td>');
-                $('#'+_div).find('table').append($(tr));
+                $(obj).parents('td').find('table').append($(tr));
             }
 
 
             var table=$('<table></table>');
             $(table).appendTo('#'+_div);
+            var button='<input type="button" value="添加" id="' + _div + 'Button" onclick=newRow(this,\"\",\"\") />';
+            $('#'+_div).after(button);
             if(value.length==0) value=[{a:'',b:''}];
             for(var i=0;i<value.length;i++){
-                newRow(value[i].a,value[i].b);
+                newRow($('#'+_div+'Button'),value[i].a,value[i].b);
             }
             $('#'+_div).data('editor', this);
         }
