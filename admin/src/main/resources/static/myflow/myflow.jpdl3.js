@@ -72,7 +72,7 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         props : {
             text: {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.textEditor();}, value:'返回'},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
-            output: {name:'input', label : '流程结果', value:'',editor: function(){return new myflow.editors.inputEditor();}},
+            output: {name:'output', label : '流程结果', value:'',editor: function(){return new myflow.editors.multiEditor();}},
         }},
     if : {
         type : 'if',
@@ -82,8 +82,8 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
         props : {
             text : {name:'text',label: '显示', value:'', editor: function(){return new myflow.editors.inputEditor();}},
             desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
-            input: {name:'input', label : '条件', value:'',editor: function(){return new myflow.editors.multiEditor();}},
-            judge: {name:'judge', label: '判断', value:'', editor: function(){return new myflow.editors.inputEditor();}}
+            input: {name:'input', label : '输入', value:'',editor: function(){return new myflow.editors.multiEditor();}},
+            judge: {name:'judge', label: '判断', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}}
         }},
     while : {
         type : 'while',
@@ -123,6 +123,16 @@ $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflo
 		props : {
 			desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
 		}},
+
+    value : {
+            type : 'value',
+            name : {text:'<<value>>'},
+            text : {text:'值操作'},
+            img : {src : 'img/16/empty.gif',width : 16, height:16},
+            props : {
+                desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}},
+			    set: {name:'set', label: '设置', value:'', editor: function(){return new myflow.editors.inputAreaEditor();}}
+            }},
 	task : {type : 'task',
 		name : {text:'<<task>>'},
 		text : {text:'任务'},

@@ -40,6 +40,7 @@ public class WsCaller {
     }
 
     public static Map<String, Object> generateCallout(String originXml, String outConfig, String out) throws Exception {
+        System.out.println(originXml);
         String[] outputs = out.split(",");
         Map<String, Object> configmap = XmlParser.parseConfig(outConfig);
         Map<String, Object> callResult = XmlParser.parseXMl(configmap, originXml);
@@ -85,17 +86,21 @@ public class WsCaller {
     public static Map<String, Object> callInFlow(String url, String targetNamespace, String method, List<RequestParam> requestParams, String outConfig, String out) throws Exception {
         if (StringUtils.isEmpty(out) || StringUtils.isEmpty(outConfig)) {
             Map<String, Object> result = new HashMap<>();
-            result.put("root", call(url, targetNamespace, method, requestParams));
+            result.put("callReturn", call(url, targetNamespace, method, requestParams));
             return result;
         }
         String originXml = exectueSoap12(url, generateSoap12Message(targetNamespace, method, requestParams));
-        try {
-            return generateCallout(originXml, outConfig, out);
-        } catch (Exception e) {
-            Map<String, Object> result = new HashMap<>();
-            result.put("root", formatXml(originXml));
-            return result;
+        Map<String, Object> valueMap = generateCallout(originXml, outConfig, out);
+        if (valueMap.size() == 0) {
+            log.warn("callout generate nothing!");
+            Object xml = valueMap.get("callReturn");
+            if (xml != null) {
+                valueMap.put("callReturn", xml.toString() + "\n\n" + formatXml(originXml));
+                return valueMap;
+            }
+            valueMap.put("callReturn", formatXml(originXml));
         }
+        return valueMap;
     }
 
     private static String generateSoap12Message(String targetNamespace, String method, List<RequestParam> requestParams) throws Exception {
