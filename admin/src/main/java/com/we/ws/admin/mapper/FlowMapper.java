@@ -24,7 +24,7 @@ public interface FlowMapper {
 
     int setFlowState(@Param("autoids") String[] autoids, @Param("state") int state);
 
-    List<Flow> listFlows(@Param("flowid") String flowid, @Param("flowname") String flowname);
+    List<Flow> listFlows(@Param("flowid") String flowid, @Param("flowname") String flowname, @Param("uid") String uid);
 
     @Select("select flowjson from T_Flow where autoid=#{autoid}")
     String getJsonById(@Param("autoid") String autoid);

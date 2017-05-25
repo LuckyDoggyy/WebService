@@ -41,9 +41,9 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public List<Flow> listFlows(String flowid, String flowname) {
+    public List<Flow> listFlows(String flowid, String flowname, String uid) {
         //TODO like
-        return flowMapper.listFlows(flowid, flowname);
+        return flowMapper.listFlows(flowid, flowname, uid);
     }
 
     @Override

@@ -9,6 +9,7 @@ package com.we.ws.admin.domain;
  */
 public class Flow {
     private int autoid;
+    private int uid;
     private String flowid;
     private String flowname;
     private String description;
@@ -85,10 +86,19 @@ public class Flow {
         this.state = state;
     }
 
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     @Override
     public String toString() {
         return "Flow{" +
                 "autoid=" + autoid +
+                ", uid=" + uid +
                 ", flowid='" + flowid + '\'' +
                 ", flowname='" + flowname + '\'' +
                 ", description='" + description + '\'' +

@@ -2,6 +2,7 @@ package com.we.ws.admin.service.impl;
 
 import com.we.ws.admin.domain.User;
 import com.we.ws.admin.domain.UserRole;
+import com.we.ws.admin.mapper.CommonUserMapper;
 import com.we.ws.admin.mapper.UserMapper;
 import com.we.ws.admin.mapper.UserRoleMapper;
 import com.we.ws.admin.service.UserService;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
+    private CommonUserMapper commonUserMapper;
+
+    @Autowired
     private UserRoleMapper userRoleMapper;
 
     @Override
@@ -44,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Pair<Boolean, String> addUser(String account, String nickName, String remarks) {
-        if (userMapper.checkExist(account) > 0) {
+        if (userMapper.checkExist(account) > 0|| commonUserMapper.checkExist(account) > 0) {
             return Pair.of(false, "账号已存在请更换");
         }
         if (userMapper.insert(account, nickName, remarks) != 1) {
