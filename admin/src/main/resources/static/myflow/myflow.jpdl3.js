@@ -21,8 +21,8 @@ $.ajax({
 //		各节点的name，text，typw，props 	将name、key、desc合并到myflow.config.props.props中
 $.extend(true,myflow.config.props.props,{
 	name : {name:'name', label:'名称', value:'新建流程', editor:function(){return new myflow.editors.inputEditor();}},
-	flowid : {name:'flowid', label:'标识', value:'', editor:function(){return new myflow.editors.inputEditor();}},
-	desc : {name:'desc', label:'描述', value:'', editor:function(){return new myflow.editors.inputAreaEditor();}}
+	flowid : {name:'flowid', label:'标识', value:'标识', editor:function(){return new myflow.editors.inputEditor();}},
+	desc : {name:'desc', label:'描述', value:'描述', editor:function(){return new myflow.editors.inputAreaEditor();}}
 });
 
 $.extend(true,myflow.config.tools.states,{		//将start、end……合并到myflow.config.tools.states中
