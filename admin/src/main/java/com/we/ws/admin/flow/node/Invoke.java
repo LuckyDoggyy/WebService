@@ -25,17 +25,14 @@ import java.util.Map;
  */
 public class Invoke extends Node {
     private String serviceId;
-    private String name;
-    private String desc;
     private Map<String, Object> input;
     private Map<String, Object> output;
 
     public Invoke(String serviceId, String name, String desc, String input, String output) {
+        super(name,desc);
         this.serviceId = serviceId;
-        this.name = name;
-        this.desc = desc;
-        this.input = parseInput(input);
-        this.output = parseOutput(output);
+        this.input = parseInOrOut(input);
+        this.output = parseInOrOut(output);
     }
 
     @Override
@@ -69,6 +66,7 @@ public class Invoke extends Node {
             if (callRes == null || callRes.size() == 0) {
                 throw new FlowException(String.format("Invoke '%s' handled but return nothing!", name));
             }
+            callRes.putAll(param);
             return Pair.of(next, callRes);
         }
     }

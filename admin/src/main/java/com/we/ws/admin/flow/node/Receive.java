@@ -13,14 +13,11 @@ import java.util.Map;
  * @since 2017-05-08
  */
 public class Receive extends Node {
-    private String name;
-    private String desc;
     private Map<String, Object> input;
 
     public Receive(String name, String desc, String input) {
-        this.name = name;
-        this.desc = desc;
-        this.input = parseInput(input);
+        super(name, desc);
+        this.input = parseInOrOut(input);
     }
 
     @Override

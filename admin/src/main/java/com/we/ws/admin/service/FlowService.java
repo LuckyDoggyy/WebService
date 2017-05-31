@@ -17,7 +17,7 @@ public interface FlowService {
 
     boolean update(Flow flow);
 
-    List<Flow> listFlows(String flowid, String flowname);
+    List<Flow> listFlows(String flowid, String flowname,String uid);
 
     boolean deleteFlows(String autoids);
 

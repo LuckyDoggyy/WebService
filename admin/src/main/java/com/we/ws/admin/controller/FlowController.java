@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,9 +118,10 @@ public class FlowController extends BaseController {
 
     @RequestMapping("listFlows")
     @ResponseBody
-    public Map<String, Object> listFlows(String flowid, String flowname) throws Exception {
+    public Map<String, Object> listFlows(HttpServletRequest request, String flowid, String flowname) throws Exception {
+        String uid = getUserid(request);
         Map<String, Object> map = new HashMap();
-        List<Flow> list = flowService.listFlows(flowid, flowname);
+        List<Flow> list = flowService.listFlows(flowid, flowname, uid);
         map.put("rows", list);
         map.put("totalCount", list.size());
         return map;

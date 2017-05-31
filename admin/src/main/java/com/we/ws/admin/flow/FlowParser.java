@@ -94,8 +94,9 @@ public class FlowParser {
     public static final String TASK = "task";
     public static final String INVOKE = "invoke";
     public static final String END = "end";
-    public static final String IF = "fork";
+    public static final String IF = "if";
     public static final String RECEIVE = "receive";
+    public static final String REPLY = "reply";
 
     private static Node generateNodebyState(State state) {
         switch (state.getType()) {
@@ -106,12 +107,13 @@ public class FlowParser {
             case TASK:
                 return Task.of(state);
             case IF:
-                String judgeExpress = state.getProps().get("judge").get("value");
-                return new If(judgeExpress);
+                return If.of(state);
             case INVOKE:
                 return Invoke.of(state);
             case RECEIVE:
                 return Receive.of(state);
+            case REPLY:
+                return Reply.of(state);
         }
         return null;
     }

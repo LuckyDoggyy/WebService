@@ -14,7 +14,19 @@ import java.util.Map;
  */
 public abstract class Node implements Handle {
 
+    protected String name;
+    protected String desc;
+
     protected Node next;
+
+
+    public Node() {
+    }
+
+    public Node(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+    }
 
     public void setNext(Node next) {
         this.next = next;
@@ -24,34 +36,17 @@ public abstract class Node implements Handle {
         return next;
     }
 
-    protected Map<String, Object> parseInput(String input) {
-        if (StringUtils.isEmpty(input)) {
+    protected Map<String, Object> parseInOrOut(String str) {
+        if (StringUtils.isEmpty(str)) {
             return null;
         }
         Map<String, Object> map = new HashMap<>();
-        String[] inputs = input.split(",");
+        String[] inputs = str.split(",");
         for (String in : inputs) {
             String[] token = in.split(":");
             if (token.length >= 2) {
                 map.put(token[0], token[1]);
-            } else {
-                map.put(token[0], "");
-            }
-        }
-        return map;
-    }
-
-    protected Map<String, Object> parseOutput(String output) {
-        if (StringUtils.isEmpty(output)) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>();
-        String[] outputs = output.split(",");
-        for (String out : outputs) {
-            String[] token = out.split(":");
-            if (token.length >= 2) {
-                map.put(token[0], token[1]);
-            } else {
+            } else if (token.length == 1) {
                 map.put(token[0], "");
             }
         }
