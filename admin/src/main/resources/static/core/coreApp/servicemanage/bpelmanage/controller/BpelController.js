@@ -24,6 +24,13 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 										return false;
                                    }
                                },
+                                "bpusergrid button[ref=searchBP]" : {
+                                      click : function(btn) {
+                                          this.search(btn);
+                                        return false;
+                                      }
+                                  },
+
                                 "deletebpgrid button[ref=searchBP]" : {
                                    click : function(btn) {
                                        this.search(btn);
@@ -166,16 +173,57 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                                       flowcallform.ownerCt.down("panel[xtype=form]").down("textfield[name=callResult]").setValue(json);
                                                       return false;
                                                   }
-                                              }
+                                              },
+
+                                     "bpusergrid button[ref=setUser]" : {
+                                            click : function(btn) {
+                                                var grid = btn.ownerCt.ownerCt;
+                                                var records = grid.getSelectionModel().getSelection();
+                                                var fid=records[0].get("autoid");
+                                                var username=records[0].get("account");
+                                                var window = Ext.create(
+                                                            'Ext.window.Window', {
+                                                                title : '流程用户设置',
+                                                                constrain : true,
+                                                                maximizable : true,
+                                                                maximized : true,
+                                                                layout : 'border',
+                                                                fixed : true,
+                                                                modal : true,
+                                                                items : [{
+                                                                         region: 'west',
+                                                                         title: '所有用户',
+                                                                         xtype: "allusergrid",
+                                                                         width: 700
+                                                                     },{
+                                                                         region: 'center',
+                                                                         title: ' 以启用用户',
+                                                                         xtype: "usergrid"
+                                                                     }]
+                                                            });
+                                                var store=window.down("panel[xtype=usergrid]").getStore();
+                                                proxy = store.getProxy();
+                                                proxy.extraParams = {
+                                                    fid : fid
+                                                };
+                                                store.loadPage(1);
+                                                window.show();
+                                                return false;
+                                            }
+                                        },
 						});
 					},
 					views : ["core.servicemanage.bpelmanage.view.BPGrid",
 					        "core.servicemanage.bpelmanage.view.FlowCallForm",
 							"core.servicemanage.bpelmanage.view.UpdateBPGrid",
 							"core.servicemanage.bpelmanage.view.DeleteBPGrid",
+							"core.servicemanage.bpelmanage.view.BPUserGrid",
+							"core.servicemanage.bpelmanage.view.AllUserGrid",
+							"core.servicemanage.bpelmanage.view.UserGrid",
 							"core.servicemanage.bpelmanage.view.AddBP",
 					        "core.servicemanage.bpelmanage.view.BPView"],
-					stores : ["core.servicemanage.bpelmanage.store.BPStore"],
+					stores : ["core.servicemanage.bpelmanage.store.BPStore",
+					        "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore"],
 					models : ["core.servicemanage.bpelmanage.model.BPModel"],
 					search : function(btn) {
 						   var tbar = btn.ownerCt;

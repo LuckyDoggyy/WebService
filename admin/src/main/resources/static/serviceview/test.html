@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
+    <script>
+        function add(obj){
+            $(obj).parent('td').parent('tr').after('<tr><td><input></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr>');
+        }
+
+         function remove(obj){
+            $(obj).parent('td').parent('tr').remove();
+        }
+
+         function show(){
+            window.open('http://www.baidu.com');
+            var tdArr = $('#table').children();
+            var value = tdArr.eq(0).find("input").val();
+            console.log($('#table tr').length);
+            console.log(value);
+        }
+
+    </script>
+</head>
+<body>
+<input type="button" value="show" onclick="show()">
+<table id="table">
+    <tr>
+        <td><input></td>
+        <td><input type="button" value="增加" onclick="add(this)"></td>
+        <td><input type="button" value="删除" onclick="remove(this)"></td>
+    </tr>
+</table>
+</body>
+</html>

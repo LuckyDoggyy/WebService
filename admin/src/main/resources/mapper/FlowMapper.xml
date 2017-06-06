@@ -18,7 +18,7 @@
             <if test="flowname != null and flowname!=''">
                 and flowname like #{flowname}
             </if>
-            <if test="uid !='0'">
+            <if test="uid !='1'">
                 and uid like #{uid}
             </if>
         </where>

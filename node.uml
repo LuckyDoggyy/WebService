@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.we.ws.admin.flow.node.Receive</OriginalElement>
+  <nodes>
+    <node x="-650.9999999999986" y="-419.6666666666662">com.we.ws.admin.flow.node.Task</node>
+    <node x="-2919.9999999999986" y="-375.6666666666662">com.we.ws.admin.flow.node.Receive</node>
+    <node x="-1124.9999999999986" y="-342.1666666666662">com.we.ws.admin.flow.node.Start</node>
+    <node x="-1672.9999999999986" y="-685.6666666666662">com.we.ws.admin.flow.node.Node</node>
+    <node x="-1683.9999999999986" y="-397.6666666666662">com.we.ws.admin.flow.node.Invoke</node>
+    <node x="-1786.4999999999986" y="-786.6666666666662">com.we.ws.admin.flow.node.Handle</node>
+    <node x="-2618.9999999999986" y="-342.1666666666662">com.we.ws.admin.flow.node.End</node>
+    <node x="-1414.9999999999986" y="-364.6666666666662">com.we.ws.admin.flow.node.Reply</node>
+    <node x="-2144.9999999999986" y="-463.6666666666662">com.we.ws.admin.flow.node.If</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.we.ws.admin.flow.node.Task" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-103.0" />
+      <point x="-498.99999999999864" y="-503.6666666666662" />
+      <point x="-1462.2142857142844" y="-503.6666666666662" />
+      <point x="97.28571428571422" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.Invoke" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-81.0" />
+      <point x="-2.8421709430404007E-14" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.Receive" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-59.0" />
+      <point x="-2779.4999999999986" y="-503.6666666666662" />
+      <point x="-1656.7857142857129" y="-503.6666666666662" />
+      <point x="-97.28571428571429" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.Reply" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-48.0" />
+      <point x="-1279.9999999999986" y="-483.6666666666662" />
+      <point x="-1527.0714285714273" y="-483.6666666666662" />
+      <point x="32.42857142857139" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.If" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-147.0" />
+      <point x="-1924.4999999999986" y="-483.6666666666662" />
+      <point x="-1591.9285714285702" y="-483.6666666666662" />
+      <point x="-32.428571428571445" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.Node" target="com.we.ws.admin.flow.node.Handle">
+      <point x="0.0" y="-81.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.End" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-25.5" />
+      <point x="-2391.9999999999986" y="-493.6666666666662" />
+      <point x="-1624.3571428571415" y="-493.6666666666662" />
+      <point x="-64.85714285714286" y="81.0" />
+    </edge>
+    <edge source="com.we.ws.admin.flow.node.Start" target="com.we.ws.admin.flow.node.Node">
+      <point x="0.0" y="-25.5" />
+      <point x="-897.9999999999986" y="-493.6666666666662" />
+      <point x="-1494.6428571428557" y="-493.6666666666662" />
+      <point x="64.8571428571428" y="81.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="-2143.5" y="-385.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
