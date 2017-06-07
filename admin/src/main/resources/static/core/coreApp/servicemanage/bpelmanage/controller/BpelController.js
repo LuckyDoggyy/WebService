@@ -37,6 +37,18 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                        return false;
                                    }
                                },
+                                "usergrid button[ref=searchPeople]" : {
+                                  click : function(btn) {
+                                      this.searchUser(btn);
+                                      return false;
+                                  }
+                              },
+                               "allusergrid button[ref=searchPeople]" : {
+                                 click : function(btn) {
+                                     this.searchUser(btn);
+                                     return false;
+                                 }
+                             },
                                 'bpgrid actioncolumn': {
 										  itemclick: function (rec,node) {
 										  		this.operate(rec,node);
@@ -180,7 +192,6 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                                 var grid = btn.ownerCt.ownerCt;
                                                 var records = grid.getSelectionModel().getSelection();
                                                 var fid=records[0].get("autoid");
-                                                var username=records[0].get("account");
                                                 var window = Ext.create(
                                                             'Ext.window.Window', {
                                                                 title : '流程用户设置',
@@ -223,6 +234,7 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 							"core.servicemanage.bpelmanage.view.AddBP",
 					        "core.servicemanage.bpelmanage.view.BPView"],
 					stores : ["core.servicemanage.bpelmanage.store.BPStore",
+					         "core.servicemanage.bpelmanage.store.UserStore",
 					        "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore"],
 					models : ["core.servicemanage.bpelmanage.model.BPModel"],
 					search : function(btn) {
@@ -239,6 +251,20 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 						   _store.loadPage(1);
 						   return false;
 						   },
+                   searchUser : function(btn) {
+                                    var tbar = btn.ownerCt;
+                                    var uid = tbar.down("textfield[name=uid]").getValue();
+                                    var name = tbar.down("textfield[name=account]").getValue();
+                                    var grid = tbar.ownerCt;
+                                    var _store = grid.getStore();
+                                    proxy = _store.getProxy();
+                                    proxy.extraParams = {
+                                        uid : uid,
+                                        name : name
+                                    };
+                                    _store.loadPage(1);
+                                    return false;
+                                },
 					operate: function (rec,node) {
 						  var autoid= rec.get('autoid');
 						  if (node.action == 'flowview') {

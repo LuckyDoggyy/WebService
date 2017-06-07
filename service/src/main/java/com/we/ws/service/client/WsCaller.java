@@ -40,7 +40,6 @@ public class WsCaller {
     }
 
     public static Map<String, Object> generateCallout(String originXml, String outConfig, String out) throws Exception {
-        System.out.println(originXml);
         String[] outputs = out.split(",");
         Map<String, Object> configmap = XmlParser.parseConfig(outConfig);
         Map<String, Object> callResult = XmlParser.parseXMl(configmap, originXml);

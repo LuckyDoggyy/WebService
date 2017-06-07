@@ -7,6 +7,11 @@ Ext.define("core.servicemanage.bpelmanage.view.BPUserGrid", {
 	loadMask : {
 		msg : "数据加载中，请稍等..."
 	},
+    selModel: {
+        selType: "checkboxmodel",
+        mode: 'SIMPLE'
+    },
+    multiSelect: true,
 	autoScroll : true,
 	disableSelection : false,
 	enableKeyNav : true,

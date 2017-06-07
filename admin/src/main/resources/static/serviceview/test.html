@@ -3,35 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../myflow/lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
     <script>
-        function add(obj){
-            $(obj).parent('td').parent('tr').after('<tr><td><input></td><td><input type="button" value="增加" onclick="add(this)"></td><td><input type="button" value="删除" onclick="remove(this)"></td></tr>');
-        }
-
-         function remove(obj){
-            $(obj).parent('td').parent('tr').remove();
-        }
-
          function show(){
-            window.open('http://www.baidu.com');
-            var tdArr = $('#table').children();
-            var value = tdArr.eq(0).find("input").val();
-            console.log($('#table tr').length);
-            console.log(value);
+         var callParams=new Array();
+         var value=$("#mobile").val();
+         callParams.push({'name':'mobile','value':value});
+            $.ajax({
+                url:'../flow/callFlow',
+                type:'POST',
+                async:false,
+                data:{
+                    autoId:1,
+                    callParams:JSON.stringify(callParams)
+                },
+                timeout:5000,
+                dataType:'json',
+                success:function(data){
+                     var weather=data.weathers;
+                     console.log(weather);
+                     if (weather) {
+                     /*
+                        weather.forEach(function(item){
+                               $("#main").append('<span>'+item+'</span></br>');
+                          });*/
+                         $("#main").append('<span>'+weather[0]+'</span></br>');
+                         $("#main").append('<span>'+weather[3]+'</span></br>');
+                         $("#main").append('<span>'+weather[4]+'</span></br>');
+                         $("#main").append('<span>'+weather[5]+'</span></br>');
+                         $("#main").append('<span>'+weather[6]+'</span></br>');
+                         return false;
+                     } else {
+                        alert("服务器异常");
+                         return false;
+                     }
+                },
+                error:function(xhr,textStatus){
+                    alert("请求错误");
+                }
+                })
         }
-
     </script>
 </head>
 <body>
-<input type="button" value="show" onclick="show()">
-<table id="table">
-    <tr>
-        <td><input></td>
-        <td><input type="button" value="增加" onclick="add(this)"></td>
-        <td><input type="button" value="删除" onclick="remove(this)"></td>
-    </tr>
-</table>
+请输入手机号 : <input id="mobile"/>&nbsp;<input type="button" value="查询" onclick="show()"/>
+
+<div id="main">
+
+</div>
 </body>
 </html>

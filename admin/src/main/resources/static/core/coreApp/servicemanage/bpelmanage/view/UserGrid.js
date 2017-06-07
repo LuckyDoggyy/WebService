@@ -54,7 +54,7 @@ Ext.define("core.servicemanage.bpelmanage.view.UserGrid", {
          width: 140,
          align: 'center'
      }],
-    store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
+    store: "core.servicemanage.bpelmanage.store.UserStore",
     bbar: [{
         xtype: 'button',
         text: '全选',
@@ -69,7 +69,7 @@ Ext.define("core.servicemanage.bpelmanage.view.UserGrid", {
         }
     }, {
         xtype: 'pagingtoolbar',
-        store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
+        store: "core.servicemanage.bpelmanage.store.UserStore",
         displayInfo: true,
         flex: 1
     }]
