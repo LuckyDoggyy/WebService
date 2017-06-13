@@ -2,8 +2,9 @@ package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.User;
+import com.we.ws.admin.service.CommonUserService;
 import com.we.ws.admin.service.RoleService;
-import com.we.ws.admin.service.impl.UserServiceImpl;
+import com.we.ws.admin.service.UserService;
 import com.we.ws.common.data.Pair;
 import com.we.ws.common.exception.TokenException;
 import com.we.ws.common.util.MD5Utils;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * Description:
+ *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-01
@@ -35,7 +36,9 @@ public class IndexController extends BaseController {
     private Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+    @Autowired
+    private CommonUserService commonUserService;
     @Autowired
     private RoleService roleService;
 
@@ -54,15 +57,25 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "/in", method = {RequestMethod.POST})
-    public String login(HttpServletResponse response, String j_username, String j_password) throws TokenException {
-        User u = userService.getByAccount(j_username);
+    public String login(HttpServletResponse response, String j_username, String j_password, String type) throws TokenException {
+        User u = null;
+        if ("0".equals(type)) {
+            u = userService.getByAccount(j_username);
+        } else if ("1".equals(type)) {
+            u = commonUserService.getByAccount(j_username);
+        } else {
+            return "redirect:relogin.html";
+        }
         if (u != null && MD5Utils.getStringMD5(j_password).equals(u.getPassword())) {
             Cookie uid = new Cookie("uid", Long.toString(u.getUid()));
             uid.setMaxAge(2000);
             Cookie token = new Cookie("token", TokenUtils.generateToken(u.getUid()));
             token.setMaxAge(2000);
+            Cookie userType = new Cookie("type", type);
+            token.setMaxAge(2000);
             response.addCookie(uid);
             response.addCookie(token);
+            response.addCookie(userType);
             return "redirect:home.html";
         } else {
             return "redirect:relogin.html";
@@ -87,7 +100,7 @@ public class IndexController extends BaseController {
         Map<String, Object> map = new HashMap<>();
         if (result.getL()) {
             map.put("success", true);
-        }else{
+        } else {
             map.put("success", false);
         }
         return map;
@@ -96,7 +109,8 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/getParentMenu")
     @ResponseBody
     public List<Menu> getParentMenu(HttpServletRequest request) {
-        return roleService.getParentMenuForLogin();
+        String type = getUserType(request);
+        return roleService.getParentMenuForLogin(type);
     }
 
     @RequestMapping(value = "/getMenu")

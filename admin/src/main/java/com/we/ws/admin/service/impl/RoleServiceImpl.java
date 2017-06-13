@@ -44,13 +44,14 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean updateRole(String name, String rid) {
-        roleMapper.updateRole(name,rid);
+        roleMapper.updateRole(name, rid);
         return true;
     }
 
     @Override
-    public List<Map<String, Object>> listRoleMenu(String rid) {
-        List<Menu> parentMenus = menuMapper.getFirstLayerMenu();
+    public List<Map<String, Object>> listRoleMenu(String rid, String type) {
+        //TODO 服务菜单不显示
+        List<Menu> parentMenus = menuMapper.getFirstLayerMenu(type);
         List<Map<String, Object>> menuArr = new ArrayList<>(3);
         for (Menu menu : parentMenus) {
             Map<String, Object> firstmap = new HashMap<>();
@@ -89,15 +90,22 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Menu> getParentMenuForLogin() {
-        return menuMapper.getFirstLayerMenu();
+    public List<Menu> getParentMenuForLogin(String type) {
+        return menuMapper.getFirstLayerMenu(type);
     }
 
     @Override
     public List<Map<String, Object>> getRoleMenuForLogin(String pid, String uid) {
         List<Map<String, Object>> secondLayer = menuMapper.getSecondLayerMenu(pid);
+        if (pid.equals("003")) {
+            for (Map<String, Object> menu : secondLayer) {
+                menu.put("children", menuMapper.getLeafMenu(menu.get("id").toString()));
+                menu.put("expanded", "true");
+            }
+            return secondLayer;
+        }
         for (Map<String, Object> menu : secondLayer) {
-            menu.put("children", menuMapper.getLeafMenu(menu.get("id").toString(), uid));
+            menu.put("children", menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid));
             menu.put("expanded", "true");
         }
         return secondLayer;

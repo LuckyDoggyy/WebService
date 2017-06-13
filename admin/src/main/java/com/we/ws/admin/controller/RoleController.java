@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Description:
+ *
  * @author twogoods
  * @version 0.1
  * @since 2017-02-04
@@ -63,8 +65,9 @@ public class RoleController extends BaseController {
 
     @RequestMapping("listRoleMenu")
     @ResponseBody
-    public List<Map<String, Object>> listRoleMenu(String node, String rid) {
-        return roleMenuService.listRoleMenu(rid);
+    public List<Map<String, Object>> listRoleMenu(HttpServletRequest request, String node, String rid) {
+        String type = getUserType(request);
+        return roleMenuService.listRoleMenu(rid, type);
     }
 
     @RequestMapping("saveRoleMenu")
