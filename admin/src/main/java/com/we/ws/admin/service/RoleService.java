@@ -22,11 +22,11 @@ public interface RoleService {
 
     boolean updateRole(String name, String rid);
 
-    List<Map<String, Object>> listRoleMenu(String rid,String type);
+    List<Map<String, Object>> listRoleMenu(String rid);
 
     boolean saveRoleMenu(String mids, String rid);
 
-    List<Menu> getParentMenuForLogin(String type);
+    List<Menu> getParentMenuForLogin(String uid);
 
     List<Map<String, Object>> getRoleMenuForLogin(String pid,String uid);
 

@@ -50,10 +50,11 @@ public class FlowController extends BaseController {
 
     @RequestMapping("addFlow")
     @ResponseBody
-    public Map<String, Object> addFlow(String json) throws Exception {
+    public Map<String, Object> addFlow(HttpServletRequest request, String json) throws Exception {
         Map<String, Object> map = new HashMap();
         Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
+        flow.setUid(Integer.valueOf(getUserid(request)));
         flowService.add(flow);
         CompletableFuture.runAsync(() -> FlowCache.addCache(flow.getAutoid(), pair.getL()));
         map.put("success", true);

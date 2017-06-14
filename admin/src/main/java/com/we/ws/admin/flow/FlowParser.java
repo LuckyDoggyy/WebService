@@ -54,6 +54,9 @@ public class FlowParser {
     }
 
     private static String getReceiveParam(Node head) {
+        if(head==null){
+            return "";
+        }
         Node node = head;
         if (node instanceof Receive) {
             Receive receive = (Receive) node;

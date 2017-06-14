@@ -9,10 +9,7 @@ import com.we.ws.admin.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description:
@@ -49,9 +46,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Map<String, Object>> listRoleMenu(String rid, String type) {
-        //TODO 服务菜单不显示
-        List<Menu> parentMenus = menuMapper.getFirstLayerMenu(type);
+    public List<Map<String, Object>> listRoleMenu(String rid) {
+        List<Menu> parentMenus = menuMapper.getFirstLayerMenu();
         List<Map<String, Object>> menuArr = new ArrayList<>(3);
         for (Menu menu : parentMenus) {
             Map<String, Object> firstmap = new HashMap<>();
@@ -90,23 +86,32 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Menu> getParentMenuForLogin(String type) {
-        return menuMapper.getFirstLayerMenu(type);
+    public List<Menu> getParentMenuForLogin(String uid) {
+        List<Menu> all = menuMapper.getFirstLayerMenu();
+
+        Iterator iterator = all.iterator();
+        while (iterator.hasNext()) {
+            Menu menu = (Menu) iterator.next();
+            if (menuMapper.checkFirstLayerMenu(uid, menu.getMid() + "%") == 0) {
+                iterator.remove();
+            }
+        }
+        return all;
     }
 
     @Override
     public List<Map<String, Object>> getRoleMenuForLogin(String pid, String uid) {
         List<Map<String, Object>> secondLayer = menuMapper.getSecondLayerMenu(pid);
-        if (pid.equals("003")) {
-            for (Map<String, Object> menu : secondLayer) {
-                menu.put("children", menuMapper.getLeafMenu(menu.get("id").toString()));
+        Iterator iterator = secondLayer.iterator();
+        while (iterator.hasNext()) {
+            Map<String, Object> menu = (Map<String, Object>) iterator.next();
+            List<Map<String, String>> leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
+            if (leaf.size() == 0) {
+                iterator.remove();
+            } else {
+                menu.put("children", leaf);
                 menu.put("expanded", "true");
             }
-            return secondLayer;
-        }
-        for (Map<String, Object> menu : secondLayer) {
-            menu.put("children", menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid));
-            menu.put("expanded", "true");
         }
         return secondLayer;
     }

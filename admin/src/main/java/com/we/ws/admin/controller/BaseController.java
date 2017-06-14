@@ -70,31 +70,6 @@ public class BaseController {
         return "0";
     }
 
-    protected String getUserType(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie c : cookies) {
-            if ("type".equals(c.getName())) {
-                return c.getValue();
-            }
-        }
-        return null;
-    }
-
-    protected Pair<String, String> getAllUserInfo(HttpServletRequest request) {
-        String uid = null;
-        String type = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie c : cookies) {
-            if ("uid".equals(c.getName())) {
-                uid = c.getValue();
-            }
-            if ("type".equals(c.getName())) {
-                type = c.getValue();
-            }
-        }
-        return Pair.of(uid, type);
-    }
-
     protected Pair<Boolean, String> checkCoookies(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String token = "", userid = "";

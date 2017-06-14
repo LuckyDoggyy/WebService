@@ -66,8 +66,7 @@ public class RoleController extends BaseController {
     @RequestMapping("listRoleMenu")
     @ResponseBody
     public List<Map<String, Object>> listRoleMenu(HttpServletRequest request, String node, String rid) {
-        String type = getUserType(request);
-        return roleMenuService.listRoleMenu(rid, type);
+        return roleMenuService.listRoleMenu(rid);
     }
 
     @RequestMapping("saveRoleMenu")

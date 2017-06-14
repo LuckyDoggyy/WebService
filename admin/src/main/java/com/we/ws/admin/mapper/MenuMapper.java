@@ -23,7 +23,11 @@ public interface MenuMapper {
     @Select("SELECT DISTINCT mid AS id, menuname AS text, 'true' AS leaf FROM T_Menu WHERE pid = #{pid} and state=0")
     List<Map<String, String>> getLeafMenu(@Param("pid") String pid);
 
-    List<Menu> getFirstLayerMenu(@Param("type") String type);
+    @Select("select * from T_Menu where pid='root'")
+    List<Menu> getFirstLayerMenu();
+
+    @Select("select count(mid) from T_RoleMenu where rid in (select rid from T_UserRole where uid=#{uid}) and mid like #{mid}")
+    int checkFirstLayerMenu(@Param("uid") String uid, @Param("mid") String mid);
 
     @Select("SELECT DISTINCT mid AS id, menuname AS text, 'false' AS leaf FROM T_Menu WHERE pid = #{pid} and state=0")
     List<Map<String, Object>> getSecondLayerMenu(@Param("pid") String firstLayerMid);
