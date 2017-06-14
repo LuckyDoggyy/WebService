@@ -17,6 +17,7 @@ public class Menu {
     private String viewid;
     private String viewname;
     private String viewcontroller;
+    private int fid;
 
     public int getAutoid() {
         return autoid;
@@ -88,5 +89,13 @@ public class Menu {
 
     public void setPname(String pname) {
         this.pname = pname;
+    }
+
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
     }
 }

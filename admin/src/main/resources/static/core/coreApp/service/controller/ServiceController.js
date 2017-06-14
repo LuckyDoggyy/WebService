@@ -15,7 +15,7 @@ Ext.define("core.service.controller.ServiceController",
 
 						});
 					},
-					views : ["core.service.view.Weather"],
+					views : ["core.service.view.ServiceItem"],
 					stores : [],
 					models : []
 				});

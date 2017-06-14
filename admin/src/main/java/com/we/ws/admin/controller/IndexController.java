@@ -122,7 +122,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/getView")
     @ResponseBody
-    public Map<String, String> getView(HttpServletRequest request, String mid) {
+    public Map<String, Object> getView(HttpServletRequest request, String mid) {
         return roleService.getView(mid);
     }
 }

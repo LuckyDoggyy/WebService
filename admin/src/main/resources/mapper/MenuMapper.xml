@@ -4,9 +4,9 @@
 
 
     <select id="getFirstLayerMenu" resultType="com.we.ws.admin.domain.Menu">
-        select * from T_Menu where pid='user'
-        <if test=' type == "0"'>
-            or pid='root'
+        select * from T_Menu where pid='root'
+        <if test=' type == "1"'>
+            and mid='003'
         </if>
     </select>
 

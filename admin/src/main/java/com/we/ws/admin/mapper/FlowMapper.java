@@ -24,12 +24,15 @@ public interface FlowMapper {
 
     int setFlowState(@Param("autoids") String[] autoids, @Param("state") int state);
 
+    @Select("select state from T_Flow where autoid=#{autoid}")
+    int getState(@Param("autoid") String autoid);
+
     List<Flow> listFlows(@Param("flowid") String flowid, @Param("flowname") String flowname, @Param("uid") String uid);
 
     @Select("select flowjson from T_Flow where autoid=#{autoid}")
     String getJsonById(@Param("autoid") String autoid);
 
     @Select("select autoid,flowid,flowname,description,input from T_Flow where autoid=#{autoid}")
-    String getById(@Param("autoid") String autoid);
+    Flow getById(@Param("autoid") String autoid);
 
 }

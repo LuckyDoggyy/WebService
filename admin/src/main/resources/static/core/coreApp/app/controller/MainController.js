@@ -20,8 +20,7 @@
 						} else {
 							// Ext.Msg.alert("提示","用户名和密码错误");
 							var dis = Ext.getCmp("displaylogin");
-							dis.setText("<font size=4 color=red><b>"
-									+ "您未登陆" + "</b></font>");
+							dis.setText("<font size=4 color=red><b>"+ "您未登陆" + "</b></font>");
 						}
 					}
 				});
@@ -35,8 +34,7 @@
 		 */
 		this.addFunItem = function(funInfo) {
 			if (funInfo) {
-				var myMask = new Ext.LoadMask(Ext.ComponentQuery
-								.query("panel[xtype=centerview]")[0], {
+				var myMask = new Ext.LoadMask(Ext.ComponentQuery.query("panel[xtype=centerview]")[0], {
 							msg : "加载页面 中，请您稍等..."
 						});
 				var mainView = funInfo.mainView;
@@ -45,14 +43,15 @@
 					if (null != myMask)
 						myMask.show();
 					try {
-						self.application.getController(funInfo.funController)
-								.init();
+						self.application.getController(funInfo.funController).init();
 						funPanel = Ext.create(funInfo.funViewName, {
 									closable : true
 								});
+								if(funInfo.funViewXtype=="serviceitem"){
+				                    funPanel.html='<iframe id="frame" src="serviceview/service.html?'+funInfo.fid+'" frameborder="0" width="100%" height="100%"></iframe>';
+								}
 					} catch (e) {
 						myMask.hide();
-						// console.log(e);
 					}
 					mainView.add(funPanel);
 					mainView.setActiveTab(funPanel);
@@ -204,7 +203,8 @@
 									mainView : mainView,
 									funViewXtype : resObj.viewid,
 									funController : resObj.viewcontroller,
-									funViewName : resObj.viewname
+									funViewName : resObj.viewname,
+									fid : resObj.fid
 								});
 							}
 						}

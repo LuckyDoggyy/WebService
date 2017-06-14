@@ -65,6 +65,20 @@ Ext.define("core.basicinfomanage.menumanage.view.AddMenu",
 							name : 'viewcontroller',
 							allowBlank : true
 						},{
+                            fieldLabel : '流程id',
+                            xtype : "combobox",
+                            name : 'fid',
+                            labelWidth : 80,
+                            emptyText : '请选择流程',
+                            queryMode : 'remote',
+                            store : "core.servicemanage.bpelmanage.store.BPStore",
+                            loadingText : '正在加载数据，请稍侯……',
+                            triggerAction : 'all',
+                            valueField : 'autoid',
+                            forceSelection : false,
+                            allowBlank : true,
+                            displayField : 'flowname'
+                        },{
 							 xtype: 'button',
 							 text: '添加',
 							 ref : 'addMenu',

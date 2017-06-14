@@ -112,7 +112,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Map<String, String> getView(String mid) {
+    public Map<String, Object> getView(String mid) {
         return menuMapper.getView(mid);
     }
 }

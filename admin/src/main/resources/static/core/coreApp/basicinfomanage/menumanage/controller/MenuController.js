@@ -123,6 +123,9 @@ Ext.define("core.basicinfomanage.menumanage.controller.MenuController",
 															 var updatemenuform = btn.up("panel[xtype=updatemenuform]");
 															 var formObj = updatemenuform.getForm();
 															 var params = self.getFormValue(formObj);
+															 if(params.fid==null||params.fid==""){
+															        params.fid=0
+															 }
 															 if (formObj.isValid()) {
 																 var resObj2 = self.ajax({
 																			 url : "menu/updateMenu",
@@ -187,6 +190,7 @@ Ext.define("core.basicinfomanage.menumanage.controller.MenuController",
 								"core.basicinfomanage.menumanage.view.UpdateMenuGrid",
 								"core.basicinfomanage.menumanage.view.MenuGrid"],
 						stores : ["core.basicinfomanage.menumanage.store.MenuStore",
+						            "core.servicemanage.bpelmanage.store.BPStore",
 									"core.basicinfomanage.menumanage.store.MenuNodeStore"],
 						models : ["core.basicinfomanage.menumanage.model.MenuModel",
 									"core.basicinfomanage.menumanage.model.MenuNode"],

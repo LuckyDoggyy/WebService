@@ -17,7 +17,7 @@ public interface FlowService {
 
     boolean update(Flow flow);
 
-    List<Flow> listFlows(String flowid, String flowname,String uid);
+    List<Flow> listFlows(String flowid, String flowname, String uid);
 
     boolean deleteFlows(String autoids);
 
@@ -25,7 +25,11 @@ public interface FlowService {
 
     boolean unableFlows(String autoids);
 
+    boolean checkEnable(String autoid);
+
     String getJsonById(String autoid);
+
+    Flow getById(String autoid);
 
     Map<String, Object> call(String autoId, String callParams) throws Exception;
 

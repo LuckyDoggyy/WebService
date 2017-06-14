@@ -6,6 +6,34 @@
     <script type="text/javascript" src="../myflow/lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
     <script>
+        var array;
+        $(function() {
+            var autoid=window.location.search.substring(1);
+            $.ajax({
+                url:'../flow/getAllById',
+                type:'POST',
+                async:false,
+                data:{
+                    autoid:autoid
+                },
+                timeout:5000,
+                dataType:'json',
+                success:function(data){
+                    array=data.input.split(",");
+                    array.forEach(function(name){
+                              $("#input").append(name+' : <input id="'+name+'"/><br>');
+                          });
+                    if(array.length>0){
+                        $("#input").append('<input type="button" value="查询" onclick="show()"/>');
+                    }
+                },
+                error:function(xhr,textStatus){
+                    alert("请求失败");
+                }
+                })
+	});
+
+
          function show(){
          var callParams=new Array();
          var value=$("#mobile").val();
@@ -22,7 +50,6 @@
                 dataType:'json',
                 success:function(data){
                      var weather=data.weathers;
-                     console.log(weather);
                      if (weather) {
                      /*
                         weather.forEach(function(item){
@@ -35,7 +62,7 @@
                          $("#main").append('<span>'+weather[6]+'</span></br>');
                          return false;
                      } else {
-                        alert("服务器异常");
+                        $("#main").append('<span>暂不提供服务,稍后再试!</span></br>');
                          return false;
                      }
                 },
@@ -44,11 +71,13 @@
                 }
                 })
         }
+
     </script>
 </head>
 <body>
-请输入手机号 : <input id="mobile"/>&nbsp;<input type="button" value="查询" onclick="show()"/>
+<div id="input">
 
+</div>
 <div id="main">
 
 </div>

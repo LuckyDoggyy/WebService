@@ -40,6 +40,11 @@ public class FlowController extends BaseController {
     @RequestMapping("callFlow")
     @ResponseBody
     public Map<String, Object> callFlow(String autoId, String callParams) throws Exception {
+        if (!flowService.checkEnable(autoId)) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("error", "暂不提供服务,稍后再试");
+            return result;
+        }
         return flowService.call(autoId, callParams);
     }
 
@@ -130,7 +135,13 @@ public class FlowController extends BaseController {
 
     @RequestMapping("getJson")
     @ResponseBody
-    public String getById(String autoid) throws Exception {
+    public String getJsonById(String autoid) throws Exception {
         return flowService.getJsonById(autoid);
+    }
+
+    @RequestMapping("getAllById")
+    @ResponseBody
+    public Flow getById(String autoid) throws Exception {
+        return flowService.getById(autoid);
     }
 }

@@ -34,20 +34,20 @@ public interface MenuMapper {
     @Select("select mid as id ,menuname as text,'true' as leaf from T_Menu where pid=#{pid} and state=0")
     List<Map<String, String>> getLeafMenusByPid(@Param("pid") String pid);
 
-    @Select("select mid,viewid,viewname,viewcontroller from T_Menu where mid=#{mid} and state=0")
-    Map<String, String> getView(@Param("mid") String mid);
+    @Select("select mid,viewid,viewname,viewcontroller,fid from T_Menu where mid=#{mid} and state=0")
+    Map<String, Object> getView(@Param("mid") String mid);
 
     List<Menu> listMenu(@Param("mid") String mid);
 
     @Select("select mid,menuname from T_Menu where state=0 and pid in (select mid from T_Menu where pid='root') or pid='null' or pid='root'")
     List<Menu> getNodes();
 
-    @Insert("insert into T_Menu (mid,menuname,pid,viewid,viewname,viewcontroller) values(#{mid},#{menuname},#{pid},#{viewid},#{viewname},#{viewcontroller})")
+    @Insert("insert into T_Menu (mid,menuname,pid,viewid,viewname,viewcontroller,fid) values(#{mid},#{menuname},#{pid},#{viewid},#{viewname},#{viewcontroller},#{fid})")
     int insert(Menu menu);
 
     int deleteMenus(@Param("autoids") String[] autoids);
 
-    @Update("update T_Menu set menuname=#{menuname},pid=#{pid},viewid=#{viewid},viewname=#{viewname},viewcontroller=#{viewcontroller} where autoid=#{autoid}")
+    @Update("update T_Menu set menuname=#{menuname},pid=#{pid},viewid=#{viewid},viewname=#{viewname},viewcontroller=#{viewcontroller},fid=#{fid} where autoid=#{autoid}")
     int updateMenu(Menu menu);
 
     @Select("select count(*) from T_Menu where state=0 and mid=#{id} or pid=#{id}")

@@ -62,8 +62,18 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
+    public boolean checkEnable(String autoid) {
+        return flowMapper.getState(autoid) == 0;
+    }
+
+    @Override
     public String getJsonById(String autoid) {
         return flowMapper.getJsonById(autoid);
+    }
+
+    @Override
+    public Flow getById(String autoid) {
+        return flowMapper.getById(autoid);
     }
 
     @Override
