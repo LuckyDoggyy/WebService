@@ -20,11 +20,22 @@ import java.util.Map;
  */
 public class FlowParser {
 
-    public static Pair<Node, Flow> parseWithFlow(String json) throws Exception {
+    public static Pair<Node, Flow> parseWithFlow(String json) {
         if (StringUtils.isEmpty(json)) {
             return Pair.of(null, null);
         }
         JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
+        Node head = null;
+        try {
+            head = parseNode(model);
+        } catch (FlowException e) {
+        }
+        FlowProp flowProp = model.getProps();
+        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));
+        return Pair.of(head, flow);
+    }
+
+    private static Node parseNode(JsonParseModel model) throws FlowException {
         Node head = null;
         Map<String, Node> parsedNodes = new HashMap<>();
         Map<String, State> states = model.getStates();
@@ -48,13 +59,11 @@ public class FlowParser {
                 fromNode.setNext(toNode);
             }
         }
-        FlowProp flowProp = model.getProps();
-        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));
-        return Pair.of(head, flow);
+        return head;
     }
 
     private static String getReceiveParam(Node head) {
-        if(head==null){
+        if (head == null) {
             return "";
         }
         Node node = head;

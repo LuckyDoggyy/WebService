@@ -175,7 +175,7 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                                       });
                                                       var paramStr=JSON.stringify(serviceParams);
                                                       var res = self.ajax({
-                                                                  url : "flow/callFlow",
+                                                                  url : "flow/callFlowInternal",
                                                                   params : {
                                                                        autoId:params.autoid,
                                                                        callParams:paramStr

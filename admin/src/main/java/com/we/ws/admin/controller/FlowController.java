@@ -48,32 +48,52 @@ public class FlowController extends BaseController {
         return flowService.call(autoId, callParams);
     }
 
+    @RequestMapping("callFlowInternal")
+    @ResponseBody
+    public Map<String, Object> callFlowInternal(String autoId, String callParams) throws Exception {
+        return flowService.call(autoId, callParams);
+    }
+
     @RequestMapping("addFlow")
     @ResponseBody
-    public Map<String, Object> addFlow(HttpServletRequest request, String json) throws Exception {
+    public Map<String, Object> addFlow(HttpServletRequest request, String json) {
         Map<String, Object> map = new HashMap();
         Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
         flow.setUid(Integer.valueOf(getUserid(request)));
         flowService.add(flow);
-        CompletableFuture.runAsync(() -> FlowCache.addCache(flow.getAutoid(), pair.getL()));
-        map.put("success", true);
+        if (pair.getL() == null) {
+            map.put("success", true);
+            map.put("msg", "添加成功,但流程图不正确");
+        } else {
+            CompletableFuture.runAsync(() -> FlowCache.addCache(flow.getAutoid(), pair.getL()));
+            map.put("success", true);
+            map.put("msg", "添加成功");
+        }
         return map;
     }
 
     @RequestMapping("updateFlow")
     @ResponseBody
-    public Map<String, Object> updateFlow(Integer autoid, String json) throws Exception {
+    public Map<String, Object> updateFlow(Integer autoid, String json) {
         Map<String, Object> map = new HashMap();
-        Pair<Node, Flow> pair = FlowParser.parseWithFlow(json);
+        Pair<Node, Flow> pair = null;
+        pair = FlowParser.parseWithFlow(json);
         Flow flow = pair.getR();
         flow.setAutoid(autoid);
         //TODO 用户鉴权
         if (flowService.update(flow)) {
-            FlowCache.addCache(autoid, pair.getL());
-            map.put("success", true);
+            if (pair.getL() == null) {
+                map.put("success", true);
+                map.put("msg", "修改成功,但流程图不正确");
+            } else {
+                FlowCache.addCache(autoid, pair.getL());
+                map.put("success", true);
+                map.put("msg", "修改成功");
+            }
         } else {
             map.put("success", false);
+            map.put("msg", "修改失败");
         }
         return map;
     }

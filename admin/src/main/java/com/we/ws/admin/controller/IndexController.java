@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,10 +58,10 @@ public class IndexController extends BaseController {
         User u = userService.getByAccount(j_username);
         if (u != null && MD5Utils.getStringMD5(j_password).equals(u.getPassword())) {
             Cookie uid = new Cookie("uid", Long.toString(u.getUid()));
-            uid.setMaxAge(2000);
+            uid.setMaxAge(90 * 60);
             Cookie token = new Cookie("token", TokenUtils.generateToken(u.getUid()));
-            token.setMaxAge(2000);
-            token.setMaxAge(2000);
+            token.setMaxAge(90 * 60);
+            token.setMaxAge(90 * 60);
             response.addCookie(uid);
             response.addCookie(token);
             return "redirect:home.html";
