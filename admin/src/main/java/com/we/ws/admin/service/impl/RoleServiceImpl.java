@@ -50,6 +50,11 @@ public class RoleServiceImpl implements RoleService {
         List<Menu> parentMenus = menuMapper.getFirstLayerMenu();
         List<Map<String, Object>> menuArr = new ArrayList<>(3);
         for (Menu menu : parentMenus) {
+            //硬编码，服务菜单不展示
+            if (menu.getMid().equals("003")) {
+                continue;
+            }
+
             Map<String, Object> firstmap = new HashMap<>();
             firstmap.put("text", menu.getMenuname());
             firstmap.put("id", menu.getMid());
@@ -92,6 +97,10 @@ public class RoleServiceImpl implements RoleService {
         Iterator iterator = all.iterator();
         while (iterator.hasNext()) {
             Menu menu = (Menu) iterator.next();
+            //硬编码，服务直接展示
+            if (menu.getMid().equals("003")) {
+                continue;
+            }
             if (menuMapper.checkFirstLayerMenu(uid, menu.getMid() + "%") == 0) {
                 iterator.remove();
             }
@@ -105,7 +114,12 @@ public class RoleServiceImpl implements RoleService {
         Iterator iterator = secondLayer.iterator();
         while (iterator.hasNext()) {
             Map<String, Object> menu = (Map<String, Object>) iterator.next();
-            List<Map<String, String>> leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
+            List<Map<String, String>> leaf;
+            if ("003".equals(pid)) {
+                 leaf = menuMapper.getLeafMenu(menu.get("id").toString());
+            } else {
+                 leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
+            }
             if (leaf.size() == 0) {
                 iterator.remove();
             } else {

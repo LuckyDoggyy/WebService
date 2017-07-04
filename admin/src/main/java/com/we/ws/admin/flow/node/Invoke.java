@@ -73,15 +73,21 @@ public class Invoke extends Node {
 
     private String getValueFromOutput(ServiceParam serviceParam, Map<String, Object> output) {
         String param = serviceParam.getParamName();
-        String alies = serviceParam.getAlies();
         Object value;
-        if ((value = output.get(param)) == null) {
-            value = output.get(alies);
+        if ((value = output.get(param)) != null) {
+            return value.toString();
         }
-        if (value == null) {
-            return "";
+        String alies = serviceParam.getAlies();
+        if(!StringUtils.isEmpty(alies)){
+            String[] allAlies=alies.split(",");
+            for (String item : allAlies) {
+                value=output.get(item);
+                if(value!=null){
+                    return value.toString();
+                }
+            }
         }
-        return value.toString();
+        return "";
     }
 
     public static Invoke of(State state) {

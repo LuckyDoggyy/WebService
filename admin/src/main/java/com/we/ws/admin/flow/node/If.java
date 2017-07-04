@@ -37,10 +37,10 @@ public class If extends Node {
         boolean flag = false;
         for (Map.Entry<String, Object> entry : input.entrySet()) {
             if (entry.getKey().equals(v1)) {
-                flag = judge.getR().judge(v2, entry.getValue().toString());
+                flag = judge.getR().judge(v2, param.get(entry.getKey()).toString());
                 break;
             } else if (entry.getKey().equals(v2)) {
-                flag = judge.getR().judge(v1, entry.getValue().toString());
+                flag = judge.getR().judge(v1, param.get(entry.getKey()).toString());
                 break;
             }
         }

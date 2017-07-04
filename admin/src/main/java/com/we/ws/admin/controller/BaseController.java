@@ -70,7 +70,7 @@ public class BaseController {
         return "0";
     }
 
-    protected Pair<Boolean, String> checkCoookies(HttpServletRequest request) {
+    protected Pair<Boolean, String> checkCoookies(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String token = "", userid = "";
         for (Cookie c : cookies) {
@@ -82,7 +82,7 @@ public class BaseController {
             }
         }
         try {
-            return TokenUtils.ValidationToken(userid, token);
+            return TokenUtils.ValidationTokenAndRefresh(userid, token, response);
         } catch (TokenException e) {
             log.warn("token exception:{}", e);
             return Pair.of(false, e.getMessage());

@@ -83,8 +83,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/checklogin")
     @ResponseBody
-    public Map<String, Object> checkLogin(HttpServletRequest request) {
-        Pair<Boolean, String> result = checkCoookies(request);
+    public Map<String, Object> checkLogin(HttpServletRequest request,HttpServletResponse response) {
+        Pair<Boolean, String> result = checkCoookies(request,response);
         Map<String, Object> map = new HashMap<>();
         if (result.getL()) {
             map.put("success", true);

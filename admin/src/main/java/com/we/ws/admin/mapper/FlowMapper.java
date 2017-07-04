@@ -19,7 +19,8 @@ import java.util.List;
 public interface FlowMapper {
     void insertReturnKey(Flow flow);
 
-    @Update("update T_Flow set flowid=#{flowid},flowname=#{flowname},description=#{description},input=#{input},flowjson=#{flowjson} where autoid=#{autoid}")
+    //@Update("update T_Flow set flowid=#{flowid},flowname=#{flowname},description=#{description},input=#{input},flowjson=#{flowjson} where autoid=#{autoid}")
+    @Update("update T_Flow set input=#{input},flowjson=#{flowjson} where autoid=#{autoid}")
     int update(Flow flow);
 
     int setFlowState(@Param("autoids") String[] autoids, @Param("state") int state);
