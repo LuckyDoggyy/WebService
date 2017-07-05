@@ -1,4 +1,4 @@
-Ext.define("core.servicemanage.bpelmanage.store.UserStore", {
+Ext.define("core.servicemanage.bpelmanage.store.AllUserStore", {
 			extend : 'Ext.data.Store',
 			model : 'core.basicinfomanage.peoplemanage.model.PeopleModel',
 			pageSize : 50,
@@ -7,7 +7,7 @@ Ext.define("core.servicemanage.bpelmanage.store.UserStore", {
 				url : "flow/listUser",
 				actionMethods : {
 					create : 'POST',
-					read : 'POST',
+					read : 'POST', // by default GET
 					update : 'POST',
 					destroy : 'POST'
 				},

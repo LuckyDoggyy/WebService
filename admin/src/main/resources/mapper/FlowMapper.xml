@@ -31,4 +31,19 @@
             #{item}
         </foreach>
     </update>
+
+    <insert id="unableUserInFlow">
+        insert into T_UnableUserInFlow (uid,flowid) values
+        <foreach collection="uids" item="item" index="index" separator=",">
+            (#{item} , #{flowid})
+        </foreach>
+    </insert>
+
+    <delete id="enableUserInFlow">
+        DELETE from T_UnableUserInFlow where flowid = #{flowid} and uid in
+        <foreach collection="uids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
 </mapper>

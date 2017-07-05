@@ -36,4 +36,8 @@ public interface FlowMapper {
     @Select("select autoid,flowid,flowname,description,input from T_Flow where autoid=#{autoid}")
     Flow getById(@Param("autoid") String autoid);
 
+    int unableUserInFlow(@Param("uids")String[] uids,@Param("flowid") String flowid);
+
+    int enableUserInFlow(@Param("uids")String[] uids,@Param("flowid") String flowid);
+
 }

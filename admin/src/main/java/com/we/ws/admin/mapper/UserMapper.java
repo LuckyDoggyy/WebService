@@ -38,7 +38,10 @@ public interface UserMapper {
     int countUser(@Param("uid") String uid, @Param("account") String account);
 
     @Select("select count(*) from T_User where account=#{account}")
-    int checkExist(@Param("account")String account);
+    int checkExist(@Param("account") String account);
 
+    List<User> listUserForFlow(@Param("flowid") String flowid, @Param("uid") String uid, @Param("account") String name, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    int countUserForFlow(@Param("flowid") String flowid, @Param("uid") String uid, @Param("account") String name);
 
 }

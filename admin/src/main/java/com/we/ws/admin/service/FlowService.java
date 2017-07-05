@@ -33,4 +33,8 @@ public interface FlowService {
 
     Map<String, Object> call(String autoId, String callParams) throws Exception;
 
+    boolean unableUserInFlow(String uids, String flowid);
+
+    boolean enableUserInFlow(String uids, String flowid);
+
 }

@@ -2,10 +2,12 @@ package com.we.ws.admin.controller;
 
 import com.we.ws.admin.domain.Flow;
 import com.we.ws.admin.domain.Service;
+import com.we.ws.admin.domain.User;
 import com.we.ws.admin.flow.FlowCache;
 import com.we.ws.admin.flow.FlowParser;
 import com.we.ws.admin.flow.node.Node;
 import com.we.ws.admin.service.FlowService;
+import com.we.ws.admin.service.UserService;
 import com.we.ws.common.data.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,9 @@ public class FlowController extends BaseController {
 
     @Autowired
     private FlowService flowService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("callFlow")
     @ResponseBody
@@ -165,4 +170,42 @@ public class FlowController extends BaseController {
     public Flow getById(String autoid) throws Exception {
         return flowService.getById(autoid);
     }
+
+    @RequestMapping("listUser")
+    @ResponseBody
+    public Map<String, Object> listUser(int page, int start, int limit, String flowid, String uid, String name) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        result.put("totalCount", userService.countUserForFlow(flowid, uid, name));
+        result.put("rows", userService.listUserForFlow(flowid, uid, name, limit, start));
+        return result;
+    }
+
+    @RequestMapping("unableUserInFlow")
+    @ResponseBody
+    public Map<String, Object> unableUserInFlow(String uids, String flowid) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        if (flowService.unableUserInFlow(uids, flowid)) {
+            result.put("success", true);
+            result.put("obj", "用户禁用成功");
+        } else {
+            result.put("success", false);
+            result.put("obj", "禁用失败");
+        }
+        return result;
+    }
+
+    @RequestMapping("enableUserInFlow")
+    @ResponseBody
+    public Map<String, Object> enableUserInFlow(String uids, String flowid) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        if (flowService.enableUserInFlow(uids, flowid)) {
+            result.put("success", true);
+            result.put("obj", "用户解禁成功");
+        } else {
+            result.put("success", false);
+            result.put("obj", "解禁失败");
+        }
+        return result;
+    }
+
 }

@@ -21,17 +21,21 @@ public interface UserService {
 
     int countUser(String uid, String name);
 
-    Pair<Boolean,String> addUser(String account, String nickName, String remarks);
+    Pair<Boolean, String> addUser(String account, String nickName, String remarks);
 
     boolean updateUser(String uid, String nickName, String remarks);
 
     boolean deleteUser(String uids);
 
-    Pair<Boolean,String> updatePass(String uid, String oldPass, String newPass);
+    Pair<Boolean, String> updatePass(String uid, String oldPass, String newPass);
 
     List<UserRole> getRolesByUid(String uid);
 
     boolean addRoles(String rids, String uid);
 
     boolean removeRoles(String autoids);
+
+    List<User> listUserForFlow(String flowid, String uid, String name, int pageSize, int offset);
+
+    int countUserForFlow(String flowid, String uid, String name);
 }

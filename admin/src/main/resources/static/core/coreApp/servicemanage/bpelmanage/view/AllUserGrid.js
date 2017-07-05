@@ -36,9 +36,9 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
             ref: 'searchPeople'
         }, {
              xtype: 'button',
-             text: '启用',
+             text: '禁用',
              iconCls: 'search',
-             ref: 'enable'
+             ref: 'unable'
          }]
     }
     ],
@@ -59,7 +59,7 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
          width: 140,
          align: 'center'
      }],
-    store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
+    store: "core.servicemanage.bpelmanage.store.AllUserStore",
     bbar: [{
         xtype: 'button',
         text: '全选',
@@ -74,7 +74,7 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
         }
     }, {
         xtype: 'pagingtoolbar',
-        store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
+        store: "core.servicemanage.bpelmanage.store.AllUserStore",
         displayInfo: true,
         flex: 1
     }]

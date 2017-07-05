@@ -116,9 +116,10 @@ public class RoleServiceImpl implements RoleService {
             Map<String, Object> menu = (Map<String, Object>) iterator.next();
             List<Map<String, String>> leaf;
             if ("003".equals(pid)) {
-                 leaf = menuMapper.getLeafMenu(menu.get("id").toString());
+                //TODO 注意，服务栏菜单 特殊处理
+                leaf = menuMapper.getLeafMenuForFlow(menu.get("id").toString(),uid);
             } else {
-                 leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
+                leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
             }
             if (leaf.size() == 0) {
                 iterator.remove();

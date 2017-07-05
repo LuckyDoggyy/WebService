@@ -23,6 +23,9 @@ public interface MenuMapper {
     @Select("SELECT DISTINCT mid AS id, menuname AS text, 'true' AS leaf FROM T_Menu WHERE pid = #{pid} and state=0")
     List<Map<String, String>> getLeafMenu(@Param("pid") String pid);
 
+    @Select("SELECT DISTINCT mid AS id, menuname AS text, 'true' AS leaf FROM T_Menu WHERE pid = #{pid} and state=0 and fid not in (select flowid from T_UnableUserInFlow where uid =#{uid})")
+    List<Map<String, String>> getLeafMenuForFlow(@Param("pid") String pid, @Param("uid") String uid);
+
     @Select("select * from T_Menu where pid='root'")
     List<Menu> getFirstLayerMenu();
 

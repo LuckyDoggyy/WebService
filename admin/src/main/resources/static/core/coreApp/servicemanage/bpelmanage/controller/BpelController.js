@@ -127,42 +127,42 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 										},
 
 								 "deletebpgrid button[ref=deleteFlow]" : {
-                                                                click : function(btn) {
-                                                                    var grid = btn.up("panel[xtype=deletebpgrid]");
-                                                                    var records = grid.getSelectionModel().getSelection();
-                                                                    if(records.length<1){
-                                                                    	Ext.Msg.alert('友情提示',resObj.obj);
-                                                                        return false;
-                                                                    };
-                                                                    var autoids = new Array();
-                                                                    for (var i = 0; i < records.length; i++) {
-                                                                        autoids.push(records[i].get('autoid'));
-                                                                    }
-                                                                    Ext.Msg.confirm( "流程删除确认","<center><h3>确定要删除选中的流程吗？<h3></center>",
-                                                                        function(result) {
-                                                                            if (result == "yes") {
-                                                                                var resObj = self
-                                                                                        .ajax({
-                                                                                            url : "flow/deleteFlows",
-                                                                                            params : {
-                                                                                                autoids : autoids.join(",")
-                                                                                            }
-                                                                                        });
-                                                                                if (resObj.success) {
-                                                                                    grid.getStore().load();
-                                                                                    self.msgbox(resObj.obj);
-                                                                                    return false;
-                                                                                } else {
-                                                                                    Ext.Msg.alert('友情提示',resObj.obj);
-                                                                                    return false;
-                                                                                }
-                                                                                return false;
-                                                                            } else {
-                                                                                return false;
+                                                click : function(btn) {
+                                                    var grid = btn.up("panel[xtype=deletebpgrid]");
+                                                    var records = grid.getSelectionModel().getSelection();
+                                                    if(records.length<1){
+                                                        Ext.Msg.alert('友情提示',resObj.obj);
+                                                        return false;
+                                                    };
+                                                    var autoids = new Array();
+                                                    for (var i = 0; i < records.length; i++) {
+                                                        autoids.push(records[i].get('autoid'));
+                                                    }
+                                                    Ext.Msg.confirm( "流程删除确认","<center><h3>确定要删除选中的流程吗？<h3></center>",
+                                                        function(result) {
+                                                            if (result == "yes") {
+                                                                var resObj = self
+                                                                        .ajax({
+                                                                            url : "flow/deleteFlows",
+                                                                            params : {
+                                                                                autoids : autoids.join(",")
                                                                             }
                                                                         });
+                                                                if (resObj.success) {
+                                                                    grid.getStore().load();
+                                                                    self.msgbox(resObj.obj);
+                                                                    return false;
+                                                                } else {
+                                                                    Ext.Msg.alert('友情提示',resObj.obj);
+                                                                    return false;
                                                                 }
-                                                            },
+                                                                return false;
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        });
+                                                }
+                                            },
                                     "panel[xtype=flowcallform] button[ref=call]" : {
                                                   click : function(btn) {
                                                       var flowcallform = btn.up("panel[xtype=flowcallform]");
@@ -208,20 +208,100 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                                                                          width: 700
                                                                      },{
                                                                          region: 'center',
-                                                                         title: ' 以启用用户',
+                                                                         title: ' 禁用用户',
                                                                          xtype: "usergrid"
                                                                      }]
                                                             });
                                                 var store=window.down("panel[xtype=usergrid]").getStore();
                                                 proxy = store.getProxy();
                                                 proxy.extraParams = {
-                                                    fid : fid
+                                                    flowid : fid
                                                 };
                                                 store.loadPage(1);
+                                                var unableButton=window.down("panel[xtype=allusergrid]").down("[xtype=toolbar]").down("button[ref=unable]");
+                                                unableButton.html=fid;
+                                                var enableButton=window.down("panel[xtype=usergrid]").down("[xtype=toolbar]").down("button[ref=enable]");
+                                                enableButton.html=fid;
                                                 window.show();
                                                 return false;
                                             }
                                         },
+
+                            "panel[xtype=allusergrid] button[ref=unable]" : {
+                                click : function(btn) {
+                                    var flowid = btn.html;
+                                    var grid = btn.up("panel[xtype=allusergrid]");
+                                    var records = grid.getSelectionModel().getSelection();
+                                    if(records.length<1){
+                                        Ext.Msg.alert('友情提示',"请勾选数据");
+                                        return false;
+                                    };
+                                    var uids = new Array();
+                                    for (var i = 0; i < records.length; i++) {
+                                        uids.push(records[i].get('uid'));
+                                    }
+                                    var res = self.ajax({
+                                        url : "flow/unableUserInFlow",
+                                        params : {
+                                            uids:uids,
+                                            flowid:flowid
+                                        }
+                                    });
+                                    if (res.success) {
+                                        var usergrid = Ext.ComponentQuery.query("panel[xtype=usergrid]")[0];
+                                        usergrid.getStore().load();
+                                        //proxy = store.getProxy();
+                                        //proxy.extraParams = {
+                                        //    sid : sid,
+                                        //    sname : sname
+                                        //};
+                                        self.msgbox(res.obj);
+                                        return false;
+                                    } else {
+                                        Ext.Msg.alert('友情提示',res.obj);
+                                        return false;
+                                    }
+                                    return false;
+                                }
+                            },
+
+                            "panel[xtype=usergrid] button[ref=enable]" : {
+                                click : function(btn) {
+                                    var flowid = btn.html;
+                                    var grid = btn.up("panel[xtype=usergrid]");
+                                    var records = grid.getSelectionModel().getSelection();
+                                    if(records.length<1){
+                                        Ext.Msg.alert('友情提示',"请勾选数据");
+                                        return false;
+                                    };
+                                    var uids = new Array();
+                                    for (var i = 0; i < records.length; i++) {
+                                        uids.push(records[i].get('uid'));
+                                    }
+                                    var res = self.ajax({
+                                        url : "flow/enableUserInFlow",
+                                        params : {
+                                            uids:uids,
+                                            flowid:flowid
+                                        }
+                                    });
+                                    if (res.success) {
+                                        grid.getStore().load();
+                                        //proxy = store.getProxy();
+                                        //proxy.extraParams = {
+                                        //    sid : sid,
+                                        //    sname : sname
+                                        //};
+                                        self.msgbox(res.obj);
+                                        return false;
+                                    } else {
+                                        Ext.Msg.alert('友情提示',res.obj);
+                                        return false;
+                                    }
+                                    return false;
+                                }
+                            },
+
 						});
 					},
 					views : ["core.servicemanage.bpelmanage.view.BPGrid",
@@ -234,8 +314,8 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
 							"core.servicemanage.bpelmanage.view.AddBP",
 					        "core.servicemanage.bpelmanage.view.BPView"],
 					stores : ["core.servicemanage.bpelmanage.store.BPStore",
-					         "core.servicemanage.bpelmanage.store.UserStore",
-					        "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore"],
+					          "core.servicemanage.bpelmanage.store.UserStore",
+                              "core.servicemanage.bpelmanage.store.AllUserStore"],
 					models : ["core.servicemanage.bpelmanage.model.BPModel"],
 					search : function(btn) {
 						   var tbar = btn.ownerCt;

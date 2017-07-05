@@ -36,4 +36,37 @@
         </foreach>
     </update>
 
+    <select id="listUserForFlow" resultType="com.we.ws.admin.domain.User">
+        SELECT uid,account,nickName,remarks from T_User
+        <where>
+            state=0
+            <if test="uid != null and uid!=''">
+                and uid = #{uid}
+            </if>
+            <if test="account != null and account!=''">
+                and account = #{account}
+            </if>
+            <if test="flowid != null and flowid!=''">
+                and uid in (select uid from T_UnableUserInFlow where flowid=#{flowid} and state=0)
+            </if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
+
+    <select id="countUserForFlow" resultType="int">
+        SELECT count(*) from T_User
+        <where>
+            state=0
+            <if test="uid != null and uid!=''">
+                and uid = #{uid}
+            </if>
+            <if test="account != null and account!=''">
+                and account = #{account}
+            </if>
+            <if test="flowid != null and flowid!=''">
+                and uid in (select uid from T_UnableUserInFlow where flowid=#{flowid} and state=0)
+            </if>
+        </where>
+    </select>
+
 </mapper>

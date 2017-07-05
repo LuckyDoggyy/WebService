@@ -97,4 +97,14 @@ public class UserServiceImpl implements UserService {
         userRoleMapper.removeRoles(autoids.split(","));
         return true;
     }
+
+    @Override
+    public List<User> listUserForFlow(String flowid, String uid, String name, int pageSize, int offset) {
+        return userMapper.listUserForFlow(flowid, uid, name, pageSize, offset);
+    }
+
+    @Override
+    public int countUserForFlow(String flowid, String uid, String name) {
+        return userMapper.countUserForFlow(flowid, uid, name);
+    }
 }

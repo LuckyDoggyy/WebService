@@ -99,4 +99,14 @@ public class FlowServiceImpl implements FlowService {
         }
         return param;
     }
+
+    @Override
+    public boolean unableUserInFlow(String uids, String flowid) {
+        return flowMapper.unableUserInFlow(uids.split(","), flowid) > 0;
+    }
+
+    @Override
+    public boolean enableUserInFlow(String uids, String flowid) {
+        return flowMapper.enableUserInFlow(uids.split(","), flowid) > 0;
+    }
 }

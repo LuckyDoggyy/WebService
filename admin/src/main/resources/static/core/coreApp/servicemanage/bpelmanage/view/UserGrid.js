@@ -17,26 +17,33 @@ Ext.define("core.servicemanage.bpelmanage.view.UserGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
-            xtype: 'textfield',
-            fieldLabel: '用户id',
-            labelWidth: 48,
-            width: 120,
-            name: 'uid'
-        }, {
-            xtype: 'textfield',
-            fieldLabel: '用户名',
-            labelWidth: 50,
-            width: 120,
-            name: 'account'
-        }, {
-            xtype: 'button',
-            text: '查询',
-            iconCls: 'search',
-            ref: 'searchPeople'
-        }]
-    }
-    ],
+        items: [
+        //    {
+        //    xtype: 'textfield',
+        //    fieldLabel: '用户id',
+        //    labelWidth: 48,
+        //    width: 120,
+        //    name: 'uid'
+        //}, {
+        //    xtype: 'textfield',
+        //    fieldLabel: '用户名',
+        //    labelWidth: 50,
+        //    width: 120,
+        //    name: 'account'
+        //}, {
+        //    xtype: 'button',
+        //    text: '查询',
+        //    iconCls: 'search',
+        //    ref: 'searchPeople'
+        //},
+            {
+                xtype: 'button',
+                text: '解禁',
+                iconCls: 'search',
+                ref: 'enable'
+            }
+        ]
+    }],
     columns: [{
         width: 80,
         height: 36,
