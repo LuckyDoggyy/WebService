@@ -19,6 +19,50 @@ Ext.define("core.servicemanage.tagmanage.controller.TagController",
                     deselect: this.updateCheckEdit
                 },
 
+
+                "taggrid button[ref=searchTag]": {
+                    click: function (btn) {
+                        var tbar = btn.ownerCt;
+                        var pid = tbar.down("textfield[name=pid]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            pid: pid
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+                "updatetaggrid button[ref=searchTag]": {
+                    click: function (btn) {
+                        var tbar = btn.ownerCt;
+                        var pid = tbar.down("textfield[name=pid]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            pid: pid
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+                "deletetaggrid button[ref=searchTag]": {
+                    click: function (btn) {
+                        var tbar = btn.ownerCt;
+                        var pid = tbar.down("textfield[name=pid]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            pid: pid
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+
                 "panel[xtype=addtag] button[ref=addTag]": {
                     click: function (btn) {
                         var addtag = btn.up("panel[xtype=addtag]");
@@ -57,7 +101,6 @@ Ext.define("core.servicemanage.tagmanage.controller.TagController",
                             Ext.Msg.alert('提示', '请选择一个分类！');
                             return false;
                         }
-                        ;
                         var window = Ext.create('Ext.window.Window', {
                             title: '修改分类信息',
                             height: 340,
@@ -150,8 +193,10 @@ Ext.define("core.servicemanage.tagmanage.controller.TagController",
             "core.servicemanage.tagmanage.view.DeleteTagGrid",
             "core.servicemanage.tagmanage.view.UpdateTagGrid",
             "core.servicemanage.tagmanage.view.TagGrid"],
-        stores: ["core.servicemanage.tagmanage.store.TagStore"],
-        models: ["core.servicemanage.tagmanage.model.TagModel"],
+        stores: ["core.servicemanage.tagmanage.store.TagStore",
+                "core.servicemanage.tagmanage.store.TagOptStore"],
+        models: ["core.servicemanage.tagmanage.model.TagModel",
+                "core.servicemanage.tagmanage.model.TagOpt"],
         deleteCheckEdit: function () {
             var grid = Ext.ComponentQuery.query("panel[xtype=deletetaggrid]")[0];
             var num = grid.getSelectionModel().getSelection().length;

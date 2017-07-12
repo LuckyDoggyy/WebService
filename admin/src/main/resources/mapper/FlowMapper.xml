@@ -4,22 +4,22 @@
 
     <insert id="insertReturnKey" parameterType="com.we.ws.admin.domain.Flow" useGeneratedKeys="true"
             keyProperty="autoid">
-        insert into T_Flow (uid,flowid,flowname,description,flowjson,input,tagId)
-        values(#{uid},#{flowid},#{flowname},#{description},#{flowjson},#{input},#{tagId})
+        insert into T_Flow (uid,flowid,flowname,description,flowjson,input)
+        values(#{uid},#{flowid},#{flowname},#{description},#{flowjson},#{input})
     </insert>
 
     <select id="listFlows" resultType="com.we.ws.admin.domain.Flow">
-        select f.autoid,f.flowid,f.flowname,f.description,f.input,f.state,t.autoid as tagId,t.tagName from T_Flow f,T_FlowTag t
+        select autoid,flowid,flowname,description,input,state from T_Flow
         <where>
-            f.tagId=t.autoid and f.state != 2
+             state != 2
             <if test="flowid != null and flowid!=''">
-                and f.flowid = #{flowid}
+                and flowid = #{flowid}
             </if>
             <if test="flowname != null and flowname!=''">
-                and f.flowname like #{flowname}
+                and flowname like #{flowname}
             </if>
             <if test="uid !='1'">
-                and f.uid like #{uid}
+                and uid like #{uid}
             </if>
         </where>
     </select>

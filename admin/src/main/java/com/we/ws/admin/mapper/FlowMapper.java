@@ -41,7 +41,7 @@ public interface FlowMapper {
 
     int enableUserInFlow(@Param("uids") String[] uids, @Param("flowid") String flowid);
 
-    @Select("select flowid,autoid from T_Flow where tagId=#{tagId} and state=0 and autoid not in (select flowid from T_UnableUserInFlow where uid=#{uid})")
-    List<Map<String, Object>> getForMenu(@Param("tagId") int tagId, @Param("uid") String uid);
+    @Select("select flowid,autoid from T_Flow where autoid in (select flowid from T_FlowTag where tagid=#{tagid} and state=0) and state=0 and autoid not in (select flowid from T_UnableUserInFlow where uid=#{uid})")
+    List<Map<String, Object>> getForMenu(@Param("tagid") int tagId, @Param("uid") String uid);
 
 }

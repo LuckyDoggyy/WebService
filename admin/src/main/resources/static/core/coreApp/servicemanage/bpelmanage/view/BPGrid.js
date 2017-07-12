@@ -2,6 +2,10 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
     extend: "Ext.grid.Panel",
     alias: "widget.bpgrid",
     title: "<center height=40>流程浏览</center>",
+    selModel: {
+        selType: "checkboxmodel",
+        mode: 'SIMPLE'
+    },
     multiSelect: true,
     columnLines: true,
     loadMask: {
@@ -28,6 +32,10 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
             text: '查询',
             iconCls: 'search',
             ref: 'searchBP'
+        }, {
+            xtype: 'button',
+            text: '查看分类',
+            ref: 'viewTags'
         }]
     }],
 

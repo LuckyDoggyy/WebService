@@ -67,6 +67,182 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
                         return false;
                     }
                 },
+
+                "bpgrid button[ref=viewTags]": {
+                    click: function (btn) {
+                        var grid = btn.ownerCt.ownerCt;
+                        var records = grid.getSelectionModel().getSelection();
+                        if (records.length < 1) {
+                            Ext.Msg.alert('友情提示', "请勾选数据");
+                            return false;
+                        } else if (records.length > 1) {
+                            Ext.Msg.alert('友情提示', "请选择一条数据");
+                            return false;
+                        }
+                        var fid = records[0].get("autoid");
+
+                        var window = Ext.create('Ext.window.Window', {
+                            title: '流程所属分类信息',
+                            height: 500,
+                            width: 880,
+                            constrain: true,
+                            maximizable: true,
+                            layout: 'fit',
+                            fixed: true,
+                            modal: true,
+                            items: {
+                                xtype: 'flowtaggrid',
+                                id: 'flowtaggrid'
+                            }
+                        });
+                        var store = window.down("panel[xtype=flowtaggrid]").getStore();
+                        proxy = store.getProxy();
+                        proxy.extraParams = {
+                            flowid: fid
+                        };
+                        store.loadPage(1);
+                        window.show();
+                        return false;
+                    }
+                },
+
+                "updatebpgrid button[ref=setTags]": {
+                    click: function (btn) {
+                        var grid = btn.ownerCt.ownerCt;
+                        var records = grid.getSelectionModel().getSelection();
+                        if (records.length < 1) {
+                            Ext.Msg.alert('友情提示', "请勾选数据");
+                            return false;
+                        } else if (records.length > 1) {
+                            Ext.Msg.alert('友情提示', "请选择一条数据");
+                            return false;
+                        }
+                        var fid = records[0].get("autoid");
+                        var window = Ext.create(
+                            'Ext.window.Window', {
+                                title: '流程分类信息设置',
+                                constrain: true,
+                                maximizable: true,
+                                maximized: true,
+                                layout: 'border',
+                                fixed: true,
+                                modal: true,
+                                items: [{
+                                    region: 'west',
+                                    title: '所有分类',
+                                    xtype: "alltaggrid",
+                                    width: 700
+                                }, {
+                                    region: 'center',
+                                    title: ' 已有分类',
+                                    xtype: "flowtaggrid"
+                                }]
+                            });
+                        var store = window.down("panel[xtype=flowtaggrid]").getStore();
+                        proxy = store.getProxy();
+                        proxy.extraParams = {
+                            flowid: fid
+                        };
+                        store.loadPage(1);
+                        var addTagButton = window.down("panel[xtype=alltaggrid]").down("[xtype=toolbar]").down("button[ref=addTag]");
+                        addTagButton.html = fid;
+                        var disableButton = window.down("panel[xtype=flowtaggrid]").down("[xtype=toolbar]").down("button[ref=disable]");
+                        disableButton.html = fid;
+                        window.show();
+                        return false;
+                    }
+                },
+
+                "alltaggrid button[ref=searchTag]": {
+                    click: function (btn) {
+                        var tbar = btn.ownerCt;
+                        var pid = tbar.down("textfield[name=pid]").getValue();
+                        var grid = tbar.ownerCt;
+                        var _store = grid.getStore();
+                        proxy = _store.getProxy();
+                        proxy.extraParams = {
+                            pid: pid
+                        };
+                        _store.loadPage(1);
+                        return false;
+                    }
+                },
+
+                "alltaggrid button[ref=addTag]": {
+                    click: function (btn) {
+                        var flowid = btn.html;
+                        var grid = btn.up("panel[xtype=alltaggrid]");
+                        var records = grid.getSelectionModel().getSelection();
+                        if (records.length < 1) {
+                            Ext.Msg.alert('友情提示', "请勾选数据");
+                            return false;
+                        }
+                        ;
+                        var tagids = new Array();
+                        for (var i = 0; i < records.length; i++) {
+                            tagids.push(records[i].get('autoId'));
+                        }
+                        var res = self.ajax({
+                            url: "flowTag/batchAddFlowTags",
+                            params: {
+                                tagids: tagids.join(","),
+                                flowid: flowid
+                            }
+                        });
+                        if (res.success) {
+                            var flowtaggrid = Ext.ComponentQuery.query("panel[xtype=flowtaggrid]")[0];
+                            flowtaggrid.getStore().load();
+                            //proxy = store.getProxy();
+                            //proxy.extraParams = {
+                            //    flowid : flowid
+                            //};
+                            self.msgbox(res.obj);
+                            return false;
+                        } else {
+                            Ext.Msg.alert('友情提示', res.obj);
+                            return false;
+                        }
+                        return false;
+                    }
+                },
+
+                "flowtaggrid button[ref=disable]": {
+                    click: function (btn) {
+                        var flowid = btn.html;
+                        var grid = btn.up("panel[xtype=flowtaggrid]");
+                        var records = grid.getSelectionModel().getSelection();
+                        if (records.length < 1) {
+                            Ext.Msg.alert('友情提示', "请勾选数据");
+                            return false;
+                        }
+                        ;
+                        var autoids = new Array();
+                        for (var i = 0; i < records.length; i++) {
+                            autoids.push(records[i].get('autoid'));
+                        }
+                        var res = self.ajax({
+                            url: "flowTag/batchDelFlowTags",
+                            params: {
+                                autoids: autoids.join(",")
+                            }
+                        });
+                        if (res.success) {
+                            var flowtaggrid = Ext.ComponentQuery.query("panel[xtype=flowtaggrid]")[0];
+                            flowtaggrid.getStore().load();
+                            //proxy = store.getProxy();
+                            //proxy.extraParams = {
+                            //    flowid : flowid
+                            //};
+                            self.msgbox(res.obj);
+                            return false;
+                        } else {
+                            Ext.Msg.alert('友情提示', res.obj);
+                            return false;
+                        }
+                        return false;
+                    }
+                },
+
                 "deletebpgrid button[ref=unableFlow]": {
                     click: function (btn) {
                         var grid = btn.up("panel[xtype=deletebpgrid]");
@@ -323,11 +499,18 @@ Ext.define("core.servicemanage.bpelmanage.controller.BpelController",
             "core.servicemanage.bpelmanage.view.AllUserGrid",
             "core.servicemanage.bpelmanage.view.UserGrid",
             "core.servicemanage.bpelmanage.view.AddBP",
+            "core.servicemanage.bpelmanage.view.FlowTagGrid",
+            "core.servicemanage.bpelmanage.view.AllTagGrid",
             "core.servicemanage.bpelmanage.view.BPView"],
         stores: ["core.servicemanage.bpelmanage.store.BPStore",
             "core.servicemanage.bpelmanage.store.UserStore",
+            "core.servicemanage.bpelmanage.store.FlowTagStore",
+            "core.servicemanage.tagmanage.store.TagStore",
+            "core.servicemanage.tagmanage.store.TagOptStore",
             "core.servicemanage.bpelmanage.store.AllUserStore"],
-        models: ["core.servicemanage.bpelmanage.model.BPModel"],
+        models: ["core.servicemanage.bpelmanage.model.BPModel",
+            "core.servicemanage.tagmanage.model.TagModel",
+            "core.servicemanage.bpelmanage.model.FlowTagModel"],
         search: function (btn) {
             var tbar = btn.ownerCt;
             var flowid = tbar.down("textfield[name=flowid]").getValue();

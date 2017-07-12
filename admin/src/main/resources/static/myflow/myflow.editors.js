@@ -2,8 +2,6 @@
 var myflow = $.myflow;
 
 $.extend(true, myflow.editors, {
-
-
 	tableEditor : function(){
 		var _props,_k,_div,_src,_r;
     		this.init = function(props, k, div, src, r){

@@ -2,20 +2,36 @@ package com.we.ws.admin.domain;
 
 /**
  * @author twogoods
- * @since 2017/7/11
+ * @since 2017-07-12
  */
 public class FlowTag {
-    private int autoId;
+    private int autoid;
+    private int flowid;
+    private int tagid;
     private String tagName;
-    private int orderIndex;
-    private int state;
 
-    public int getAutoId() {
-        return autoId;
+    public int getAutoid() {
+        return autoid;
     }
 
-    public void setAutoId(int autoId) {
-        this.autoId = autoId;
+    public void setAutoid(int autoid) {
+        this.autoid = autoid;
+    }
+
+    public int getFlowid() {
+        return flowid;
+    }
+
+    public void setFlowid(int flowid) {
+        this.flowid = flowid;
+    }
+
+    public int getTagid() {
+        return tagid;
+    }
+
+    public void setTagid(int tagid) {
+        this.tagid = tagid;
     }
 
     public String getTagName() {
@@ -24,21 +40,5 @@ public class FlowTag {
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
-    }
-
-    public int getOrderIndex() {
-        return orderIndex;
-    }
-
-    public void setOrderIndex(int orderIndex) {
-        this.orderIndex = orderIndex;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 }

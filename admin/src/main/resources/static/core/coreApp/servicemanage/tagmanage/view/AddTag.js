@@ -28,6 +28,21 @@ Ext.define("core.servicemanage.tagmanage.view.AddTag",
             name: 'orderIndex',
             allowBlank: true
         }, {
+            fieldLabel: '父分类',
+            xtype: "combobox",
+            name: 'pid',
+            anchor: '18%',
+            labelWidth: 80,
+            emptyText: '请选择分类',
+            queryMode: 'remote',
+            store: "core.servicemanage.tagmanage.store.TagOptStore",
+            loadingText: '正在加载数据，请稍侯……',
+            triggerAction: 'all',
+            valueField: 'value',
+            forceSelection: true,
+            allowBlank: false,
+            displayField: 'name'
+        }, {
             xtype: 'button',
             text: '添加',
             ref: 'addTag',

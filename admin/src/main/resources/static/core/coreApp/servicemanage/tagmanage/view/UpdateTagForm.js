@@ -29,6 +29,20 @@ Ext.define("core.servicemanage.tagmanage.view.UpdateTagForm", {
         labelWidth: 80,
         name: 'orderIndex',
         allowBlank: true
+    },{
+        fieldLabel: '父分类',
+        xtype: "combobox",
+        name: 'pid',
+        labelWidth: 80,
+        emptyText: '请选择分类',
+        queryMode: 'remote',
+        store: "core.servicemanage.tagmanage.store.TagOptStore",
+        loadingText: '正在加载数据，请稍侯……',
+        triggerAction: 'all',
+        valueField: 'value',
+        forceSelection: true,
+        allowBlank: false,
+        displayField: 'name'
     }],
     buttons: [{
         text: '修改',

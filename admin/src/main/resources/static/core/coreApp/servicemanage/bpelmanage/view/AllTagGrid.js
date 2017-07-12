@@ -1,7 +1,7 @@
-Ext.define("core.servicemanage.tagmanage.view.TagGrid", {
+Ext.define("core.servicemanage.bpelmanage.view.AllTagGrid", {
     extend: "Ext.grid.Panel",
-    alias: "widget.taggrid",
-    title: "<center height=40>分类管理</center>",
+    alias: "widget.alltaggrid",
+    title: "<center height=40>所有分类</center>",
     selModel: {
         selType: "checkboxmodel",
         mode: 'SIMPLE'
@@ -35,6 +35,11 @@ Ext.define("core.servicemanage.tagmanage.view.TagGrid", {
             text: '查询',
             iconCls: 'search',
             ref: 'searchTag'
+        }, {
+            xtype: 'button',
+            text: '添加分类',
+            iconCls: 'search',
+            ref: 'addTag'
         }]
     }],
     columns: [{

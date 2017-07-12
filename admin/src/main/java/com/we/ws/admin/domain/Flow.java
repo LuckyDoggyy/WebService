@@ -16,8 +16,6 @@ public class Flow {
     private String flowjson;
     private String input;
     private int state;
-    private int tagId;
-    private String tagName;
 
     public Flow() {}
 
@@ -30,14 +28,7 @@ public class Flow {
         this.input = input;
     }
 
-    public Flow(String flowid, String flowname, String flowjson, String description, String input, int tagId) {
-        this.flowid = flowid;
-        this.flowname = flowname;
-        this.flowjson = flowjson;
-        this.description = description;
-        this.input = input;
-        this.tagId = tagId;
-    }
+
 
     public int getAutoid() {
         return autoid;
@@ -101,22 +92,6 @@ public class Flow {
 
     public void setUid(int uid) {
         this.uid = uid;
-    }
-
-    public int getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
     }
 
     @Override

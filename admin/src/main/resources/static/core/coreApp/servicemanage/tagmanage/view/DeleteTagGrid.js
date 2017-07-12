@@ -20,6 +20,24 @@ Ext.define("core.servicemanage.tagmanage.view.DeleteTagGrid", {
         dock: 'top',
         height: 36,
         items: [{
+            fieldLabel: '分类',
+            xtype: "combobox",
+            name: 'pid',
+            labelWidth: 35,
+            emptyText: '请选择分类',
+            queryMode: 'remote',
+            store: "core.servicemanage.tagmanage.store.TagOptStore",
+            loadingText: '正在加载数据，请稍侯……',
+            triggerAction: 'all',
+            valueField: 'value',
+            forceSelection: false,
+            displayField: 'name'
+        }, {
+            xtype: 'button',
+            text: '查询',
+            iconCls: 'search',
+            ref: 'searchTag'
+        }, {
             xtype: 'button',
             text: '删除分类',
             ref: 'deleteTag',

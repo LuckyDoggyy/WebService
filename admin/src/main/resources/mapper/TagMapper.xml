@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.we.ws.admin.mapper.TagMapper">
+    <update id="setTagState">
+        update T_Tag set state=#{state} where autoid in
+        <foreach collection="autoids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="listTags" resultType="com.we.ws.admin.domain.Tag">
+        select autoid,tagName,orderIndex,state from T_Tag
+        <where>
+            state=0
+            <if test="pid != null and pid!=''">
+                and pid = #{pid}
+            </if>
+        </where>
+        order by orderIndex
+    </select>
+</mapper>

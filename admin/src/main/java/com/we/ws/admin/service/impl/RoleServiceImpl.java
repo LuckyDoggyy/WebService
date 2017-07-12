@@ -1,6 +1,6 @@
 package com.we.ws.admin.service.impl;
 
-import com.we.ws.admin.domain.FlowTag;
+import com.we.ws.admin.domain.Tag;
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.Role;
 import com.we.ws.admin.mapper.*;
@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
-    private FlowTagMapper flowTagMapper;
+    private TagMapper tagMapper;
     @Autowired
     private FlowMapper flowMapper;
 
@@ -114,7 +114,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Map<String, Object>> getRoleMenuForLogin(String pid, String uid) {
         if ("003".equals(pid)) {
-            return getServiceMenuForLogin(uid);
+            return generateMenu(uid, 1);
         }
         List<Map<String, Object>> secondLayer = menuMapper.getSecondLayerMenu(pid);
         Iterator iterator = secondLayer.iterator();
@@ -138,12 +138,41 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public List<Map<String, Object>> getServiceMenuForLogin(String uid) {
+//        List<Map<String, Object>> menus = new ArrayList<>();
+//        List<FlowTag> tags = flowTagMapper.listFlowTags("0");
+//        tags.forEach(tag -> {
+//            List<Map<String, Object>> flows = flowMapper.getForMenu(tag.getAutoId(), uid);
+//            if (flows.size() > 0) {
+//                List<Map<String, Object>> leafs = new ArrayList<>();
+//                flows.forEach(flow -> {
+//                    Map<String, Object> leaf = new HashMap<>();
+//                    leaf.put("id", "fid:" + flow.get("autoid").toString());
+//                    leaf.put("leaf", "true");
+//                    leaf.put("text", flow.get("flowid"));
+//                    leafs.add(leaf);
+//                });
+//                Map<String, Object> item = new HashMap<>();
+//                item.put("id", "parent:" + tag.getAutoId());
+//                item.put("leaf", "false");
+//                item.put("text", tag.getTagName());
+//                item.put("expanded", "true");
+//                item.put("children", leafs);
+//                menus.add(item);
+//            }
+//        });
+//        return menus;
+        return generateMenu(uid, 1);
+    }
+
+
+    private List<Map<String, Object>> generateMenu(String uid, int pid) {
+        List<Tag> tags = tagMapper.listTags(String.valueOf(pid));
         List<Map<String, Object>> menus = new ArrayList<>();
-        List<FlowTag> tags = flowTagMapper.listFlowTags();
         tags.forEach(tag -> {
+            List<Map<String, Object>> pres = generateMenu(uid, tag.getAutoId());
             List<Map<String, Object>> flows = flowMapper.getForMenu(tag.getAutoId(), uid);
+            List<Map<String, Object>> leafs = new ArrayList<>();
             if (flows.size() > 0) {
-                List<Map<String, Object>> leafs = new ArrayList<>();
                 flows.forEach(flow -> {
                     Map<String, Object> leaf = new HashMap<>();
                     leaf.put("id", "fid:" + flow.get("autoid").toString());
@@ -151,14 +180,15 @@ public class RoleServiceImpl implements RoleService {
                     leaf.put("text", flow.get("flowid"));
                     leafs.add(leaf);
                 });
-                Map<String, Object> item = new HashMap<>();
-                item.put("id", "parent:" + tag.getAutoId());
-                item.put("leaf", "false");
-                item.put("text", tag.getTagName());
-                item.put("expanded", "true");
-                item.put("children", leafs);
-                menus.add(item);
             }
+            leafs.addAll(pres);
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", "parent:" + tag.getAutoId());
+            item.put("leaf", "false");
+            item.put("text", tag.getTagName());
+            item.put("expanded", "true");
+            item.put("children", leafs);
+            menus.add(item);
         });
         return menus;
     }
