@@ -17,7 +17,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
+        items: [{
             xtype: 'textfield',
             fieldLabel: '用户id',
             labelWidth: 48,
@@ -39,12 +39,12 @@ Ext.define("core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid", {
         xtype: 'toolbar',
         dock: 'top',
         items: [{
-             xtype: 'button',
-             text: '设置角色',
-             ref: 'checkRole',
-             disabled: true,
-             hidden: false
-           }]
+            xtype: 'button',
+            text: '设置角色',
+            ref: 'checkRole',
+            disabled: true,
+            hidden: false
+        }]
     }],
     columns: [{
         width: 50,
@@ -52,17 +52,17 @@ Ext.define("core.basicinfomanage.peoplemanage.view.SetRolePeopleGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 140,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }, {
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }, {
         text: "备注",
         dataIndex: "remarks",
         width: 240,

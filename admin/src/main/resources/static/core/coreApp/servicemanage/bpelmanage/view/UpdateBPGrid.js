@@ -57,6 +57,11 @@ Ext.define("core.servicemanage.bpelmanage.view.UpdateBPGrid", {
               align: 'center',
               width : 200
             },{
+				text : "分类",
+				dataIndex : "tagName",
+				align: 'center',
+				width : 200
+			},{
 				text : "状态",
 				dataIndex : "state",
 				align: 'center',

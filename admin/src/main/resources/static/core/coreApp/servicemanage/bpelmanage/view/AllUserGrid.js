@@ -17,7 +17,7 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
+        items: [{
             xtype: 'textfield',
             fieldLabel: '用户id',
             labelWidth: 48,
@@ -35,11 +35,11 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
             iconCls: 'search',
             ref: 'searchPeople'
         }, {
-             xtype: 'button',
-             text: '禁用',
-             iconCls: 'search',
-             ref: 'unable'
-         }]
+            xtype: 'button',
+            text: '禁用',
+            iconCls: 'search',
+            ref: 'unable'
+        }]
     }
     ],
     columns: [{
@@ -48,17 +48,17 @@ Ext.define("core.servicemanage.bpelmanage.view.AllUserGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 200,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }],
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }],
     store: "core.servicemanage.bpelmanage.store.AllUserStore",
     bbar: [{
         xtype: 'button',

@@ -31,7 +31,7 @@ public class FlowParser {
         } catch (FlowException e) {
         }
         FlowProp flowProp = model.getProps();
-        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));
+        Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), json, flowProp.getDesc(), getReceiveParam(head), Integer.valueOf(flowProp.getTagid()));
         return Pair.of(head, flow);
     }
 

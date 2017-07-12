@@ -9,6 +9,7 @@ package com.we.ws.admin.flow.json;
  */
 public class FlowProp {
     private Text name;
+    private Text tagid;
     private Text flowid;
     private Text desc;
 
@@ -26,6 +27,14 @@ public class FlowProp {
 
     public void setFlowid(Text flowid) {
         this.flowid = flowid;
+    }
+
+    public String getTagid() {
+        return tagid.getValue();
+    }
+
+    public void setTagid(Text tagid) {
+        this.tagid = tagid;
     }
 
     public String getDesc() {

@@ -18,7 +18,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
+        items: [{
             xtype: 'textfield',
             fieldLabel: '用户id',
             labelWidth: 48,
@@ -40,14 +40,14 @@ Ext.define("core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid", {
         xtype: 'toolbar',
         dock: 'top',
         items: [
-        {
-            xtype: 'button',
-            text: '修改人员',
-            ref: 'updatePeople',
-            iconCls: 'modify',
-            disabled: true,
-            hidden: false
-        }]
+            {
+                xtype: 'button',
+                text: '修改人员',
+                ref: 'updatePeople',
+                iconCls: 'modify',
+                disabled: true,
+                hidden: false
+            }]
     }],
     columns: [{
         width: 80,
@@ -55,17 +55,17 @@ Ext.define("core.basicinfomanage.peoplemanage.view.UpdatePeopleGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 140,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }, {
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }, {
         text: "备注",
         dataIndex: "remarks",
         width: 240,

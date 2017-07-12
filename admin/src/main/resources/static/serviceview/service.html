@@ -7,69 +7,74 @@
     <script type="text/javascript" src="lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
     <script>
         var array;
-        $(function() {
-            var autoid=window.location.search.substring(1);
+        $(function () {
+            var params = window.location.search.substring(1);
+            var paramArr = params.split("&");
+            $("#input").append(decodeURI(paramArr[1]) + ':<br>');
             $.ajax({
-                url:'../flow/getAllById',
-                type:'POST',
-                async:false,
-                data:{
-                    autoid:autoid
+                url: '../flow/getAllById',
+                type: 'POST',
+                async: false,
+                data: {
+                    autoid: paramArr[0]
                 },
-                timeout:5000,
-                dataType:'json',
-                success:function(data){
-                    array=data.input.split(",");
-                    array.forEach(function(name){
-                              $("#input").append(name+' : <input id="'+name+'"/><br>');
-                          });
-                    if(array.length>0){
-                        $("#input").append('<input type="button" value="查询" onclick="show()"/>');
+                timeout: 5000,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.input);
+                    if(data.input!=""){
+                        array = data.input.split(",");
+                        array.forEach(function (name) {
+                            $("#input").append(name + ' : <input id="' + name + '"/><br>');
+                        });
+                        if (array.length > 0) {
+                            $("#input").append('<input type="button" value="查询" onclick="show()"/>');
+                        }
                     }
                 },
-                error:function(xhr,textStatus){
+                error: function (xhr, textStatus) {
                     alert("请求失败");
                 }
-                })
-	});
+            })
+        });
 
 
-         function show(){
-         var callParams=new Array();
-         var value=$("#mobile").val();
-         callParams.push({'name':'mobile','value':value});
+        function show() {
+            var callParams = new Array();
+            var value = $("#mobile").val();
+            callParams.push({'name': 'mobile', 'value': value});
             $.ajax({
-                url:'../flow/callFlow',
-                type:'POST',
-                async:false,
-                data:{
-                    autoId:1,
-                    callParams:JSON.stringify(callParams)
+                url: '../flow/callFlow',
+                type: 'POST',
+                async: false,
+                data: {
+                    autoId: 1,
+                    callParams: JSON.stringify(callParams)
                 },
-                timeout:5000,
-                dataType:'json',
-                success:function(data){
-                     var weather=data.weathers;
-                     if (weather) {
-                     /*
-                        weather.forEach(function(item){
-                               $("#main").append('<span>'+item+'</span></br>');
-                          });*/
-                         $("#main").append('<span>'+weather[0]+'</span></br>');
-                         $("#main").append('<span>'+weather[3]+'</span></br>');
-                         $("#main").append('<span>'+weather[4]+'</span></br>');
-                         $("#main").append('<span>'+weather[5]+'</span></br>');
-                         $("#main").append('<span>'+weather[6]+'</span></br>');
-                         return false;
-                     } else {
+                timeout: 5000,
+                dataType: 'json',
+                success: function (data) {
+                    var weather = data.weathers;
+                    if (weather) {
+                        /*
+                         weather.forEach(function(item){
+                         $("#main").append('<span>'+item+'</span></br>');
+                         });*/
+                        $("#main").append('<span>' + weather[0] + '</span></br>');
+                        $("#main").append('<span>' + weather[3] + '</span></br>');
+                        $("#main").append('<span>' + weather[4] + '</span></br>');
+                        $("#main").append('<span>' + weather[5] + '</span></br>');
+                        $("#main").append('<span>' + weather[6] + '</span></br>');
+                        return false;
+                    } else {
                         $("#main").append('<span>暂不提供服务,稍后再试!</span></br>');
-                         return false;
-                     }
+                        return false;
+                    }
                 },
-                error:function(xhr,textStatus){
+                error: function (xhr, textStatus) {
                     alert("请求错误");
                 }
-                })
+            })
         }
 
     </script>

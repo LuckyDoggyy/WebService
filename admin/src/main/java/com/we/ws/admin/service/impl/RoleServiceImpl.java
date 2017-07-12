@@ -1,10 +1,9 @@
 package com.we.ws.admin.service.impl;
 
+import com.we.ws.admin.domain.FlowTag;
 import com.we.ws.admin.domain.Menu;
 import com.we.ws.admin.domain.Role;
-import com.we.ws.admin.mapper.MenuMapper;
-import com.we.ws.admin.mapper.RoleMapper;
-import com.we.ws.admin.mapper.RoleMenuMapper;
+import com.we.ws.admin.mapper.*;
 import com.we.ws.admin.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +26,10 @@ public class RoleServiceImpl implements RoleService {
     private MenuMapper menuMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private FlowTagMapper flowTagMapper;
+    @Autowired
+    private FlowMapper flowMapper;
 
     @Override
     public List<Role> listRole(int pageSize, int offset) {
@@ -110,14 +113,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Map<String, Object>> getRoleMenuForLogin(String pid, String uid) {
+        if ("003".equals(pid)) {
+            return getServiceMenuForLogin(uid);
+        }
         List<Map<String, Object>> secondLayer = menuMapper.getSecondLayerMenu(pid);
         Iterator iterator = secondLayer.iterator();
         while (iterator.hasNext()) {
             Map<String, Object> menu = (Map<String, Object>) iterator.next();
             List<Map<String, String>> leaf;
             if ("003".equals(pid)) {
-                //TODO 注意，服务栏菜单 特殊处理
-                leaf = menuMapper.getLeafMenuForFlow(menu.get("id").toString(),uid);
+                //TODO 注意，服务栏菜单 特殊处理,此处可以去掉
+                leaf = menuMapper.getLeafMenuForFlow(menu.get("id").toString(), uid);
             } else {
                 leaf = menuMapper.getLeafMenuWithCheck(menu.get("id").toString(), uid);
             }
@@ -129,6 +135,32 @@ public class RoleServiceImpl implements RoleService {
             }
         }
         return secondLayer;
+    }
+
+    public List<Map<String, Object>> getServiceMenuForLogin(String uid) {
+        List<Map<String, Object>> menus = new ArrayList<>();
+        List<FlowTag> tags = flowTagMapper.listFlowTags();
+        tags.forEach(tag -> {
+            List<Map<String, Object>> flows = flowMapper.getForMenu(tag.getAutoId(), uid);
+            if (flows.size() > 0) {
+                List<Map<String, Object>> leafs = new ArrayList<>();
+                flows.forEach(flow -> {
+                    Map<String, Object> leaf = new HashMap<>();
+                    leaf.put("id", "fid:" + flow.get("autoid").toString());
+                    leaf.put("leaf", "true");
+                    leaf.put("text", flow.get("flowid"));
+                    leafs.add(leaf);
+                });
+                Map<String, Object> item = new HashMap<>();
+                item.put("id", "parent:" + tag.getAutoId());
+                item.put("leaf", "false");
+                item.put("text", tag.getTagName());
+                item.put("expanded", "true");
+                item.put("children", leafs);
+                menus.add(item);
+            }
+        });
+        return menus;
     }
 
     @Override

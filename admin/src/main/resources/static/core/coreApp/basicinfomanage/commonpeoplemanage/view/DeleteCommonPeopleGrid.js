@@ -18,7 +18,7 @@ Ext.define("core.basicinfomanage.peoplemanage.view.DeleteCommonPeopleGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
+        items: [{
             xtype: 'textfield',
             fieldLabel: '用户id',
             labelWidth: 48,
@@ -40,14 +40,14 @@ Ext.define("core.basicinfomanage.peoplemanage.view.DeleteCommonPeopleGrid", {
         xtype: 'toolbar',
         dock: 'top',
         items: [
-        {
-            xtype: 'button',
-            text: '禁用',
-            ref: 'deletePeople',
-            iconCls: 'table_remove',
-            disabled: true,
-            hidden: false
-        }]
+            {
+                xtype: 'button',
+                text: '禁用',
+                ref: 'deletePeople',
+                iconCls: 'table_remove',
+                disabled: true,
+                hidden: false
+            }]
     }],
     columns: [{
         width: 80,
@@ -55,17 +55,17 @@ Ext.define("core.basicinfomanage.peoplemanage.view.DeleteCommonPeopleGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 200,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }],
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }],
     store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
     bbar: [{
         xtype: 'button',

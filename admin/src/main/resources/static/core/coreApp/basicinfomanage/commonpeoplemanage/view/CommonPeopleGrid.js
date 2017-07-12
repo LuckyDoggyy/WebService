@@ -18,7 +18,7 @@ Ext.define("core.basicinfomanage.commonpeoplemanage.view.CommonPeopleGrid", {
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
-        items: [ {
+        items: [{
             xtype: 'textfield',
             fieldLabel: '用户id',
             labelWidth: 48,
@@ -44,17 +44,17 @@ Ext.define("core.basicinfomanage.commonpeoplemanage.view.CommonPeopleGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 200,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }],
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }],
     store: "core.basicinfomanage.commonpeoplemanage.store.CommonPeopleStore",
     bbar: [{
         xtype: 'button',

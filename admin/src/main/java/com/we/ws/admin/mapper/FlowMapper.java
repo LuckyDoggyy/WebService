@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -36,8 +37,11 @@ public interface FlowMapper {
     @Select("select autoid,flowid,flowname,description,input from T_Flow where autoid=#{autoid}")
     Flow getById(@Param("autoid") String autoid);
 
-    int unableUserInFlow(@Param("uids")String[] uids,@Param("flowid") String flowid);
+    int unableUserInFlow(@Param("uids") String[] uids, @Param("flowid") String flowid);
 
-    int enableUserInFlow(@Param("uids")String[] uids,@Param("flowid") String flowid);
+    int enableUserInFlow(@Param("uids") String[] uids, @Param("flowid") String flowid);
+
+    @Select("select flowid,autoid from T_Flow where tagId=#{tagId} and state=0 and autoid not in (select flowid from T_UnableUserInFlow where uid=#{uid})")
+    List<Map<String, Object>> getForMenu(@Param("tagId") int tagId, @Param("uid") String uid);
 
 }

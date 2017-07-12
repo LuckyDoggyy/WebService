@@ -18,24 +18,24 @@ Ext.define("core.servicemanage.bpelmanage.view.UserGrid", {
         xtype: 'toolbar',
         dock: 'top',
         items: [
-        //    {
-        //    xtype: 'textfield',
-        //    fieldLabel: '用户id',
-        //    labelWidth: 48,
-        //    width: 120,
-        //    name: 'uid'
-        //}, {
-        //    xtype: 'textfield',
-        //    fieldLabel: '用户名',
-        //    labelWidth: 50,
-        //    width: 120,
-        //    name: 'account'
-        //}, {
-        //    xtype: 'button',
-        //    text: '查询',
-        //    iconCls: 'search',
-        //    ref: 'searchPeople'
-        //},
+            //    {
+            //    xtype: 'textfield',
+            //    fieldLabel: '用户id',
+            //    labelWidth: 48,
+            //    width: 120,
+            //    name: 'uid'
+            //}, {
+            //    xtype: 'textfield',
+            //    fieldLabel: '用户名',
+            //    labelWidth: 50,
+            //    width: 120,
+            //    name: 'account'
+            //}, {
+            //    xtype: 'button',
+            //    text: '查询',
+            //    iconCls: 'search',
+            //    ref: 'searchPeople'
+            //},
             {
                 xtype: 'button',
                 text: '解禁',
@@ -50,17 +50,17 @@ Ext.define("core.servicemanage.bpelmanage.view.UserGrid", {
         dataIndex: "uid",
         text: 'uid',
         align: 'center'
-    },  {
+    }, {
         text: "账号",
         dataIndex: "account",
         width: 200,
         align: 'center'
-    },  {
-         text: "昵称",
-         dataIndex: "nickName",
-         width: 140,
-         align: 'center'
-     }],
+    }, {
+        text: "昵称",
+        dataIndex: "nickName",
+        width: 140,
+        align: 'center'
+    }],
     store: "core.servicemanage.bpelmanage.store.UserStore",
     bbar: [{
         xtype: 'button',
