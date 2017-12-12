@@ -15,9 +15,7 @@ public class Text {
         this.text = text;
     }
 
-    public String getText() {
-        return text;
-    }
+    public String getText() { return text; }
 
     public String getValue() {
         return value;

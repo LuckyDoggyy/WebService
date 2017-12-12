@@ -5,10 +5,20 @@ import com.we.ws.admin.flow.json.FlowProp;
 import com.we.ws.admin.flow.json.JsonParseModel;
 import com.we.ws.admin.flow.json.Path;
 import com.we.ws.admin.flow.json.State;
+import com.we.ws.admin.flow.match.ReadWSDL.DbManager;
+import com.we.ws.admin.flow.match.ReadWSDL.WsdlDAO;
 import com.we.ws.admin.flow.node.*;
 import com.we.ws.common.data.Pair;
 import com.we.ws.common.util.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.we.ws.admin.flow.match.ReadWSDL.DbManager;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import com.we.ws.admin.flow.match.ServiceGraph.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +35,11 @@ public class FlowParser {
             return Pair.of(null, null);
         }
         JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);
+
+
+        //        model.getStates().put()
+        String newJson = JsonUtils.jsonFromObject(model);
+
         Node head = null;
         try {
             head = parseNode(model);
@@ -33,9 +48,11 @@ public class FlowParser {
         FlowProp flowProp = model.getProps();
         Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));
         //TODO
-        flowProp.getTagid();
+//        flowProp.getTagid();
         return Pair.of(head, flow);
     }
+
+
 
     private static Node parseNode(JsonParseModel model) throws FlowException {
         Node head = null;

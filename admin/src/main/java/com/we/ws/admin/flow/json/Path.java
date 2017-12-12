@@ -12,6 +12,7 @@ public class Path {
     private String to;
     private Text text;
 
+
     public String getFrom() {
         return from;
     }
@@ -34,5 +35,9 @@ public class Path {
 
     public String getText() {
         return text.getText();
+    }
+
+    public String toString(){
+        return "{\"from\":\"" + from + "\",\"to\":\"" + to +"\"}";
     }
 }

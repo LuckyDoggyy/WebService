@@ -11,7 +11,39 @@ import java.util.Map;
  */
 public class State {
     protected String type;
+
     protected Map<String, Map<String, String>> props;
+
+    protected Map<String, Integer> attr;
+
+    protected Map<String, String> text;
+
+    public State(){
+
+    }
+
+    public State(String type, Map<String, Map<String, String>> props, Map<String, Integer> attr, Map<String, String> text){
+        this.attr = attr;
+        this.props = props;
+        this.type = type;
+        this.text = text;
+    }
+
+    public Map<String, String> getText() {
+        return text;
+    }
+
+    public void setText(Map<String, String> text) {
+        this.text = text;
+    }
+
+    public Map<String, Integer> getAttr() {
+        return attr;
+    }
+
+    public void setAttr(Map<String, Integer> attr) {
+        this.attr = attr;
+    }
 
     public String getType() {
         return type;

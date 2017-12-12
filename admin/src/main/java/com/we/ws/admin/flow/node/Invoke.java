@@ -100,4 +100,10 @@ public class Invoke extends Node {
         return new Invoke(serviceId, name, desc, input, output);
     }
 
+/*
+    public static Invoke updateInvoke(State state){
+        Map
+    }
+*/
+
 }

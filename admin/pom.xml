@@ -37,6 +37,16 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/iri -->
+        <dependency>
+            <groupId>com.hp.hpl.jena</groupId>
+            <artifactId>iri</artifactId>
+            <version>0.8</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

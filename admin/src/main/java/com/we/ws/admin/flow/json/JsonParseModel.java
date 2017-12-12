@@ -11,6 +11,7 @@ import java.util.Map;
  * @since 2017-04-14
  */
 public class JsonParseModel {
+
     private Map<String, State> states;
     private Map<String, Path> paths;
     private Map<String, FlowProp> props;

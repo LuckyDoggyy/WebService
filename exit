@@ -1,0 +1,1233 @@
+warning: LF will be replaced by CRLF in admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/ICFinder.java.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/JWS.java.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/Lin.java.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordSimilarity.java.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WuAndPalmer.java.
+The file will have its original line endings in your working directory.
+[1mdiff --git a/admin/pom.xml b/admin/pom.xml[m
+[1mindex ee41b3e..7a1eec7 100644[m
+[1m--- a/admin/pom.xml[m
+[1m+++ b/admin/pom.xml[m
+[36m@@ -37,6 +37,16 @@[m
+             <artifactId>mysql-connector-java</artifactId>[m
+             <version>5.1.38</version>[m
+         </dependency>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/iri -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.hp.hpl.jena</groupId>[m
+[32m+[m[32m            <artifactId>iri</artifactId>[m
+[32m+[m[32m            <version>0.8</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m
+     </dependencies>[m
+ [m
+     <build>[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/FlowParser.java b/admin/src/main/java/com/we/ws/admin/flow/FlowParser.java[m
+[1mindex 92f02fe..ad0569c 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/FlowParser.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/FlowParser.java[m
+[36m@@ -5,10 +5,20 @@[m [mimport com.we.ws.admin.flow.json.FlowProp;[m
+ import com.we.ws.admin.flow.json.JsonParseModel;[m
+ import com.we.ws.admin.flow.json.Path;[m
+ import com.we.ws.admin.flow.json.State;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ReadWSDL.DbManager;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ReadWSDL.WsdlDAO;[m
+ import com.we.ws.admin.flow.node.*;[m
+ import com.we.ws.common.data.Pair;[m
+ import com.we.ws.common.util.JsonUtils;[m
+ import org.apache.commons.lang3.StringUtils;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ReadWSDL.DbManager;[m
+[32m+[m
+[32m+[m[32mimport java.sql.Connection;[m
+[32m+[m[32mimport java.sql.PreparedStatement;[m
+[32m+[m[32mimport java.sql.ResultSet;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.LinkedList;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ServiceGraph.*;[m
+ [m
+ import java.util.HashMap;[m
+ import java.util.Map;[m
+[36m@@ -25,6 +35,11 @@[m [mpublic class FlowParser {[m
+             return Pair.of(null, null);[m
+         }[m
+         JsonParseModel model = JsonUtils.objectFromJson(json, JsonParseModel.class);[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        //        model.getStates().put()[m
+[32m+[m[32m        String newJson = JsonUtils.jsonFromObject(model);[m
+[32m+[m
+         Node head = null;[m
+         try {[m
+             head = parseNode(model);[m
+[36m@@ -33,10 +48,12 @@[m [mpublic class FlowParser {[m
+         FlowProp flowProp = model.getProps();[m
+         Flow flow = new Flow(flowProp.getName(), flowProp.getFlowid(), flowProp.getDesc(), json, getReceiveParam(head));[m
+         //TODO[m
+[31m-        flowProp.getTagid();[m
+[32m+[m[32m//        flowProp.getTagid();[m
+         return Pair.of(head, flow);[m
+     }[m
+ [m
+[32m+[m
+[32m+[m
+     private static Node parseNode(JsonParseModel model) throws FlowException {[m
+         Node head = null;[m
+         Map<String, Node> parsedNodes = new HashMap<>();[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/StateMatch.java b/admin/src/main/java/com/we/ws/admin/flow/StateMatch.java[m
+[1mindex c71faa6..258b6ac 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/StateMatch.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/StateMatch.java[m
+[36m@@ -189,14 +189,15 @@[m [mpublic class StateMatch {[m
+         }*/[m
+         LinkedList<State> stateList = new LinkedList<>();[m
+         String type = stateTemplate.getType();[m
+[31m-        Map<String, String> attr = stateTemplate.getAttr();[m
+[32m+[m
+[32m+[m
+ //        Map<String, Map<String, String>> props = stateTemplate.getProps();[m
+ [m
+         for (ServiceNode serviceNode : serviceList) {[m
+             //serviceid[m
+             String url = serviceNode.getWSDL().toString();[m
+             String serviceId = String.valueOf(WsdlDAO.searchSidByUrl(url));[m
+[31m-            Map<String, Map<String, String>> serviceProps = new HashMap<>();[m
+[32m+[m[32m            Map<String, Map<String, String>> serviceProps = new LinkedHashMap<>();[m
+             Map<String, String> serviceIdMap = new HashMap<>();[m
+             serviceIdMap.put("value", serviceId.trim());[m
+             serviceProps.put("serviceId", serviceIdMap);[m
+[36m@@ -227,7 +228,11 @@[m [mpublic class StateMatch {[m
+             outputMap.put("value", outputJson);[m
+             serviceProps.put("output", outputMap);[m
+ [m
+[31m-            State tmpState = new State(type, serviceProps, attr);[m
+[32m+[m[32m            Map<String, Integer> attr = new HashMap<>();[m
+[32m+[m[32m            Map<String, String> text = new HashMap<>();[m
+[32m+[m[32m            attr.putAll(stateTemplate.getAttr());[m
+[32m+[m[32m            text.putAll(stateTemplate.getText());[m
+[32m+[m[32m            State tmpState = new State(type, serviceProps, attr, text);[m
+             stateList.add(tmpState);[m
+         }[m
+         return stateList;[m
+[36m@@ -314,15 +319,20 @@[m [mpublic class StateMatch {[m
+                 "\"states\":{\n" +[m
+                 "\"rect1\":{\"type\":\"start\",\"text\":{\"text\":\"开始\"},\"attr\":{\"x\":380,\"y\":29,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"开始\"}}},\n" +[m
+                 "\"rect2\":{\"type\":\"end\",\"text\":{\"text\":\"结束\"},\"attr\":{\"x\":381,\"y\":448,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"结束\"}}},\n" +[m
+[31m-                "\"rect3\":{\"type\":\"invoke\",\"text\":{\"text\":\"test\"},\"attr\":{\"x\":381,\"y\":227,\"width\":100,\"height\":50},\"props\":{\"serviceId\":{\"value\":\"\"},\"text\":{\"value\":\"test\"},\"desc\":{\"value\":\"This service provide the accommodation which has the sports of hiking and surfing.\"},\"input\":{\"value\":\"hiking:,surfing:\"},\"output\":{\"value\":\"accommodation:\"}}},\n" +[m
+[31m-                "\"rect5\":{\"type\":\"receive\",\"text\":{\"text\":\"接收\"},\"attr\":{\"x\":380,\"y\":126,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"接收\"},\"desc\":{\"value\":\"输入\"},\"input\":{\"value\":\"mobile:\"}}}},\n" +[m
+                 "\n" +[m
+                 "\n" +[m
+[31m-                "\"paths\":{\"path6\":{\"from\":\"rect1\",\"to\":\"rect5\",\"dots\":[],\"text\":{\"text\":\"TO 接收\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}},\n" +[m
+[32m+[m[32m                "\"rect3\":{\"type\":\"invoke\",\"text\":{\"text\":\"\"},\"attr\":{\"x\":381,\"y\":227,\"width\":100,\"height\":50},\"props\":{\"serviceId\":{\"value\":\"\"},\"text\":{\"value\":\"\"},\"desc\":{\"value\":\"This service provide the accommodation which has the sports of hiking and surfing.\"},\"input\":{\"value\":\"hiking:,surfing:\"},\"output\":{\"value\":\"accommodation:\"}}},\n" +[m
+[32m+[m[32m                "\n" +[m
+[32m+[m[32m                "\n" +[m
+[32m+[m[32m                "\"rect5\":{\"type\":\"receive\",\"text\":{\"text\":\"接收\"},\"attr\":{\"x\":380,\"y\":126,\"width\":100,\"height\":50},\"props\":{\"text\":{\"value\":\"接收\"},\"desc\":{\"value\":\"输入\"},\"input\":{\"value\":\"mobile:\"}}}},\n" +[m
+[32m+[m[32m                "\n" +[m
+[32m+[m[32m                "\"paths\":{\n" +[m
+[32m+[m[32m                "\"path6\":{\"from\":\"rect1\",\"to\":\"rect5\",\"dots\":[],\"text\":{\"text\":\"TO 接收\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}},\n" +[m
+                 "\"path7\":{\"from\":\"rect5\",\"to\":\"rect3\",\"dots\":[],\"text\":{\"text\":\"TO 手机\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}},\n" +[m
+[31m-                "\"path10\":{\"from\":\"rect3\",\"to\":\"rect2\",\"dots\":[],\"text\":{\"text\":\"TO 结束\"},\"textPos\":{\"x\":0,\"y\":-10},\n" +[m
+[32m+[m[32m                "\"path10\":{\"from\":\"rect3\",\"to\":\"rect2\",\"dots\":[],\"text\":{\"text\":\"TO 结束\"},\"textPos\":{\"x\":0,\"y\":-10},\"props\":{\"text\":{\"value\":\"\"}}}},\n" +[m
+                 "\n" +[m
+[31m-                "\"props\":{\"text\":{\"value\":\"\"}}}},\"props\":{\"props\":{\"name\":{\"value\":\"新建流程\"},\"flowid\":{\"value\":\"标识\"},\"tagid\":{\"value\":\"1\"},\"desc\":{\"value\":\"描述\"}}}}";[m
+[32m+[m[32m                "\"props\":{\"props\":{\"name\":{\"value\":\"新建流程\"},\"flowid\":{\"value\":\"标识\"},\"tagid\":{\"value\":\"1\"},\"desc\":{\"value\":\"描述\"}}}\n" +[m
+[32m+[m[32m                "}\n";[m
+ [m
+ [m
+         ServiceSimilarity ss = new ServiceSimilarity("http://127.0.0.1/domains/1.1/travel/");[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/json/JsonParseModel.java b/admin/src/main/java/com/we/ws/admin/flow/json/JsonParseModel.java[m
+[1mindex 2a0472d..f6a36a2 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/json/JsonParseModel.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/json/JsonParseModel.java[m
+[36m@@ -11,6 +11,7 @@[m [mimport java.util.Map;[m
+  * @since 2017-04-14[m
+  */[m
+ public class JsonParseModel {[m
+[32m+[m
+     private Map<String, State> states;[m
+     private Map<String, Path> paths;[m
+     private Map<String, FlowProp> props;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/json/Path.java b/admin/src/main/java/com/we/ws/admin/flow/json/Path.java[m
+[1mindex d64893b..164ca32 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/json/Path.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/json/Path.java[m
+[36m@@ -12,6 +12,7 @@[m [mpublic class Path {[m
+     private String to;[m
+     private Text text;[m
+ [m
+[32m+[m
+     public String getFrom() {[m
+         return from;[m
+     }[m
+[36m@@ -35,4 +36,8 @@[m [mpublic class Path {[m
+     public String getText() {[m
+         return text.getText();[m
+     }[m
+[32m+[m
+[32m+[m[32m    public String toString(){[m
+[32m+[m[32m        return "{\"from\":\"" + from + "\",\"to\":\"" + to +"\"}";[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/json/State.java b/admin/src/main/java/com/we/ws/admin/flow/json/State.java[m
+[1mindex 9038a91..5f782cf 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/json/State.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/json/State.java[m
+[36m@@ -11,8 +11,40 @@[m [mimport java.util.Map;[m
+  */[m
+ public class State {[m
+     protected String type;[m
+[32m+[m
+     protected Map<String, Map<String, String>> props;[m
+ [m
+[32m+[m[32m    protected Map<String, Integer> attr;[m
+[32m+[m
+[32m+[m[32m    protected Map<String, String> text;[m
+[32m+[m
+[32m+[m[32m    public State(){[m
+[32m+[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public State(String type, Map<String, Map<String, String>> props, Map<String, Integer> attr, Map<String, String> text){[m
+[32m+[m[32m        this.attr = attr;[m
+[32m+[m[32m        this.props = props;[m
+[32m+[m[32m        this.type = type;[m
+[32m+[m[32m        this.text = text;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public Map<String, String> getText() {[m
+[32m+[m[32m        return text;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setText(Map<String, String> text) {[m
+[32m+[m[32m        this.text = text;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public Map<String, Integer> getAttr() {[m
+[32m+[m[32m        return attr;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setAttr(Map<String, Integer> attr) {[m
+[32m+[m[32m        this.attr = attr;[m
+[32m+[m[32m    }[m
+[32m+[m
+     public String getType() {[m
+         return type;[m
+     }[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/json/Text.java b/admin/src/main/java/com/we/ws/admin/flow/json/Text.java[m
+[1mindex b6b5933..1b65423 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/json/Text.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/json/Text.java[m
+[36m@@ -15,9 +15,7 @@[m [mpublic class Text {[m
+         this.text = text;[m
+     }[m
+ [m
+[31m-    public String getText() {[m
+[31m-        return text;[m
+[31m-    }[m
+[32m+[m[32m    public String getText() { return text; }[m
+ [m
+     public String getValue() {[m
+         return value;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/OntologySearch.java b/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/OntologySearch.java[m
+[1mindex 42fd2f8..3fb5a32 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/OntologySearch.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/OntologySearch.java[m
+[36m@@ -1,19 +1,14 @@[m
+[31m-package OwlHandle;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.OwlHandle;[m
+ [m
+ [m
+[31m-import java.io.BufferedReader;[m
+[31m-import java.io.File;[m
+[31m-import java.io.FileInputStream;[m
+[31m-import java.io.InputStreamReader;[m
+[31m-import java.lang.reflect.Array;[m
+[31m-import java.util.ArrayList;[m
+[31m-import java.util.Scanner;[m
+[31m-[m
+[32m+[m[32mimport org.apache.jena.ontology.*;[m
+ import org.apache.jena.ontology.OntDocumentManager;[m
+ import org.apache.jena.ontology.OntModel;[m
+ import org.apache.jena.ontology.OntModelSpec;[m
+ import org.apache.jena.rdf.model.ModelFactory;[m
+[31m-import org.apache.jena.ontology.*;[m
+[32m+[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.Scanner;[m
+ [m
+ [m
+ /*[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/ParseOwl.java b/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/ParseOwl.java[m
+[1mindex c1d691f..e1cd76b 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/ParseOwl.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/OwlHandle/ParseOwl.java[m
+[36m@@ -1,20 +1,13 @@[m
+[31m-package OwlHandle;[m
+[31m-[m
+[31m-import java.io.File;[m
+[31m-[m
+[31m-[m
+[31m-import java.io.FileInputStream;[m
+[31m-import java.io.IOException;[m
+[31m-import java.util.ArrayList;[m
+[31m-import java.util.Iterator;[m
+[31m-import java.util.List;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.OwlHandle;[m
+ [m
+[32m+[m[32mimport org.apache.jena.ontology.*;[m
+ import org.apache.jena.ontology.OntDocumentManager;[m
+ import org.apache.jena.ontology.OntModel;[m
+ import org.apache.jena.ontology.OntModelSpec;[m
+ import org.apache.jena.rdf.model.ModelFactory;[m
+ import org.apache.jena.util.iterator.ExtendedIterator;[m
+[31m-import org.apache.jena.ontology.*;[m
+[32m+[m
+[32m+[m[32mimport java.util.Iterator;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/1.[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/FileModify.java b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/FileModify.java[m
+[1mindex c7bd87e..0b568a8 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/FileModify.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/FileModify.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package OwlsHandle;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.OwlsHandle;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/5.[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/ParseOWLS.java b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/ParseOWLS.java[m
+[1mindex 1646cc6..c5d638d 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/ParseOWLS.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/ParseOWLS.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package OwlsHandle;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.OwlsHandle;[m
+ [m
+ import org.mindswap.owl.*;[m
+ import org.mindswap.owls.service.Service;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/RunService.java b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/RunService.java[m
+[1mindex e5b381f..8336784 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/RunService.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/OwlsHandle/RunService.java[m
+[36m@@ -1,23 +1,15 @@[m
+[32m+[m[32m/*[m
+ //[m
+ // Source code recreated from a .class file by IntelliJ IDEA[m
+ // (powered by Fernflower decompiler)[m
+ //[m
+ [m
+[31m-package OwlsHandle;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.OwlsHandle;[m
+ [m
+[31m-import java.net.URI;[m
+ import org.mindswap.common.Variable;[m
+[31m-import org.mindswap.owl.OWLClass;[m
+[31m-import org.mindswap.owl.OWLDataProperty;[m
+[31m-import org.mindswap.owl.OWLDataValue;[m
+[31m-import org.mindswap.owl.OWLFactory;[m
+[31m-import org.mindswap.owl.OWLIndividual;[m
+[31m-import org.mindswap.owl.OWLKnowledgeBase;[m
+[31m-import org.mindswap.owl.OWLObjectProperty;[m
+[31m-import org.mindswap.owl.OWLValue;[m
+[32m+[m[32mimport org.mindswap.owl.*;[m
+ import org.mindswap.owls.OWLSFactory;[m
+ import org.mindswap.owls.process.AtomicProcess;[m
+[31m-import org.mindswap.owls.process.Process;[m
+ import org.mindswap.owls.process.execution.DefaultProcessMonitor;[m
+ import org.mindswap.owls.process.execution.ProcessExecutionEngine;[m
+ import org.mindswap.owls.process.variable.Input;[m
+[36m@@ -26,6 +18,8 @@[m [mimport org.mindswap.owls.service.Service;[m
+ import org.mindswap.query.ValueMap;[m
+ import org.mindswap.utils.Utils;[m
+ [m
+[32m+[m[32mimport java.net.URI;[m
+[32m+[m
+ public class RunService {[m
+     Service service;[m
+     Process process;[m
+[36m@@ -210,3 +204,4 @@[m [mpublic class RunService {[m
+         test.runAll();[m
+     }[m
+ }[m
+[32m+[m[32m*/[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/DbManager.java b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/DbManager.java[m
+[1mindex ff5a4cc..9ca0920 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/DbManager.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/DbManager.java[m
+[36m@@ -1,9 +1,8 @@[m
+[31m-package ReadWSDL;[m
+[31m-[m
+[31m-import java.sql.*;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ReadWSDL;[m
+ [m
+ import com.mysql.jdbc.Driver;[m
+[31m-import com.sun.deploy.security.ValidationState;[m
+[32m+[m
+[32m+[m[32mimport java.sql.*;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/23.[m
+[36m@@ -17,7 +16,7 @@[m [mpublic class DbManager {[m
+     public static Connection getConnection(String dbName, String userName,[m
+                   String password) throws SQLException{[m
+         String url = "jdbc:mysql://localhost:3306/" + dbName +[m
+[31m-                "?userUnicode=true&characterEncoding=utf-8";[m
+[32m+[m[32m                "?userUnicode=true&characterEncoding=utf-8&useSSL=true";[m
+         DriverManager.registerDriver(new Driver());[m
+         return DriverManager.getConnection(url, userName, password);[m
+     }[m
+[36m@@ -35,7 +34,7 @@[m [mpublic class DbManager {[m
+             else if(param instanceof Integer)[m
+                 preStmt.setInt(i + 1 , (Integer) param);[m
+             else if(param instanceof Double)[m
+[31m-                preStmt.setDouble(i + 1 , (Double) param);[m
+[32m+[m[32m                preStmt.setDouble(i + 1  , (Double) param);[m
+             else if(param instanceof Long)[m
+                 preStmt.setLong(i + 1 , (Long) param);[m
+         }[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/GetWsdls.java b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/GetWsdls.java[m
+[1mindex 2f63392..9b6ef80 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/GetWsdls.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/GetWsdls.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package ReadWSDL;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ReadWSDL;[m
+ [m
+ import java.io.BufferedReader;[m
+ import java.io.IOException;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlBean.java b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlBean.java[m
+[1mindex 31f4fce..6e672af 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlBean.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlBean.java[m
+[36m@@ -1,22 +1,15 @@[m
+[31m-package ReadWSDL;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ReadWSDL;[m
+ [m
+[32m+[m[32mimport com.ibm.wsdl.BindingOperationImpl;[m
+[32m+[m
+[32m+[m[32mimport javax.wsdl.Binding;[m
+[32m+[m[32mimport javax.wsdl.Definition;[m
+[32m+[m[32mimport javax.wsdl.Port;[m
+ import javax.wsdl.factory.WSDLFactory;[m
+ import javax.wsdl.xml.WSDLReader;[m
+[31m-import javax.xml.namespace.QName;[m
+[31m-import javax.xml.ws.Service;[m
+[31m-import java.util.Iterator;[m
+[32m+[m[32mimport java.util.List;[m
+ import java.util.Map;[m
+ [m
+[31m-[m
+[31m-import com.ibm.wsdl.BindingOperationImpl;[m
+[31m-[m
+[31m-import javax.wsdl.*;[m
+[31m-import javax.wsdl.extensions.*;[m
+[31m-import javax.wsdl.factory.*;[m
+[31m-import javax.wsdl.xml.*;[m
+[31m-import javax.xml.namespace.QName;[m
+[31m-import java.util.*;[m
+[31m-[m
+ /**[m
+  * Created by xuxyu on 2017/8/23.[m
+  */[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlDAO.java b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlDAO.java[m
+[1mindex 54a3f57..2f30495 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlDAO.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ReadWSDL/WsdlDAO.java[m
+[36m@@ -1,7 +1,10 @@[m
+[31m-package ReadWSDL;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ReadWSDL;[m
+ [m
+[31m-import javax.xml.transform.Result;[m
+[31m-import java.sql.*;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ServiceGraph.ServiceNode;[m
+[32m+[m
+[32m+[m[32mimport java.sql.Connection;[m
+[32m+[m[32mimport java.sql.PreparedStatement;[m
+[32m+[m[32mimport java.sql.ResultSet;[m
+ import java.util.ArrayList;[m
+ [m
+ /**[m
+[36m@@ -24,6 +27,24 @@[m [mpublic class WsdlDAO {[m
+         }[m
+     }[m
+ [m
+[32m+[m[32m    public static void insertParams(String url, ArrayList<String> params, String table)[m
+[32m+[m[32m        throws Exception{[m
+[32m+[m
+[32m+[m[32m        int serviceId = searchSidByUrl(url);[m
+[32m+[m[32m        for(int i = 0 ; i < params.size() ; i ++){[m
+[32m+[m[32m            String input = params.get(i);[m
+[32m+[m[32m            String sql = "insert into " + table + " (sid, paramname, state) values" +[m
+[32m+[m[32m                "(?, ?, 0)";[m
+[32m+[m[32m            DbManager.executeUpdate(sql, serviceId, input);[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+     public static int insertWsdl(WsdlBean wb) throws Exception{[m
+         String sql = "insert into t_service (servicename, remark, wsdlurl, targetnamespace, method, version, state) " +[m
+                 "values (?, ?, ?, ?, ?, 2, 0)";[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/CompoundWords.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/CompoundWords.java[m
+[1mindex d9aaaf8..62234e3 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/CompoundWords.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/CompoundWords.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+ [m
+ [m
+ import java.util.ArrayList;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/ICFinder.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/ICFinder.java[m
+[1mindex f5c277b..e8bc59d 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/ICFinder.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/ICFinder.java[m
+[36m@@ -1,9 +1,14 @@[m
+[31m-package SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+ [m
+ [m
+[31m-import java.io.*;[m
+[31m-import java.util.*;[m
+[31m-import java.util.regex.*;[m
+[32m+[m[32mimport java.io.BufferedReader;[m
+[32m+[m[32mimport java.io.FileReader;[m
+[32m+[m[32mimport java.io.IOException;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.Hashtable;[m
+[32m+[m[32mimport java.util.Vector;[m
+[32m+[m[32mimport java.util.regex.Matcher;[m
+[32m+[m[32mimport java.util.regex.Pattern;[m
+ [m
+ [m
+ // n + v only[m
+[36m@@ -29,8 +34,8 @@[m [mpublic class ICFinder {[m
+     private ArrayList<String> verbroots = null;[m
+ [m
+     public ICFinder(String icfilename) {[m
+[31m-        System.out.println("... calculating IC <roots> ...");[m
+[31m-        System.out.println("... ICFinder");[m
+[32m+[m[32m//        System.out.println("... calculating IC <roots> ...");[m
+[32m+[m[32m//        System.out.println("... ICFinder");[m
+ [m
+ // your IC file[m
+         this.icfilename = icfilename;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/JWS.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/JWS.java[m
+[1mindex e9dd8cb..379eee2 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/JWS.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/JWS.java[m
+[36m@@ -1,24 +1,17 @@[m
+[31m-package SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+ [m
+ [m
+[31m-import edu.mit.jwi.item.*;[m
+[31m-import edu.mit.jwi.data.*;[m
+[31m-[m
+[31m-import java.io.*;[m
+[31m-import java.net.*;[m
+[31m-[m
+[31m-import edu.mit.jwi.*;[m
+ import edu.mit.jwi.*;[m
+[32m+[m[32mimport edu.mit.jwi.IDictionary;[m
+ import edu.mit.jwi.data.*;[m
+ import edu.mit.jwi.data.compare.*;[m
+ import edu.mit.jwi.data.parse.*;[m
+ import edu.mit.jwi.item.*;[m
+ import edu.mit.jwi.morph.*;[m
+[31m-import edu.mit.jwi.item.IIndexWord;[m
+[31m-import edu.mit.jwi.IDictionary;[m
+ [m
+[31m-import java.util.TreeMap;[m
+[31m-import java.text.*;[m
+[32m+[m[32mimport java.io.File;[m
+[32m+[m[32mimport java.net.MalformedURLException;[m
+[32m+[m[32mimport java.net.URL;[m
+ import java.util.ArrayList;[m
+ import java.util.Iterator;[m
+ import java.util.List;[m
+[36m@@ -39,7 +32,7 @@[m [mpublic class JWS {[m
+ [m
+     // constructor 1 - use user specified IC file[m
+     public JWS(String dir, String icfile) {[m
+[31m-        System.out.println("Loading modules");[m
+[32m+[m[32m//        System.out.println("Loading modules");[m
+ [m
+         wnhome = dir+"/dict";[m
+         icfilename = icfile; // user defined IC file[m
+[36m@@ -47,11 +40,11 @@[m [mpublic class JWS {[m
+             System.out.println("your directory paths are wrong:\n" + wnhome + "\n" + icfilename);[m
+             System.exit(1);[m
+         }[m
+[31m-        System.out.println("set up:");[m
+[32m+[m[32m//        System.out.println("set up:");[m
+         initialiseWordNet();[m
+ [m
+ // get <roots>[m
+[31m-        System.out.println("... finding noun and verb <roots>");[m
+[32m+[m[32m//        System.out.println("... finding noun and verb <roots>");[m
+         roots = new ArrayList<ISynsetID>();[m
+ // get noun <roots>[m
+         getRoots(POS.NOUN);[m
+[36m@@ -61,7 +54,7 @@[m [mpublic class JWS {[m
+         icfinder = new ICFinder(icfilename);[m
+         lin = new Lin(dict, icfinder);[m
+         wup = new WuAndPalmer(dict, roots);[m
+[31m-        System.out.println("\n\nJava WordNet::Similarity using WordNet " + dict.getVersion() + " : loaded\n\n\n");[m
+[32m+[m[32m//        System.out.println("\n\nJava WordNet::Similarity using WordNet " + dict.getVersion() + " : loaded\n\n\n");[m
+     }[m
+ [m
+     // !!! put in JWS !!![m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/KuhnMunkres.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/KuhnMunkres.java[m
+[1mindex c8be186..3da9915 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/KuhnMunkres.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/KuhnMunkres.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package SemanticSimilarity;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/18.[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/Lin.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/Lin.java[m
+[1mindex 1a122d9..abe56e0 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/Lin.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/Lin.java[m
+[36m@@ -1,18 +1,17 @@[m
+[31m-package SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+ [m
+ [m
+[32m+[m[32mimport edu.mit.jwi.Dictionary;[m
+ import edu.mit.jwi.IDictionary;[m
+ import edu.mit.jwi.item.*;[m
+ [m
+[31m-import java.net.*;[m
+[31m-[m
+[31m-import edu.mit.jwi.Dictionary;[m
+[31m-[m
+[32m+[m[32mimport java.net.MalformedURLException;[m
+[32m+[m[32mimport java.net.URL;[m
+[32m+[m[32mimport java.text.DecimalFormat;[m
+[32m+[m[32mimport java.text.NumberFormat;[m
+ import java.util.HashSet;[m
+ import java.util.List;[m
+[31m-import java.util.Hashtable;[m
+ import java.util.TreeMap;[m
+[31m-import java.text.*;[m
+ [m
+ [m
+ // 'Lin' : computes the semantic relatedness of word senses using the information content based measure as described in Lin, 1998.[m
+[36m@@ -26,7 +25,7 @@[m [mpublic class Lin {[m
+     private NumberFormat formatter = new DecimalFormat("0.0000");[m
+ [m
+     public Lin(IDictionary dict, ICFinder icfinder) {[m
+[31m-        System.out.println("... Lin");[m
+[32m+[m[32m//        System.out.println("... Lin");[m
+         this.dict = dict;[m
+         this.icfinder = icfinder;[m
+     }[m
+[36m@@ -322,7 +321,7 @@[m [malternatives.[m
+ //abbreviate v 2 4 @ ~ $ + 2 0 00243900 00243749[m
+ //abdicate[m
+ // lin(1) specific senses for both words[m
+[31m-        double linscore = lin.lin("fly", 1, "walk", 1, "v"); // "word1", sense#, "word2", sense#, "POS"[m
+[32m+[m[32m        double linscore = lin.lin("fly", 1, "walk", 1, "n"); // "word1", sense#, "word2", sense#, "POS"[m
+         System.out.println("specific senses");[m
+         //if(linscore != 0) // 0 is an error code i.e it means that something isn't right e.g. words are not in WordNet, wrong POS etc[m
+         //{[m
+[36m@@ -341,7 +340,7 @@[m [malternatives.[m
+ */[m
+ [m
+ // max value (i.e. highest score!) : get the highest score for 2 words[m
+[31m-		double maxvalue = lin.max("many", "forever", "n"); // "word1", "word2", "POS"[m
+[32m+[m		[32mdouble maxvalue = lin.max("surfriding", "surfing", "v"); // "word1", "word2", "POS"[m
+ 		System.out.println("max value");[m
+ 		System.out.println(formatter.format(maxvalue));[m
+ 		System.out.println();[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/TextSimilarity.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/TextSimilarity.java[m
+[1mindex c59814d..0dc3c9c 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/TextSimilarity.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/TextSimilarity.java[m
+[36m@@ -1,19 +1,14 @@[m
+[31m-package SemanticSimilarity;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;[m
+ [m
+[31m-import edu.mit.jwi.item.Word;[m
+[31m-import org.apache.jena.base.Sys;[m
+ import org.apache.lucene.analysis.TokenStream;[m
+ import org.apache.lucene.analysis.standard.StandardAnalyzer;[m
+ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;[m
+ import org.apache.lucene.analysis.util.CharArraySet;[m
+ import org.apache.lucene.util.Version;[m
+[31m-import SemanticSimilarity.WordSimilarity;[m
+[31m-import SemanticSimilarity.WordNode;[m
+[31m-import sun.reflect.generics.tree.Tree;[m
+ [m
+[31m-import SemanticSimilarity.KuhnMunkres;[m
+[31m-[m
+[31m-import java.util.*;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.Arrays;[m
+[32m+[m[32mimport java.util.Iterator;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/17.[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordNode.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordNode.java[m
+[1mindex b775bd4..4af459c 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordNode.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordNode.java[m
+[36m@@ -1,6 +1,5 @@[m
+[31m-package SemanticSimilarity;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;[m
+ [m
+[31m-import edu.mit.jwi.item.Word;[m
+ import java.util.TreeMap;[m
+ [m
+ /**[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordSimilarity.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordSimilarity.java[m
+[1mindex ee7ba32..d094c53 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordSimilarity.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WordSimilarity.java[m
+[36m@@ -1,19 +1,4 @@[m
+[31m-package SemanticSimilarity;[m
+[31m-[m
+[31m-import edu.mit.jwi.item.Word;[m
+[31m-[m
+[31m-import java.util.Comparator;[m
+[31m-import java.util.TreeMap;[m
+[31m-import java.text.*;[m
+[31m-[m
+[31m-import java.util.Iterator;[m
+[31m-[m
+[31m-import org.apache.lucene.analysis.TokenStream;[m
+[31m-import org.apache.lucene.analysis.standard.StandardAnalyzer;[m
+[31m-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;[m
+[31m-import org.apache.lucene.analysis.util.CharArraySet;[m
+[31m-import org.apache.lucene.util.Version;[m
+[31m-[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;[m
+ [m
+ public class WordSimilarity {[m
+ [m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WuAndPalmer.java b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WuAndPalmer.java[m
+[1mindex c101149..a90c6bd 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WuAndPalmer.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/SemanticSimilarity/WuAndPalmer.java[m
+[36m@@ -1,20 +1,15 @@[m
+[31m-package SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.SemanticSimilarity;//package edu.sussex.nlp.jws;[m
+ [m
+ [m
+[32m+[m[32mimport edu.mit.jwi.Dictionary;[m
+ import edu.mit.jwi.IDictionary;[m
+ import edu.mit.jwi.item.*;[m
+ [m
+[31m-import java.net.*;[m
+[31m-[m
+[31m-import edu.mit.jwi.Dictionary;[m
+[31m-[m
+[31m-import java.util.HashSet;[m
+[31m-import java.util.List;[m
+[31m-import java.util.TreeMap;[m
+[31m-import java.text.*;[m
+[31m-import java.util.ArrayList;[m
+[31m-import java.util.Iterator;[m
+[31m-import java.util.Collections;[m
+[32m+[m[32mimport java.net.MalformedURLException;[m
+[32m+[m[32mimport java.net.URL;[m
+[32m+[m[32mimport java.text.DecimalFormat;[m
+[32m+[m[32mimport java.text.NumberFormat;[m
+[32m+[m[32mimport java.util.*;[m
+ [m
+ [m
+ // 'WuAndPalmer':[m
+[36m@@ -26,7 +21,7 @@[m [mpublic class WuAndPalmer {[m
+     private ArrayList<ISynsetID> roots = null;[m
+ [m
+     public WuAndPalmer(IDictionary dict, ArrayList<ISynsetID> roots) {[m
+[31m-        System.out.println("... WuAndPalmer");[m
+[32m+[m[32m//        System.out.println("... WuAndPalmer");[m
+         this.dict = dict;[m
+         this.roots = roots;[m
+     }[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/Demo.java b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/Demo.java[m
+[1mindex de41f88..0a7d81f 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/Demo.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/Demo.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package ServiceGraph;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ServiceGraph;[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/22.[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/GetUrls.java b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/GetUrls.java[m
+[1mindex 0923d22..aa906ce 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/GetUrls.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/GetUrls.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package  ServiceGraph;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ServiceGraph;[m
+ [m
+ import java.io.BufferedReader;[m
+ import java.io.IOException;[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceGraph.java b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceGraph.java[m
+[1mindex 04cc066..8bd31b2 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceGraph.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceGraph.java[m
+[36m@@ -1,7 +1,8 @@[m
+[31m-package ServiceGraph;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ServiceGraph;[m
+ [m
+[31m-import OwlHandle.OntologySearch;[m
+[31m-import OwlsHandle.ParseOWLS;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.OwlHandle.OntologySearch;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.OwlsHandle.ParseOWLS;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.ReadWSDL.WsdlDAO;[m
+ import org.mindswap.owls.process.variable.Input;[m
+ import org.mindswap.owls.process.variable.Output;[m
+ import org.mindswap.owls.service.Service;[m
+[36m@@ -138,7 +139,7 @@[m [mpublic class ServiceGraph {[m
+         setServiceNodes(owlsList);[m
+         setEdges();[m
+         long endMili = System.currentTimeMillis();[m
+[31m-        System.out.println(("Service graph cost " + (endMili - startMili) / 1000 + "s"));[m
+[32m+[m[32m//        System.out.println(("Service graph cost " + (endMili - startMili) / 1000 + "s"));[m
+     }[m
+ [m
+ [m
+[36m@@ -150,6 +151,15 @@[m [mpublic class ServiceGraph {[m
+     public static void main(String[] args) throws Exception {[m
+         ServiceGraph sg = new ServiceGraph("http://127.0.0.1/domains/1.1/travel/");[m
+         LinkedList<ServiceNode> serviceNodes = sg.getServiceNodes();[m
+[32m+[m[32m//        for(ServiceNode serviceNode : serviceNodes){[m
+[32m+[m[32m//            String url = serviceNode.getWSDL().toString();[m
+[32m+[m[32m//            ArrayList<String> inputs = serviceNode.getInputsParmeters();[m
+[32m+[m[32m//            ArrayList<String> outputs = serviceNode.getOutputsParmeters();[m
+[32m+[m[32m//            WsdlDAO.insertParams(url, inputs, "t_serviceparam");[m
+[32m+[m[32m//            WsdlDAO.insertParams(url, outputs, "t_outputserviceparam");[m
+[32m+[m[32m//        }[m
+[32m+[m
+[32m+[m
+         Scanner scanner = new Scanner(System.in);[m
+         Random random = new Random();[m
+ [m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceNode.java b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceNode.java[m
+[1mindex 3cdd19b..15b5627 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceNode.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceNode.java[m
+[36m@@ -1,5 +1,6 @@[m
+[31m-package ServiceGraph;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ServiceGraph;[m
+ [m
+[32m+[m[32mimport com.we.ws.admin.flow.match.OwlsHandle.ParseOWLS;[m
+ [m
+ import org.mindswap.owl.OWLIndividualList;[m
+ import org.mindswap.owls.grounding.WSDLAtomicGrounding;[m
+[36m@@ -8,9 +9,6 @@[m [mimport org.mindswap.owls.process.variable.Input;[m
+ import org.mindswap.owls.process.variable.Output;[m
+ import org.mindswap.owls.service.Service;[m
+ [m
+[31m-import OwlsHandle.ParseOWLS;[m
+[31m-[m
+[31m-import java.lang.reflect.Array;[m
+ import java.net.URI;[m
+ import java.util.ArrayList;[m
+ import java.util.HashMap;[m
+[36m@@ -185,7 +183,6 @@[m [mpublic class ServiceNode {[m
+         }[m
+     }[m
+ [m
+[31m-/*[m
+ [m
+     public static void main(String [] args) throws Exception{[m
+         ParseOWLS powls = new ParseOWLS();[m
+[36m@@ -197,12 +194,7 @@[m [mpublic class ServiceNode {[m
+         for(int i = 0 ; i < list.size() ; i ++){[m
+             System.out.println(serviceNode.getInputs().get(i));[m
+             System.out.println(list.get(i));[m
+[31m-        }*/[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[32m+[m[32m        }[m
+ [m
+[31m-/*        ParseOWLS powls = new ParseOWLS();[m
+[31m-        powls.setServiceMap();*/[m
+     }[m
+[32m+[m[32m}[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceSimilarity.java b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceSimilarity.java[m
+[1mindex 81bbd0e..7f90b20 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceSimilarity.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/match/ServiceGraph/ServiceSimilarity.java[m
+[36m@@ -1,15 +1,10 @@[m
+[31m-package ServiceGraph;[m
+[32m+[m[32mpackage com.we.ws.admin.flow.match.ServiceGraph;[m
+ [m
+[31m-import SemanticSimilarity.KuhnMunkres;[m
+[31m-import org.mindswap.owls.process.variable.Input;[m
+[31m-import org.mindswap.owls.process.variable.Output;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.SemanticSimilarity.KuhnMunkres;[m
+[32m+[m[32mimport com.we.ws.admin.flow.match.SemanticSimilarity.TextSimilarity;[m
+ [m
+ import java.util.*;[m
+ [m
+[31m-import ServiceGraph.ServiceNode;[m
+[31m-import SemanticSimilarity.TextSimilarity;[m
+[31m-[m
+[31m-[m
+ [m
+ /**[m
+  * Created by xuxyu on 2017/8/14.[m
+[36m@@ -36,7 +31,6 @@[m [mpublic class ServiceSimilarity {[m
+             similarity = addInputNode(serviceNode, in);[m
+             if(similarity > 0.9){[m
+                 map.put(serviceNode, similarity);[m
+[31m-                System.out.println(serviceNode.getServiceName() + similarity + "\n" + serviceNode.service.getURI());[m
+             }[m
+         }[m
+         return map;[m
+[36m@@ -65,7 +59,6 @@[m [mpublic class ServiceSimilarity {[m
+             similarity = addOutputNode(serviceNode, out);[m
+             if(similarity > 0.9){[m
+                 map.put(serviceNode, similarity);[m
+[31m-                System.out.println(serviceNode.getServiceName() + similarity + "\n" + serviceNode.service.getURI());[m
+             }[m
+         }[m
+         return map;[m
+[36m@@ -183,7 +176,7 @@[m [mpublic class ServiceSimilarity {[m
+         double descriptionSimilarity = 0;[m
+         for(Map.Entry<LinkedList<ServiceNode>, Double> entry : compositions.entrySet()){[m
+             double parameterSimilarity = entry.getValue();[m
+[31m-            descriptionSimilarity = descriptionSimilarity(entry.getKey(),text) / 3;[m
+[32m+[m[32m            descriptionSimilarity = descriptionSimilarity(entry.getKey(), text) / 3;[m
+             if(parameterSimilarity + descriptionSimilarity >= 0.9)[m
+                 selectedCompositions.add(entry.getKey());[m
+         }[m
+[36m@@ -191,17 +184,48 @@[m [mpublic class ServiceSimilarity {[m
+     }[m
+ [m
+ [m
+[32m+[m[32m    public ArrayList<LinkedList<ServiceNode>> getSelectedCompositions(ArrayList<String> input, ArrayList<String> output,[m
+[32m+[m[32m           String description) throws Exception{[m
+[32m+[m
+[32m+[m[32m        ArrayList<LinkedList<ServiceNode>> selectedCompositions = new ArrayList<>();[m
+[32m+[m
+[32m+[m[32m        HashMap<ServiceNode, Double> inNodesMap = searchByInput(sg, input);[m
+[32m+[m
+[32m+[m[32m        HashMap<ServiceNode, Double> outNodesMap = searchByOutput(sg, output);[m
+[32m+[m
+[32m+[m[32m        HashMap<LinkedList<ServiceNode>, Double> compositionsMap = searchServicesCompositions(inNodesMap, outNodesMap);[m
+[32m+[m
+[32m+[m[32m        selectedCompositions = selectCompostionsByDescription(compositionsMap, description);[m
+[32m+[m
+[32m+[m[32m        return selectedCompositions;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+[32m+[m
+ [m
+[31m-    public static void main(String [] args) throws Exception{[m
+[32m+[m
+[32m+[m[32m    public static void main(String [] args) throws Exception {[m
+         ServiceSimilarity ss = new ServiceSimilarity("http://127.0.0.1/domains/1.1/travel/");[m
+[31m-        ArrayList<String> in = new ArrayList<>();[m
+[32m+[m
+[32m+[m[32m/*        ArrayList<String> in = new ArrayList<>();[m
+         in.add("hiking");[m
+         in.add("surfing");[m
+[32m+[m
+[32m+[m[32m        ArrayList<String> out = new ArrayList<>();[m
+[32m+[m[32m        out.add("accommodation");[m
+[32m+[m
+[32m+[m[32m        String description = "This service provide the accommodation which has the sports of hiking and surfing.";[m
+[32m+[m
+[32m+[m[32m        System.out.println(ss.getSelectedCompositions(in, out, description).size());*/[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        ArrayList<String> in = new ArrayList<>();[m
+[32m+[m[32m        in.add("Municipal-Unit");[m
+         HashMap<ServiceNode, Double> inNodesMap = ss.searchByInput(ss.sg, in);[m
+         System.out.println("Input match " + inNodesMap.size() + " services.");[m
+ [m
+         ArrayList<String> out = new ArrayList<>();[m
+[31m-        out.add("accommodation");[m
+[32m+[m[32m        out.add("Drought");[m
+         HashMap<ServiceNode, Double> outNodesMap = ss.searchByOutput(ss.sg, out);[m
+         System.out.println("Output match " + outNodesMap.size() + " services.");[m
+ [m
+[36m@@ -217,7 +241,8 @@[m [mpublic class ServiceSimilarity {[m
+ [m
+ [m
+         ArrayList<LinkedList<ServiceNode>> selectedCompositions = new ArrayList<>();[m
+[31m-        selectedCompositions = ss.selectCompostionsByDescription(compositionsMap, "This service provide the accommodation which has the sports of hiking and surfing.  ");[m
+[32m+[m[32m        selectedCompositions = ss.selectCompostionsByDescription(compositionsMap,[m
+[32m+[m[32m                "This service informs about drought in a given municipal-unit.");[m
+         System.out.println("\n\n\nThere are " + selectedCompositions.size() + " compositions after been selected.");[m
+         for(int j = 0 ; j < selectedCompositions.size() ; j ++) {[m
+             LinkedList<ServiceNode> list = selectedCompositions.get(j);[m
+[36m@@ -226,20 +251,4 @@[m [mpublic class ServiceSimilarity {[m
+                 System.out.println("Service " + (k + 1) + list.get(k).service.getName() + " " + list.get(k).service.getURI());[m
+         }[m
+     }[m
+[31m-[m
+[31m-/*[m
+[31m-[m
+[31m-    public float descriptionSimilarity(String description, ServiceNode sn1, ServiceNode sn2){[m
+[31m-        String description1 = sn1.getTtextDescription();[m
+[31m-        String description2 = sn2.getTtextDescription();[m
+[31m-        String mixDescription = description1 + description2;[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-*/[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+ }[m
+[1mdiff --git a/admin/src/main/java/com/we/ws/admin/flow/node/Invoke.java b/admin/src/main/java/com/we/ws/admin/flow/node/Invoke.java[m
+[1mindex 0dda3e4..c1b0ea1 100644[m
+[1m--- a/admin/src/main/java/com/we/ws/admin/flow/node/Invoke.java[m
+[1m+++ b/admin/src/main/java/com/we/ws/admin/flow/node/Invoke.java[m
+[36m@@ -100,4 +100,10 @@[m [mpublic class Invoke extends Node {[m
+         return new Invoke(serviceId, name, desc, input, output);[m
+     }[m
+ [m
+[32m+[m[32m/*[m
+[32m+[m[32m    public static Invoke updateInvoke(State state){[m
+[32m+[m[32m        Map[m
+[32m+[m[32m    }[m
+[32m+[m[32m*/[m
+[32m+[m
+ }[m
+[1mdiff --git a/admin/src/main/resources/application.yml b/admin/src/main/resources/application.yml[m
+[1mindex 9cde894..e56a6e3 100644[m
+[1m--- a/admin/src/main/resources/application.yml[m
+[1m+++ b/admin/src/main/resources/application.yml[m
+[36m@@ -7,7 +7,7 @@[m [mspring:[m
+         name: test[m
+         url: jdbc:mysql://127.0.0.1:3306/webservice?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&useSSL=false[m
+         username: root[m
+[31m-        password: admin[m
+[32m+[m[32m        password: 111111[m
+         type: com.alibaba.druid.pool.DruidDataSource[m
+         driver-class-name: com.mysql.jdbc.Driver[m
+         filters: stat[m
+[1mdiff --git a/admin/src/main/resources/mapper/WebServiceMapper.xml b/admin/src/main/resources/mapper/WebServiceMapper.xml[m
+[1mindex b693daa..372a609 100644[m
+[1m--- a/admin/src/main/resources/mapper/WebServiceMapper.xml[m
+[1m+++ b/admin/src/main/resources/mapper/WebServiceMapper.xml[m
+[36m@@ -44,7 +44,7 @@[m
+     </insert>[m
+     [m
+     <insert id="insertWSReturnKey" parameterType="com.we.ws.admin.domain.Service" useGeneratedKeys="true" keyProperty="sid">[m
+[31m-        insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method,output, version)[m
+[32m+[m[32m        insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method, output, version)[m
+         values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{output},#{version})[m
+     </insert>[m
+ [m
+[1mdiff --git a/admin/src/main/resources/static/myflow/myflow.js b/admin/src/main/resources/static/myflow/myflow.js[m
+[1mindex 3aa5067..1d1ddbc 100755[m
+[1m--- a/admin/src/main/resources/static/myflow/myflow.js[m
+[1m+++ b/admin/src/main/resources/static/myflow/myflow.js[m
+[36m@@ -117,6 +117,7 @@[m
+                 right: 30[m
+             },[m
+             props: {}[m
+[32m+[m[41m[m
+         },[m
+         restore: "",[m
+         activeRects: {      //      当前激活状态[m
+[36m@@ -889,7 +890,7 @@[m
+                 }[m
+                 m()[m
+             }[m
+[31m-        }[m
+[32m+[m[32m        }  //拖动[m[41m[m
+         function j() {       // function dotList()  if(!_from) throw '没有from节点!'[m
+             var D, C, E = k.getBBox(),      //      getBBox获得起始的rect[m
+                 F = s.getBBox(),[m
+[1mdiff --git a/admin/src/main/resources/static/myflow/view.html b/admin/src/main/resources/static/myflow/view.html[m
+[1mindex 4e85f20..2ac9d36 100755[m
+[1m--- a/admin/src/main/resources/static/myflow/view.html[m
+[1m+++ b/admin/src/main/resources/static/myflow/view.html[m
+[36m@@ -65,6 +65,7 @@[m
+ 						});[m
+         },[m
+         error:function(xhr,textStatus){[m
+[32m+[m[32m            console.log("ghfgyfy");[m
+             alert("请求失败");[m
+         }[m
+         })[m
+[1mdiff --git a/pom.xml b/pom.xml[m
+[1mindex 750afb4..6ce76da 100644[m
+[1m--- a/pom.xml[m
+[1m+++ b/pom.xml[m
+[36m@@ -33,6 +33,74 @@[m
+             <groupId>org.springframework.boot</groupId>[m
+             <artifactId>spring-boot-devtools</artifactId>[m
+         </dependency>[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/jena -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.hp.hpl.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena</artifactId>[m
+[32m+[m[32m            <version>2.6.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.slf4j</groupId>[m
+[32m+[m[32m            <artifactId>slf4j-api</artifactId>[m
+[32m+[m[32m            <version>1.7.25</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.mindswap/owlsapi -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.mindswap</groupId>[m
+[32m+[m[32m            <artifactId>owlsapi</artifactId>[m
+[32m+[m[32m            <version>3.1.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/com.github.ansell.pellet/pellet-core -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.github.ansell.pellet</groupId>[m
+[32m+[m[32m            <artifactId>pellet-core</artifactId>[m
+[32m+[m[32m            <version>2.3.6-ansell</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena</artifactId>[m
+[32m+[m[32m            <version>3.4.0</version>[m
+[32m+[m[32m            <type>pom</type>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena-arq</artifactId>[m
+[32m+[m[32m            <version>3.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>mysql</groupId>[m
+[32m+[m[32m            <artifactId>mysql-connector-java</artifactId>[m
+[32m+[m[32m            <version>6.0.6</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>wsdl4j</groupId>[m
+[32m+[m[32m            <artifactId>wsdl4j</artifactId>[m
+[32m+[m[32m            <version>1.6.3</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.lucene</groupId>[m
+[32m+[m[32m            <artifactId>lucene-core</artifactId>[m
+[32m+[m[32m            <version>4.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.lucene</groupId>[m
+[32m+[m[32m            <artifactId>lucene-analyzers-common</artifactId>[m
+[32m+[m[32m            <version>4.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+     </dependencies>[m
+     <build>[m
+         <finalName>virtualwebservice</finalName>[m
+[1mdiff --git a/service/pom.xml b/service/pom.xml[m
+[1mindex a68ed48..b4c7e7f 100644[m
+[1m--- a/service/pom.xml[m
+[1m+++ b/service/pom.xml[m
+[36m@@ -79,6 +79,74 @@[m
+             <artifactId>axis2-kernel</artifactId>[m
+             <version>1.7.4</version>[m
+         </dependency>[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/jena -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.hp.hpl.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena</artifactId>[m
+[32m+[m[32m            <version>2.5.7</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.slf4j</groupId>[m
+[32m+[m[32m            <artifactId>slf4j-api</artifactId>[m
+[32m+[m[32m            <version>1.7.25</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.mindswap/owlsapi -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.mindswap</groupId>[m
+[32m+[m[32m            <artifactId>owlsapi</artifactId>[m
+[32m+[m[32m            <version>3.1.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/com.github.ansell.pellet/pellet-core -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.github.ansell.pellet</groupId>[m
+[32m+[m[32m            <artifactId>pellet-core</artifactId>[m
+[32m+[m[32m            <version>2.3.6-ansell</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena</artifactId>[m
+[32m+[m[32m            <version>3.4.0</version>[m
+[32m+[m[32m            <type>pom</type>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.jena</groupId>[m
+[32m+[m[32m            <artifactId>jena-arq</artifactId>[m
+[32m+[m[32m            <version>3.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>mysql</groupId>[m
+[32m+[m[32m            <artifactId>mysql-connector-java</artifactId>[m
+[32m+[m[32m            <version>6.0.6</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>wsdl4j</groupId>[m
+[32m+[m[32m            <artifactId>wsdl4j</artifactId>[m
+[32m+[m[32m            <version>1.6.3</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.lucene</groupId>[m
+[32m+[m[32m            <artifactId>lucene-core</artifactId>[m
+[32m+[m[32m            <version>4.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common -->[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.apache.lucene</groupId>[m
+[32m+[m[32m            <artifactId>lucene-analyzers-common</artifactId>[m
+[32m+[m[32m            <version>4.4.0</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+     </dependencies>[m
+ [m
+ </project>[m
+\ No newline at end of file[m

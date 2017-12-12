@@ -7,7 +7,7 @@ spring:
         name: test
         url: jdbc:mysql://127.0.0.1:3306/webservice?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&useSSL=false
         username: root
-        password: admin
+        password: 111111
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
         filters: stat

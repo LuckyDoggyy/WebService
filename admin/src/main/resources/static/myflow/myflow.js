@@ -117,6 +117,7 @@
                 right: 30
             },
             props: {}
+
         },
         restore: "",
         activeRects: {      //      当前激活状态
@@ -889,7 +890,7 @@
                 }
                 m()
             }
-        }
+        }  //拖动
         function j() {       // function dotList()  if(!_from) throw '没有from节点!'
             var D, C, E = k.getBBox(),      //      getBBox获得起始的rect
                 F = s.getBBox(),

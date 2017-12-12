@@ -44,7 +44,7 @@
     </insert>
     
     <insert id="insertWSReturnKey" parameterType="com.we.ws.admin.domain.Service" useGeneratedKeys="true" keyProperty="sid">
-        insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method,output, version)
+        insert into T_Service (servicename,remark, url, wsdlurl, targetnamespace, method, output, version)
         values (#{serviceName},#{remark},#{url},#{wsdlUrl},#{targetNamespace},#{method},#{output},#{version})
     </insert>
 
