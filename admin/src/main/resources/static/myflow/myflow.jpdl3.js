@@ -208,6 +208,11 @@
                         return new myflow.editors.inputAreaEditor();
                     }
                 },
+                input: {
+                    name: 'input', label: '输入', value: '', editor: function () {
+                        return new myflow.editors.multiEditor();
+                    }
+                },
                 judge: {
                     name: 'judge', label: '循环条件', value: '', editor: function () {
                         return new myflow.editors.inputEditor();
@@ -217,7 +222,7 @@
         },
         assign: {
             type: 'assign',
-            name: {text: '<<assign>>'},
+            name: {text: '<<control node>>'},
             text: {text: 'node'},
             img: {src: 'img/16/assign.gif', width: 16, height: 16},
             props: {
@@ -226,16 +231,16 @@
                         return new myflow.editors.inputAreaEditor();
                     }
                 },
-                desc: {
+                /*desc: {
                     name: 'desc', label: '描述', value: '', editor: function () {
                         return new myflow.editors.inputAreaEditor();
                     }
-                },
-                judge: {
-                    name: 'judge', label: '判断', value: '', editor: function () {
-                        return new myflow.editors.inputEditor();
-                    }
-                }
+                },*/
+                input: {
+                    name: 'input', label: '流程输入', value: '', editor: function () {
+                        return new myflow.editors.multiEditor();
+                   }
+            }
             }
         },
         flow: {
@@ -254,11 +259,6 @@
                         return new myflow.editors.inputAreaEditor();
                     }
                 },
-                judge: {
-                    name: 'judge', label: '判断', value: '', editor: function () {
-                        return new myflow.editors.inputEditor();
-                    }
-                }
             }
         },
         empty: {
@@ -277,7 +277,7 @@
 
         value: {
             type: 'value',
-            name: {text: '<<value>>'},
+            name: {text: '<<assign>>'},
             text: {text: '值操作'},
             img: {src: 'img/16/empty.gif', width: 16, height: 16},
             props: {

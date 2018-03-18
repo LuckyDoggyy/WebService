@@ -95,7 +95,7 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
                 this.fireEvent('itemclick', rec, node);
             }
         }]
-    }, {
+    }, /*{
         xtype: 'actioncolumn',
         width: 80,
         text: '流程调用',
@@ -109,7 +109,7 @@ Ext.define("core.servicemanage.bpelmanage.view.BPGrid", {
                 this.fireEvent('itemclick', rec, node);
             }
         }]
-    }],
+    }*/],
     store: "core.servicemanage.bpelmanage.store.BPStore",
     bbar: [{
         xtype: 'button',

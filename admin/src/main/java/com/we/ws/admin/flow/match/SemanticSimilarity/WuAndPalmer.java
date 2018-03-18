@@ -323,7 +323,7 @@ public class WuAndPalmer {
 
 
     // test
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 // dummy WordNet setup - allows one to run the examples from this Class  ...........................................................
 // WordNet vers. that you want to use (assumes that you have downloaded the version in question)
 // *your* WordNet(vers.) is here ...

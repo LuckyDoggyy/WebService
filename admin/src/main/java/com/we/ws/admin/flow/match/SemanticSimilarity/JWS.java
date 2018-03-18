@@ -31,7 +31,7 @@ public class JWS {
 
 
     // constructor 1 - use user specified IC file
-    public JWS(String dir, String icfile) {
+    public JWS(String dir, String icfile) throws Exception{
 //        System.out.println("Loading modules");
 
         wnhome = dir+"/dict";
@@ -79,7 +79,7 @@ public class JWS {
         return (new File(dir)).exists();
     }
 
-    private void initialiseWordNet() {
+    private void initialiseWordNet() throws Exception {
         try {
             url = new URL("file", null, wnhome);
         } catch (MalformedURLException e) {

@@ -18,7 +18,7 @@ public class TextSimilarity {
     WordSimilarity ws;
     KuhnMunkres km = new KuhnMunkres();
 
-    public TextSimilarity() {
+    public TextSimilarity() throws Exception {
         ws = new WordSimilarity();
     }
 

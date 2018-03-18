@@ -6,7 +6,7 @@ public class WordSimilarity {
     WuAndPalmer wup;
     JWS jws;
 
-    public WordSimilarity(){
+    public WordSimilarity() throws Exception{
         String dir = "D:/WordNet";
         String icFile = dir + "/WordNet-InfoContent-2.1/ic-semcor.dat";
         jws = new JWS(dir, icFile);
@@ -26,7 +26,7 @@ public class WordSimilarity {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         WordSimilarity ws = new WordSimilarity();
 
